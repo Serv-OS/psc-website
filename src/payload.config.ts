@@ -23,8 +23,12 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 // Accept our own var first, then Vercel/Neon's auto-injected names, then SQLite dev default.
+// Prefer the UNPOOLED/direct connection — pgBouncer transaction pooling breaks
+// node-postgres prepared statements + Payload's schema push/DDL.
 const databaseURI =
   process.env.DATABASE_URI ||
+  process.env.POSTGRES_URL_NON_POOLING ||
+  process.env.DATABASE_URL_UNPOOLED ||
   process.env.POSTGRES_URL ||
   process.env.DATABASE_URL ||
   'file:./psc.db'
