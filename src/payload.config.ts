@@ -42,7 +42,7 @@ export default buildConfig({
     },
     components: {
       beforeDashboard: ['/admin/DashboardKpis#DashboardKpis'],
-      afterNavLinks: ['/admin/QuoteBuilderNavLink#QuoteBuilderNavLink'],
+      afterNavLinks: ['/admin/BuilderNavLink#BuilderNavLink', '/admin/QuoteBuilderNavLink#QuoteBuilderNavLink'],
       views: {
         quoteBuilder: {
           Component: '/admin/QuoteBuilder#QuoteBuilder',

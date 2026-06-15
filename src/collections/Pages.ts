@@ -48,9 +48,17 @@ export const Pages: CollectionConfig = {
       ],
     },
     {
+      name: 'layout',
+      type: 'json',
+      label: 'Visual layout (page builder)',
+      admin: {
+        description: 'Managed by the visual page builder. Edit at /builder — avoid hand-editing here.',
+      },
+    },
+    {
       name: 'hero',
       type: 'group',
-      label: 'Hero',
+      label: 'Hero (legacy — being replaced by the visual builder)',
       fields: [
         { name: 'eyebrow', type: 'text' },
         { name: 'heading', type: 'text' },

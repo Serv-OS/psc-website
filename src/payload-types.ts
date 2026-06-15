@@ -155,6 +155,18 @@ export interface Page {
     | 'benefits'
     | 'contact-us'
     | 'resources';
+  /**
+   * Managed by the visual page builder. Edit at /builder — avoid hand-editing here.
+   */
+  layout?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   hero?: {
     eyebrow?: string | null;
     heading?: string | null;
@@ -615,6 +627,7 @@ export interface PayloadMigration {
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
+  layout?: T;
   hero?:
     | T
     | {

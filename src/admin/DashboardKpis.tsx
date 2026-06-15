@@ -42,7 +42,7 @@ export async function DashboardKpis() {
         <div style={card}><div style={label}>Win rate</div><div style={value}>{winRate}%</div></div>
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 12, marginTop: 16 }}>
-        <a href="/admin/quote-builder" style={action}>＄ Build a new quote<div style={{ fontSize: 11, color: '#6a766d', fontWeight: 500, marginTop: 2 }}>Full cost &amp; markup calculator</div></a>
+        <a href="/builder" style={action}>✎ Edit pages (Builder)<div style={{ fontSize: 11, color: '#6a766d', fontWeight: 500, marginTop: 2 }}>Visual drag-and-drop editor</div></a>
         <a href="/admin/collections/blog-posts/create" style={action}>✎ Write a blog post<div style={{ fontSize: 11, color: '#6a766d', fontWeight: 500, marginTop: 2 }}>Publish to the website</div></a>
         <a href="/admin/collections/media" style={action}>▣ Upload photos<div style={{ fontSize: 11, color: '#6a766d', fontWeight: 500, marginTop: 2 }}>Media library &amp; gallery</div></a>
       </div>

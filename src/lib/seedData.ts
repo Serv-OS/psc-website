@@ -1,6 +1,7 @@
 import type { Payload } from 'payload'
 
 import { DEFAULT_CITIES } from './cities'
+import { HOME_LAYOUT } from '../builder/homeLayout'
 
 /** Minimal Lexical rich-text from plain paragraphs. */
 function richText(paragraphs: string[]) {
@@ -65,7 +66,7 @@ export type SeedResult = Record<string, number | string>
 /** Idempotent seed of launch content. Returns a summary of what now exists. */
 export async function seedDatabase(
   payload: Payload,
-  opts: { adminEmail?: string; adminPassword?: string } = {},
+  opts: { adminEmail?: string; adminPassword?: string; forceHomeLayout?: boolean } = {},
 ): Promise<SeedResult> {
   const adminEmail = opts.adminEmail || process.env.SEED_ADMIN_EMAIL || 'admin@peninsulasidingcompany.com'
   const adminPassword = opts.adminPassword || process.env.SEED_ADMIN_PASSWORD || 'ChangeMe!2026'
@@ -110,6 +111,19 @@ export async function seedDatabase(
     }
   }
   result.pagesCreated = pagesCreated
+
+  // 3b) Seed the Home page's visual-builder layout if it has none yet
+  const home = await payload.find({ collection: 'pages', where: { slug: { equals: 'home' } }, limit: 1 })
+  const homeDoc = home.docs[0]
+  if (homeDoc) {
+    const existing = homeDoc.layout as { content?: unknown[] } | null
+    if (opts.forceHomeLayout || !existing || !Array.isArray(existing.content) || existing.content.length === 0) {
+      await payload.update({ collection: 'pages', id: homeDoc.id, data: { layout: HOME_LAYOUT as never } })
+      result.homeLayout = 'seeded'
+    } else {
+      result.homeLayout = 'kept existing'
+    }
+  }
 
   // 4) Service areas
   let citiesCreated = 0

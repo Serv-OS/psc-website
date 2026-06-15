@@ -1,6 +1,6 @@
 {
   "name": "psc-website",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Peninsula Siding Company — marketing site, CMS, instant-quote engine & staff portal.",
   "license": "UNLICENSED",
   "type": "module",
@@ -19,6 +19,7 @@
     "migrate:media": "cross-env NODE_OPTIONS=--no-deprecation payload run ./scripts/migrate-wp-media.ts"
   },
   "dependencies": {
+    "@measured/puck": "^0.20.2",
     "@payloadcms/db-postgres": "3.85.1",
     "@payloadcms/db-sqlite": "3.85.1",
     "@payloadcms/email-resend": "3.85.1",

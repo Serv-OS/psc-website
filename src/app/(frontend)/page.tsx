@@ -6,6 +6,7 @@ import { JsonLd } from '@/components/ui/JsonLd'
 import { MediaImage } from '@/components/ui/MediaImage'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { QuoteStudio } from '@/components/home/QuoteStudio'
+import { PuckRender } from '@/builder/PuckRender'
 import { asMedia, getFeaturedGallery, getPage, getSiteSettings, getTestimonials, imageSlot } from '@/lib/data'
 import { generalContractorLd, serviceCatalogLd } from '@/lib/jsonld'
 import { DEFAULT_PRICING } from '@/lib/quote'
@@ -77,6 +78,17 @@ export default async function HomePage() {
     installMatPer1000PerStory: settings?.pricing?.installMatPer1000PerStory ?? DEFAULT_PRICING.installMatPer1000PerStory,
     permitsPerSqft: settings?.pricing?.permitsPerSqft ?? DEFAULT_PRICING.permitsPerSqft,
     debrisPerSqft: settings?.pricing?.debrisPerSqft ?? DEFAULT_PRICING.debrisPerSqft,
+  }
+
+  // If the page has been built with the visual builder, render that instead.
+  const layout = page?.layout as { content?: unknown[] } | null
+  if (layout && Array.isArray(layout.content) && layout.content.length > 0) {
+    return (
+      <>
+        <JsonLd data={[generalContractorLd(biz), serviceCatalogLd(biz)]} />
+        <PuckRender data={layout} />
+      </>
+    )
   }
 
   return (
