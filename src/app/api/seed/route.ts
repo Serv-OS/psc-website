@@ -23,6 +23,9 @@ export async function GET(req: Request) {
     // (no destructive changes → no prompt) and idempotent on re-run.
     let schema = 'skipped'
     try {
+      // Force the push (bypass pushDevSchema's "no changes detected" dequal skip,
+      // which no-ops against a fresh prod DB and leaves tables uncreated).
+      process.env.PAYLOAD_FORCE_DRIZZLE_PUSH = 'true'
       const { pushDevSchema } = await import('@payloadcms/drizzle')
       await pushDevSchema(payload.db as never)
       schema = 'pushed'
