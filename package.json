@@ -1,6 +1,6 @@
 {
   "name": "psc-website",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Peninsula Siding Company — marketing site, CMS, instant-quote engine & staff portal.",
   "license": "UNLICENSED",
   "type": "module",
@@ -28,6 +28,7 @@
     "@payloadcms/storage-vercel-blob": "3.85.1",
     "@payloadcms/ui": "3.85.1",
     "cross-env": "^7.0.3",
+    "drizzle-kit": "0.31.7",
     "graphql": "^16.9.0",
     "next": "16.2.9",
     "payload": "3.85.1",

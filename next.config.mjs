@@ -11,6 +11,8 @@ const wpRedirect = (from, to) => [
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // drizzle-kit is required at runtime by the schema-push step (/api/seed).
+  serverExternalPackages: ['drizzle-kit'],
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'posup.co.uk' },
