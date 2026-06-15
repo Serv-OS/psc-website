@@ -22,7 +22,12 @@ import { SiteSettings } from './globals/SiteSettings'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
-const databaseURI = process.env.DATABASE_URI || 'file:./psc.db'
+// Accept our own var first, then Vercel/Neon's auto-injected names, then SQLite dev default.
+const databaseURI =
+  process.env.DATABASE_URI ||
+  process.env.POSTGRES_URL ||
+  process.env.DATABASE_URL ||
+  'file:./psc.db'
 const usePostgres = !databaseURI.startsWith('file:')
 
 // Parse EMAIL_FROM of the form: Name <email@domain>
@@ -65,7 +70,9 @@ export default buildConfig({
   globals: [SiteSettings],
   editor: lexicalEditor(),
   db: usePostgres
-    ? postgresAdapter({ pool: { connectionString: databaseURI } })
+    ? // push:true auto-creates/syncs the schema on boot so the first Vercel deploy
+      // works without a manual migration step. Switch to committed migrations later.
+      postgresAdapter({ pool: { connectionString: databaseURI }, push: true })
     : sqliteAdapter({ client: { url: databaseURI } }),
   secret: process.env.PAYLOAD_SECRET || 'INSECURE-DEV-SECRET-CHANGE-ME',
   typescript: { outputFile: path.resolve(dirname, 'payload-types.ts') },
