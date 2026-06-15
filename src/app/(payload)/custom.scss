@@ -1,0 +1,9 @@
+/* Admin-panel theming for Peninsula Siding.
+   Tints Payload's UI toward the brand green so the staff portal feels on-brand. */
+:root {
+  --theme-success-500: #206a38;
+}
+
+.template-default {
+  --theme-elevation-1000: #16261c;
+}

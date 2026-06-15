@@ -1,0 +1,43 @@
+{
+  "name": "psc-website",
+  "version": "0.1.0",
+  "description": "Peninsula Siding Company — marketing site, CMS, instant-quote engine & staff portal.",
+  "license": "UNLICENSED",
+  "type": "module",
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "scripts": {
+    "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
+    "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev",
+    "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
+    "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
+    "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
+    "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
+    "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
+    "seed": "cross-env NODE_OPTIONS=--no-deprecation payload run ./scripts/seed.ts",
+    "migrate:media": "cross-env NODE_OPTIONS=--no-deprecation payload run ./scripts/migrate-wp-media.ts"
+  },
+  "dependencies": {
+    "@payloadcms/db-postgres": "3.85.1",
+    "@payloadcms/db-sqlite": "3.85.1",
+    "@payloadcms/email-resend": "3.85.1",
+    "@payloadcms/next": "3.85.1",
+    "@payloadcms/richtext-lexical": "3.85.1",
+    "@payloadcms/storage-vercel-blob": "3.85.1",
+    "@payloadcms/ui": "3.85.1",
+    "cross-env": "^7.0.3",
+    "graphql": "^16.9.0",
+    "next": "16.2.9",
+    "payload": "3.85.1",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "sharp": "0.35.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/react": "19.2.0",
+    "@types/react-dom": "19.2.0",
+    "typescript": "^5.7.3"
+  }
+}
