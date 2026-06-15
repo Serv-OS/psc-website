@@ -4,7 +4,6 @@ import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { resendAdapter } from '@payloadcms/email-resend'
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
-import sharp from 'sharp'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
@@ -80,7 +79,6 @@ export default buildConfig({
     : sqliteAdapter({ client: { url: databaseURI } }),
   secret: process.env.PAYLOAD_SECRET || 'INSECURE-DEV-SECRET-CHANGE-ME',
   typescript: { outputFile: path.resolve(dirname, 'payload-types.ts') },
-  sharp,
   ...(process.env.RESEND_API_KEY
     ? {
         email: resendAdapter({

@@ -24,14 +24,9 @@ export const Media: CollectionConfig = {
   upload: {
     staticDir: path.resolve(dirname, '../../media'),
     mimeTypes: ['image/*'],
-    focalPoint: true,
-    adminThumbnail: 'thumbnail',
-    imageSizes: [
-      { name: 'thumbnail', width: 400, height: 300, position: 'centre' },
-      { name: 'card', width: 768 },
-      { name: 'feature', width: 1280 },
-      { name: 'og', width: 1200, height: 630, position: 'centre' },
-    ],
+    // NOTE: image resizing (imageSizes) is disabled because sharp can't load on
+    // Vercel's Linux runtime under Next 16/Turbopack. Uploads still work and the
+    // frontend optimizes images via next/image. Re-enable with sharp later.
   },
   fields: [
     {
