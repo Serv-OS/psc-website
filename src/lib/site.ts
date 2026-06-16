@@ -111,3 +111,39 @@ export const CITY_LINKS = [
   { label: 'Redwood City', href: '/siding-redwood-city' },
   { label: 'Palo Alto', href: '/siding-palo-alto' },
 ]
+
+/** A header/footer link (optionally with dropdown children). */
+export type NavItem = { label: string; href: string; children?: { label: string; href: string }[] }
+export type FooterColumn = { heading: string; links: { label: string; href: string }[] }
+
+/** Default footer link columns — used when Site Settings → Menus → Footer is empty. */
+export const DEFAULT_FOOTER_COLUMNS: FooterColumn[] = [
+  {
+    heading: 'Areas we serve',
+    links: [
+      ...CITY_LINKS,
+      { label: 'Atherton', href: '/contact-us' },
+      { label: 'Brisbane', href: '/contact-us' },
+      { label: 'El Granada', href: '/contact-us' },
+    ],
+  },
+  {
+    heading: 'Quick links',
+    links: [
+      { label: 'Home', href: '/' },
+      { label: 'About Us', href: '/about-us' },
+      { label: 'Services', href: '/services' },
+      { label: 'Gallery', href: '/gallery' },
+      { label: 'Benefits', href: '/benefits' },
+    ],
+  },
+  {
+    heading: 'Get in touch',
+    links: [
+      { label: 'Contact Us', href: '/contact-us' },
+      { label: 'Free Quote', href: '/#quote' },
+      { label: 'Resources', href: '/resources' },
+      { label: 'Privacy Policy', href: '/privacy-policy' },
+    ],
+  },
+]

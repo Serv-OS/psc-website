@@ -4,17 +4,18 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState, type CSSProperties } from 'react'
 
-import { NAV } from '@/lib/site'
+import type { NavItem } from '@/lib/site'
 
 type Props = {
   announcement: string
   phone: string
   logoUrl: string
+  nav: NavItem[]
 }
 
 const QUOTE_HREF = '/#quote'
 
-export function Header({ announcement, phone, logoUrl }: Props) {
+export function Header({ announcement, phone, logoUrl, nav }: Props) {
   const pathname = usePathname()
   const [svcOpen, setSvcOpen] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -111,7 +112,7 @@ export function Header({ announcement, phone, logoUrl }: Props) {
 
           {/* DESKTOP NAV */}
           <nav className="nav-desktop">
-            {NAV.map((item) =>
+            {nav.map((item) =>
               'children' in item && item.children ? (
                 <div
                   key={item.href}
@@ -119,7 +120,7 @@ export function Header({ announcement, phone, logoUrl }: Props) {
                   onMouseEnter={() => setSvcOpen(true)}
                   onMouseLeave={() => setSvcOpen(false)}
                 >
-                  <Link href={item.href} style={linkStyle(isActive('/services'))}>
+                  <Link href={item.href} style={linkStyle(isActive(item.href))}>
                     {item.label} <span style={{ fontSize: 10 }}>▾</span>
                   </Link>
                   {svcOpen && (
@@ -198,7 +199,7 @@ export function Header({ announcement, phone, logoUrl }: Props) {
             className="mobile-menu"
             style={{ background: '#fff', borderTop: '1px solid #e7ece7', padding: '8px 24px 18px' }}
           >
-            {NAV.map((item) => (
+            {nav.map((item) => (
               <div key={item.href}>
                 <Link href={item.href} onClick={() => setMobileOpen(false)}>
                   {item.label}

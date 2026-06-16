@@ -154,7 +154,10 @@ export interface Page {
     | 'gallery'
     | 'benefits'
     | 'contact-us'
-    | 'resources';
+    | 'resources'
+    | 'siding-san-mateo'
+    | 'siding-redwood-city'
+    | 'siding-palo-alto';
   /**
    * Managed by the visual page builder. Edit at /builder — avoid hand-editing here.
    */
@@ -892,6 +895,42 @@ export interface SiteSetting {
     ratingValue?: number | null;
     reviewCount?: number | null;
   };
+  /**
+   * Top navigation items. Add sub-items to create a dropdown.
+   */
+  headerNav?:
+    | {
+        label: string;
+        /**
+         * e.g. /about-us
+         */
+        href: string;
+        children?:
+          | {
+              label: string;
+              href: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * The link columns shown in the footer (the logo/contact column is built from the Contact tab).
+   */
+  footerColumns?:
+    | {
+        heading: string;
+        links?:
+          | {
+              label: string;
+              href: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
   pricing?: {
     /**
      * Sale = cost × markup
@@ -947,6 +986,33 @@ export interface SiteSettingsSelect<T extends boolean = true> {
     | {
         ratingValue?: T;
         reviewCount?: T;
+      };
+  headerNav?:
+    | T
+    | {
+        label?: T;
+        href?: T;
+        children?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  footerColumns?:
+    | T
+    | {
+        heading?: T;
+        links?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+              id?: T;
+            };
+        id?: T;
       };
   pricing?:
     | T

@@ -1,4 +1,5 @@
 import type { GlobalConfig } from 'payload'
+import { revalidatePath } from 'next/cache'
 
 import { anyone, authenticated } from '../access'
 
@@ -8,6 +9,19 @@ export const SiteSettings: GlobalConfig = {
   label: 'Site Settings',
   access: { read: anyone, update: authenticated },
   admin: { group: 'Settings' },
+  hooks: {
+    // Header/footer/logo live in the shared layout — refresh every page on save
+    // so edits (menus, logo, phone, announcement) appear immediately.
+    afterChange: [
+      () => {
+        try {
+          revalidatePath('/', 'layout')
+        } catch {
+          /* not in a request context (e.g. CLI) — ignore */
+        }
+      },
+    ],
+  },
   fields: [
     {
       type: 'tabs',
@@ -76,6 +90,66 @@ export const SiteSettings: GlobalConfig = {
                   fields: [
                     { name: 'ratingValue', type: 'number', defaultValue: 5, admin: { width: '50%' } },
                     { name: 'reviewCount', type: 'number', defaultValue: 50, admin: { width: '50%' } },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          label: 'Menus',
+          description: 'Header navigation and footer link columns. Leave empty to use the built-in defaults.',
+          fields: [
+            {
+              name: 'headerNav',
+              type: 'array',
+              label: 'Header menu',
+              admin: { initCollapsed: true, description: 'Top navigation items. Add sub-items to create a dropdown.' },
+              fields: [
+                {
+                  type: 'row',
+                  fields: [
+                    { name: 'label', type: 'text', required: true, admin: { width: '50%' } },
+                    { name: 'href', type: 'text', required: true, admin: { width: '50%', description: 'e.g. /about-us' } },
+                  ],
+                },
+                {
+                  name: 'children',
+                  type: 'array',
+                  label: 'Dropdown sub-items',
+                  admin: { initCollapsed: true },
+                  fields: [
+                    {
+                      type: 'row',
+                      fields: [
+                        { name: 'label', type: 'text', required: true, admin: { width: '50%' } },
+                        { name: 'href', type: 'text', required: true, admin: { width: '50%' } },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              name: 'footerColumns',
+              type: 'array',
+              label: 'Footer link columns',
+              admin: { initCollapsed: true, description: 'The link columns shown in the footer (the logo/contact column is built from the Contact tab).' },
+              fields: [
+                { name: 'heading', type: 'text', required: true },
+                {
+                  name: 'links',
+                  type: 'array',
+                  label: 'Links',
+                  admin: { initCollapsed: true },
+                  fields: [
+                    {
+                      type: 'row',
+                      fields: [
+                        { name: 'label', type: 'text', required: true, admin: { width: '50%' } },
+                        { name: 'href', type: 'text', required: true, admin: { width: '50%' } },
+                      ],
+                    },
                   ],
                 },
               ],

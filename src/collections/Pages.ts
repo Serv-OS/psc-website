@@ -14,6 +14,9 @@ export const PAGE_SLUGS = [
   { label: 'Benefits', value: 'benefits' },
   { label: 'Contact Us', value: 'contact-us' },
   { label: 'Resources (Blog hub)', value: 'resources' },
+  { label: 'Location · San Mateo', value: 'siding-san-mateo' },
+  { label: 'Location · Redwood City', value: 'siding-redwood-city' },
+  { label: 'Location · Palo Alto', value: 'siding-palo-alto' },
 ] as const
 
 /**

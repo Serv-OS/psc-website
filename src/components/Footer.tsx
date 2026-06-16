@@ -1,7 +1,6 @@
 import Link from 'next/link'
 
-import type { Biz } from '@/lib/site'
-import { CITY_LINKS } from '@/lib/site'
+import type { Biz, FooterColumn } from '@/lib/site'
 
 const colTitle: React.CSSProperties = {
   fontSize: 13,
@@ -14,7 +13,7 @@ const colTitle: React.CSSProperties = {
 const colLink: React.CSSProperties = { color: '#9fb6a4', textDecoration: 'none' }
 const colWrap: React.CSSProperties = { display: 'flex', flexDirection: 'column', gap: 9, fontSize: 14, color: '#9fb6a4' }
 
-export function Footer({ biz, logoUrl }: { biz: Biz; logoUrl: string }) {
+export function Footer({ biz, logoUrl, columns }: { biz: Biz; logoUrl: string; columns: FooterColumn[] }) {
   const year = 2026
   return (
     <footer style={{ background: '#0b2417', color: '#cdddd0' }}>
@@ -25,7 +24,7 @@ export function Footer({ biz, logoUrl }: { biz: Biz; logoUrl: string }) {
           margin: '0 auto',
           padding: '64px 24px 30px',
           display: 'grid',
-          gridTemplateColumns: '1.6fr 1fr 1fr 1fr',
+          gridTemplateColumns: `1.6fr ${columns.map(() => '1fr').join(' ')}`,
           gap: 40,
         }}
       >
@@ -61,39 +60,18 @@ export function Footer({ biz, logoUrl }: { biz: Biz; logoUrl: string }) {
           </div>
         </div>
 
-        <div>
-          <div style={colTitle}>Areas we serve</div>
-          <div style={colWrap}>
-            {CITY_LINKS.map((c) => (
-              <Link key={c.href} href={c.href} style={colLink}>
-                {c.label}
-              </Link>
-            ))}
-            <span>Atherton &middot; Brisbane &middot; Colma</span>
-            <span>El Granada &middot; Moss Beach</span>
+        {columns.map((col) => (
+          <div key={col.heading}>
+            <div style={colTitle}>{col.heading}</div>
+            <div style={colWrap}>
+              {col.links.map((l) => (
+                <Link key={`${l.label}-${l.href}`} href={l.href} style={colLink}>
+                  {l.label}
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
-
-        <div>
-          <div style={colTitle}>Quick links</div>
-          <div style={colWrap}>
-            <Link href="/" style={colLink}>Home</Link>
-            <Link href="/about-us" style={colLink}>About Us</Link>
-            <Link href="/services" style={colLink}>Services</Link>
-            <Link href="/gallery" style={colLink}>Gallery</Link>
-            <Link href="/benefits" style={colLink}>Benefits</Link>
-          </div>
-        </div>
-
-        <div>
-          <div style={colTitle}>Get in touch</div>
-          <div style={colWrap}>
-            <Link href="/contact-us" style={colLink}>Contact Us</Link>
-            <Link href="/#quote" style={colLink}>Free Quote</Link>
-            <Link href="/resources" style={colLink}>Resources</Link>
-            <Link href="/privacy-policy" style={colLink}>Privacy Policy</Link>
-          </div>
-        </div>
+        ))}
       </div>
 
       <div style={{ borderTop: '1px solid rgba(255,255,255,.1)' }}>
