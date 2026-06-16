@@ -97,7 +97,6 @@ export const NAV = [
     label: 'Services',
     href: '/services',
     children: [
-      { label: 'Services Overview', href: '/services' },
       { label: 'Design Inspirations', href: '/services/design-inspirations' },
       { label: 'Quality Pricing', href: '/services/quality-pricing' },
     ],
