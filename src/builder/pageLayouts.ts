@@ -6,6 +6,8 @@
 
 const block = (type: string, id: string, props: Record<string, unknown>) => ({ type, props: { id, ...props } })
 const layout = (content: Array<ReturnType<typeof block>>) => ({ root: { props: {} }, zones: {}, content })
+/** Image field value pointing at a migrated Media file (served by Payload). */
+const img = (file: string, alt: string) => ({ url: `/api/media/file/${file}`, alt })
 
 /* ───────────────────────── About Us ───────────────────────── */
 const aboutUs = layout([
@@ -44,8 +46,8 @@ const aboutUs = layout([
       'Drag the handle to see how we transform outdated exteriors into beautiful, durable, energy-efficient homes built for Bay Area living — and yours could be next.',
     buttonLabel: 'Get a free siding estimate',
     buttonHref: '/#quote',
-    beforeImage: null,
-    afterImage: null,
+    beforeImage: img('3-before.jpg', 'Bay Area home — before new siding'),
+    afterImage: img('3-after.jpg', 'Bay Area home — after new siding'),
     background: 'forest',
   }),
   block('MaterialsTabs', 'materials-about', {
@@ -103,7 +105,7 @@ const services = layout([
     primaryHref: '/#quote',
     secondaryLabel: 'Explore materials',
     secondaryHref: '#materials',
-    image: null,
+    image: img('6-after.jpg', 'Finished James Hardie siding project in the Bay Area'),
     background: 'white',
   }),
   block('ServiceFinderBlock', 'finder-services', {
@@ -122,9 +124,9 @@ const services = layout([
     columns: '3',
     background: 'soft',
     items: [
-      { title: 'James Hardie® Fiber Cement', body: 'Resists fire, termites, and extreme weather. A 30-year warranty and 15-year ColorPlus® finish make it a long-lasting investment — installed by an Elite Preferred Contractor.', image: null },
-      { title: 'Cedar Valley Cedar', body: 'The natural beauty of Western Red Cedar — shingles on a fiberglass-laminate backer, available in hundreds of factory-finished colors and stains for a personalized, elegant exterior.', image: null },
-      { title: 'Shakertown® Cedar', body: 'Western Red Cedar in efficient 8-ft panels — less waste, faster installation, and a seamless natural wood look, available in durable pre-stained finishes.', image: null },
+      { title: 'James Hardie® Fiber Cement', body: 'Resists fire, termites, and extreme weather. A 30-year warranty and 15-year ColorPlus® finish make it a long-lasting investment — installed by an Elite Preferred Contractor.', image: img('13-after-768x768.jpg', 'James Hardie fiber cement siding') },
+      { title: 'Cedar Valley Cedar', body: 'The natural beauty of Western Red Cedar — shingles on a fiberglass-laminate backer, available in hundreds of factory-finished colors and stains for a personalized, elegant exterior.', image: img('12-after-768x768.jpg', 'Cedar Valley cedar siding') },
+      { title: 'Shakertown® Cedar', body: 'Western Red Cedar in efficient 8-ft panels — less waste, faster installation, and a seamless natural wood look, available in durable pre-stained finishes.', image: img('7-after-768x768.jpg', 'Shakertown cedar siding') },
     ],
   }),
   block('Heading', 'explore-head-services', {
@@ -261,7 +263,7 @@ const qualityPricing = layout([
     primaryHref: '#estimate',
     secondaryLabel: 'Get my instant estimate',
     secondaryHref: '/#quote',
-    image: null,
+    image: img('9-after.jpg', 'Detailed Bay Area siding proposal and finished project'),
     background: 'white',
   }),
   block('EstimateSliderBlock', 'estimate-pricing', {
@@ -353,7 +355,7 @@ const benefits = layout([
     primaryHref: '/gallery',
     secondaryLabel: 'Get a free consultation',
     secondaryHref: '/contact-us',
-    image: null,
+    image: img('7-after.jpg', 'Protected, transformed Bay Area home exterior'),
     background: 'white',
   }),
   block('Heading', 'pillars-head-benefits', {
