@@ -4,7 +4,16 @@ import type { CSSProperties, ReactNode } from 'react'
 
 import { BeforeAfter } from '@/components/ui/BeforeAfter'
 import { MediaImage } from '@/components/ui/MediaImage'
+import { SectionHeader } from '@/components/ui/SectionHeader'
+import { FAQ } from '@/components/ui/FAQ'
 import { QuoteStudio } from '@/components/home/QuoteStudio'
+import { MaterialTabs } from '@/components/about/MaterialTabs'
+import { ServiceFinder } from '@/components/services/ServiceFinder'
+import { StyleExplorer } from '@/components/design/StyleExplorer'
+import { EstimateSlider } from '@/components/pricing/EstimateSlider'
+import { FireTest } from '@/components/benefits/FireTest'
+import { ContactForm } from '@/components/contact/ContactForm'
+import { GalleryProjectsLive, BlogPostsLive } from './DynamicCollections'
 import { ImageField, type ImageValue } from './ImageField'
 
 /* ── shared helpers ─────────────────────────────────────────────────────── */
@@ -68,9 +77,9 @@ export const config: Config = {
     render: ({ children }: { children?: ReactNode }) => <div style={{ overflowX: 'hidden' }}>{children}</div>,
   },
   categories: {
-    layout: { title: 'Sections', components: ['Hero', 'Heading', 'Text', 'CallToAction', 'Spacer'] },
-    content: { title: 'Content', components: ['ServicesGrid', 'FeatureCards', 'BeforeAfter', 'Reviews', 'ImageBlock'] },
-    interactive: { title: 'Interactive', components: ['QuoteEngine'] },
+    layout: { title: 'Sections', components: ['Hero', 'CenteredHero', 'Heading', 'Text', 'CallToAction', 'Spacer'] },
+    content: { title: 'Content', components: ['SplitContent', 'ServicesGrid', 'FeatureCards', 'NumberedCards', 'CheckList', 'BeforeAfter', 'Reviews', 'ImageBlock'] },
+    interactive: { title: 'Interactive', components: ['QuoteEngine', 'MaterialsTabs', 'ServiceFinderBlock', 'StyleExplorerBlock', 'EstimateSliderBlock', 'FireTestBlock', 'FAQBlock', 'GalleryBlock', 'ContactBlock', 'BlogListBlock'] },
   },
   components: {
     // ─────────── HERO ───────────
@@ -235,8 +244,9 @@ export const config: Config = {
             icon: { type: 'text', label: 'Icon (emoji/char)' },
             title: { type: 'text', label: 'Title' },
             body: { type: 'textarea', label: 'Body' },
+            highlight: { type: 'radio', label: 'Style', options: [{ label: 'Normal', value: false }, { label: 'Highlighted', value: true }] },
           },
-          defaultItemProps: { icon: '★', title: 'Feature', body: 'Short description.' },
+          defaultItemProps: { icon: '★', title: 'Feature', body: 'Short description.', highlight: false },
         },
       },
       defaultProps: {
@@ -253,13 +263,20 @@ export const config: Config = {
         <section style={{ ...bandStyle(background as Band) }}>
           <div className="container" style={{ padding: '40px 24px 84px' }}>
             <div className={columns === '3' ? 'cols-3' : 'cols-4'}>
-              {(items || []).map((w: { icon?: string; title?: string; body?: string }, i: number) => (
-                <div key={i} style={{ background: '#fff', border: '1px solid #e7ece7', borderRadius: 18, padding: 24 }}>
-                  <div style={{ width: 46, height: 46, borderRadius: 12, background: '#e7f1e8', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, color: '#206a38', marginBottom: 16 }}>{w.icon}</div>
-                  <h3 style={{ fontSize: '16.5px', fontWeight: 700, color: '#16261c' }}>{w.title}</h3>
-                  <p style={{ fontSize: '13.5px', color: '#5b675e', marginTop: 8, lineHeight: 1.55 }}>{w.body}</p>
-                </div>
-              ))}
+              {(items || []).map((w: { icon?: string; title?: string; body?: string; highlight?: boolean }, i: number) =>
+                w.highlight ? (
+                  <div key={i} style={{ background: 'linear-gradient(135deg,#206a38,#0e341d)', borderRadius: 18, padding: 26, color: '#fff', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                    <h3 style={{ fontSize: 17, fontWeight: 800, lineHeight: 1.3 }}>{w.title}</h3>
+                    <p style={{ fontSize: '13.5px', color: '#bcd9c2', marginTop: 8, lineHeight: 1.55 }}>{w.body}</p>
+                  </div>
+                ) : (
+                  <div key={i} style={{ background: '#fff', border: '1px solid #e7ece7', borderRadius: 18, padding: 24 }}>
+                    <div style={{ width: 46, height: 46, borderRadius: 12, background: '#e7f1e8', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, color: '#206a38', marginBottom: 16 }}>{w.icon}</div>
+                    <h3 style={{ fontSize: '16.5px', fontWeight: 700, color: '#16261c' }}>{w.title}</h3>
+                    <p style={{ fontSize: '13.5px', color: '#5b675e', marginTop: 8, lineHeight: 1.55 }}>{w.body}</p>
+                  </div>
+                ),
+              )}
             </div>
           </div>
         </section>
@@ -442,6 +459,392 @@ export const config: Config = {
       fields: { size: { type: 'select', label: 'Size', options: [{ label: 'Small', value: '32' }, { label: 'Medium', value: '64' }, { label: 'Large', value: '96' }] } },
       defaultProps: { size: '64' },
       render: ({ size }) => <div style={{ height: Number(size) }} />,
+    },
+
+    // ─────────── CENTERED HERO (with optional stats) ───────────
+    CenteredHero: {
+      label: 'Centered hero',
+      fields: {
+        badge: { type: 'text', label: 'Badge' },
+        heading: { type: 'textarea', label: 'Heading' },
+        subheading: { type: 'textarea', label: 'Subheading' },
+        stats: {
+          type: 'array',
+          label: 'Stats (optional)',
+          getItemSummary: (i: { value?: string }) => i.value || 'Stat',
+          arrayFields: { value: { type: 'text', label: 'Value' }, label: { type: 'text', label: 'Label' } },
+          defaultItemProps: { value: '10+', label: 'Stat' },
+        },
+        background: bandField,
+      },
+      defaultProps: { badge: '', heading: 'A bold page headline', subheading: '', stats: [], background: 'forest' },
+      render: ({ badge, heading, subheading, stats, background }) => {
+        const dark = background === 'forest' || background === 'green'
+        return (
+          <section style={{ position: 'relative', overflow: 'hidden', ...bandStyle(background as Band) }}>
+            <div style={{ position: 'absolute', inset: 0, background: 'repeating-linear-gradient(0deg,rgba(255,255,255,.03) 0 1px,transparent 1px 26px)', pointerEvents: 'none' }} />
+            <div className="container" style={{ position: 'relative', maxWidth: 1100, padding: '84px 24px 72px', textAlign: 'center' }}>
+              {badge ? (
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 9, background: dark ? 'rgba(255,255,255,.08)' : '#e7f1e8', border: dark ? '1px solid rgba(255,255,255,.14)' : '1px solid #cfe3d3', color: dark ? '#bfe0c6' : '#1c5530', fontSize: '12.5px', fontWeight: 600, padding: '8px 16px', borderRadius: 999, letterSpacing: '.4px' }}>
+                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#34d058' }} />
+                  {badge}
+                </div>
+              ) : null}
+              <h1 style={{ fontSize: 'clamp(36px,5.2vw,62px)', fontWeight: 800, letterSpacing: '-1.6px', lineHeight: 1.04, marginTop: badge ? 22 : 0, color: dark ? '#fff' : '#16261c' }}>{heading}</h1>
+              {subheading ? <p style={{ maxWidth: 660, margin: '22px auto 0', fontSize: 18, lineHeight: 1.65, color: dark ? '#bdd4c2' : '#46544a' }}>{subheading}</p> : null}
+              {stats && stats.length ? (
+                <div className="cols-4" style={{ marginTop: 40, gap: 16 }}>
+                  {stats.map((s: { value?: string; label?: string }, i: number) => (
+                    <div key={i} style={{ background: dark ? 'rgba(255,255,255,.06)' : '#f4f6f3', border: dark ? '1px solid rgba(255,255,255,.12)' : '1px solid #e7ece7', borderRadius: 16, padding: '22px 16px' }}>
+                      <div style={{ fontSize: 30, fontWeight: 800, color: dark ? '#fff' : '#16261c', letterSpacing: '-1px' }}>{s.value}</div>
+                      <div style={{ fontSize: '12.5px', color: dark ? '#9fc2a6' : '#5b675e', marginTop: 6, lineHeight: 1.4 }}>{s.label}</div>
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+            </div>
+          </section>
+        )
+      },
+    },
+
+    // ─────────── SPLIT: text + checklist card ───────────
+    SplitContent: {
+      label: 'Split: text + card',
+      fields: {
+        eyebrow: { type: 'text', label: 'Left eyebrow' },
+        heading: { type: 'textarea', label: 'Left heading' },
+        body: { type: 'textarea', label: 'Left body (blank line = new paragraph)' },
+        cardEyebrow: { type: 'text', label: 'Card eyebrow' },
+        cardText: { type: 'textarea', label: 'Card text' },
+        checklist: {
+          type: 'array',
+          label: 'Card checklist',
+          getItemSummary: (i: { text?: string }) => i.text || 'Item',
+          arrayFields: { text: { type: 'textarea', label: 'Item' } },
+          defaultItemProps: { text: 'A key benefit' },
+        },
+        background: bandField,
+      },
+      defaultProps: {
+        eyebrow: 'Our story',
+        heading: 'A bold heading for this section',
+        body: 'Write the first paragraph here.\n\nAdd a blank line to start a new paragraph.',
+        cardEyebrow: 'Our mission',
+        cardText: 'A short mission or summary statement.',
+        checklist: [{ text: 'First highlight' }, { text: 'Second highlight' }],
+        background: 'white',
+      },
+      render: ({ eyebrow, heading, body, cardEyebrow, cardText, checklist, background }) => {
+        const paras = String(body || '').split(/\n{2,}/).map((p) => p.trim()).filter(Boolean)
+        return (
+          <section style={{ ...bandStyle(background as Band) }}>
+            <div className="split container" style={{ padding: '84px 24px', gap: 56, alignItems: 'start' }}>
+              <div>
+                {eyebrow ? <div style={eyebrowStyle(false)}>{eyebrow}</div> : null}
+                <h2 style={{ fontSize: 'clamp(26px,3vw,38px)', fontWeight: 800, letterSpacing: '-1px', marginTop: 12, color: '#16261c' }}>{heading}</h2>
+                {paras.map((p, i) => (
+                  <p key={i} style={{ marginTop: i ? 14 : 18, fontSize: 16, lineHeight: 1.7, color: '#46544a' }}>{p}</p>
+                ))}
+              </div>
+              <div style={{ background: '#f4f6f3', border: '1px solid #e7ece7', borderRadius: 20, padding: 34 }}>
+                {cardEyebrow ? <div style={eyebrowStyle(false)}>{cardEyebrow}</div> : null}
+                {cardText ? <p style={{ marginTop: 16, fontSize: 17, lineHeight: 1.6, color: '#22312a', fontWeight: 500 }}>{cardText}</p> : null}
+                {checklist && checklist.length ? (
+                  <>
+                    <div style={{ height: 1, background: '#e1e8e1', margin: '24px 0' }} />
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                      {checklist.map((c: { text?: string }, i: number) => (
+                        <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+                          <span style={{ color: '#206a38', fontSize: 18, lineHeight: 1, marginTop: 1 }}>✓</span>
+                          <span style={{ fontSize: '14.5px', color: '#3a4a40', lineHeight: 1.5 }}>{c.text}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                ) : null}
+              </div>
+            </div>
+          </section>
+        )
+      },
+    },
+
+    // ─────────── NUMBERED CARDS ───────────
+    NumberedCards: {
+      label: 'Numbered cards',
+      fields: {
+        eyebrow: { type: 'text', label: 'Eyebrow' },
+        title: { type: 'textarea', label: 'Title' },
+        columns: { type: 'select', label: 'Columns', options: [{ label: '3', value: '3' }, { label: '4', value: '4' }] },
+        background: bandField,
+        items: {
+          type: 'array',
+          label: 'Cards',
+          getItemSummary: (i: { title?: string }) => i.title || 'Card',
+          arrayFields: { n: { type: 'text', label: 'Number' }, title: { type: 'text', label: 'Title' }, body: { type: 'textarea', label: 'Body' } },
+          defaultItemProps: { n: '01', title: 'Step title', body: 'Short description.' },
+        },
+      },
+      defaultProps: {
+        eyebrow: 'Our services',
+        title: 'A numbered list of offerings',
+        columns: '3',
+        background: 'white',
+        items: [
+          { n: '01', title: 'First', body: 'Short description.' },
+          { n: '02', title: 'Second', body: 'Short description.' },
+          { n: '03', title: 'Third', body: 'Short description.' },
+        ],
+      },
+      render: ({ eyebrow, title, columns, items, background }) => {
+        const dark = background === 'forest' || background === 'green'
+        return (
+          <section style={{ ...bandStyle(background as Band) }}>
+            <div className="container" style={{ padding: '84px 24px' }}>
+              {title ? <SectionHeader eyebrow={eyebrow || ''} title={title} dark={dark} maxWidth={720} /> : null}
+              <div className={columns === '4' ? 'cols-4' : 'cols-3'}>
+                {(items || []).map((s: { n?: string; title?: string; body?: string }, i: number) => (
+                  <div key={i} style={{ border: dark ? '1px solid rgba(255,255,255,.14)' : '1px solid #e7ece7', borderRadius: 18, padding: 28, background: dark ? 'rgba(255,255,255,.04)' : 'transparent' }}>
+                    <div style={{ fontSize: 13, fontWeight: 800, color: dark ? '#7fd28d' : '#206a38' }}>{s.n}</div>
+                    <h3 style={{ fontSize: 18, fontWeight: 700, color: dark ? '#fff' : '#16261c', marginTop: 8 }}>{s.title}</h3>
+                    <p style={{ fontSize: 14, color: dark ? '#bcd2bf' : '#5b675e', marginTop: 10, lineHeight: 1.6 }}>{s.body}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        )
+      },
+    },
+
+    // ─────────── CHECK LIST ───────────
+    CheckList: {
+      label: 'Check list',
+      fields: {
+        eyebrow: { type: 'text', label: 'Eyebrow' },
+        title: { type: 'textarea', label: 'Title' },
+        columns: { type: 'select', label: 'Columns', options: [{ label: '1', value: '1' }, { label: '2', value: '2' }, { label: '3', value: '3' }] },
+        background: bandField,
+        items: {
+          type: 'array',
+          label: 'Items',
+          getItemSummary: (i: { title?: string }) => i.title || 'Item',
+          arrayFields: { title: { type: 'text', label: 'Title' }, body: { type: 'textarea', label: 'Body (optional)' } },
+          defaultItemProps: { title: 'A point', body: '' },
+        },
+      },
+      defaultProps: {
+        eyebrow: '',
+        title: '',
+        columns: '2',
+        background: 'white',
+        items: [{ title: 'First point', body: '' }, { title: 'Second point', body: '' }],
+      },
+      render: ({ eyebrow, title, columns, items, background }) => {
+        const dark = background === 'forest' || background === 'green'
+        return (
+          <section style={{ ...bandStyle(background as Band) }}>
+            <div className="container" style={{ padding: '64px 24px' }}>
+              {title ? <SectionHeader eyebrow={eyebrow || ''} title={title} dark={dark} maxWidth={720} /> : null}
+              <div className={columns === '3' ? 'cols-3' : columns === '1' ? '' : 'cols-2'} style={{ maxWidth: columns === '1' ? 760 : undefined, margin: columns === '1' ? '0 auto' : undefined, display: columns === '1' ? 'flex' : undefined, flexDirection: columns === '1' ? 'column' : undefined, gap: columns === '1' ? 14 : undefined }}>
+                {(items || []).map((c: { title?: string; body?: string }, i: number) => (
+                  <div key={i} style={{ display: 'flex', gap: 14, alignItems: 'flex-start', background: dark ? 'rgba(255,255,255,.04)' : '#fff', border: dark ? '1px solid rgba(255,255,255,.12)' : '1px solid #e7ece7', borderRadius: 14, padding: 18 }}>
+                    <span style={{ flexShrink: 0, width: 28, height: 28, borderRadius: '50%', background: dark ? 'rgba(127,210,141,.18)' : '#e7f1e8', color: dark ? '#7fd28d' : '#206a38', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 15, fontWeight: 800 }}>✓</span>
+                    <div>
+                      <div style={{ fontSize: '15.5px', fontWeight: 700, color: dark ? '#fff' : '#16261c' }}>{c.title}</div>
+                      {c.body ? <p style={{ fontSize: 14, color: dark ? '#bcd2bf' : '#5b675e', marginTop: 4, lineHeight: 1.55 }}>{c.body}</p> : null}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        )
+      },
+    },
+
+    // ─────────── MATERIALS TABS ───────────
+    MaterialsTabs: {
+      label: 'Materials tabs',
+      fields: { eyebrow: { type: 'text', label: 'Eyebrow' }, title: { type: 'textarea', label: 'Title' }, copy: { type: 'textarea', label: 'Copy' }, background: bandField },
+      defaultProps: { eyebrow: 'Premium materials', title: 'The best siding brands, expertly installed', copy: 'We partner with trusted manufacturers to deliver exteriors that stand up to Bay Area weather and add lasting value.', background: 'white' },
+      render: ({ eyebrow, title, copy, background }) => {
+        const dark = background === 'forest' || background === 'green'
+        return (
+          <section style={{ ...bandStyle(background as Band) }}>
+            <div className="container" style={{ padding: '84px 24px' }}>
+              {title ? <SectionHeader eyebrow={eyebrow || ''} title={title} copy={copy} dark={dark} maxWidth={720} marginBottom={40} /> : null}
+              <MaterialTabs />
+            </div>
+          </section>
+        )
+      },
+    },
+
+    // ─────────── SERVICE FINDER ───────────
+    ServiceFinderBlock: {
+      label: 'Service finder',
+      fields: { eyebrow: { type: 'text', label: 'Eyebrow' }, title: { type: 'textarea', label: 'Title' }, copy: { type: 'textarea', label: 'Copy' }, background: bandField },
+      defaultProps: { eyebrow: 'Find your fit', title: 'Not sure what you need?', copy: 'Tell us about your home and we’ll point you to the right service.', background: 'soft' },
+      render: ({ eyebrow, title, copy, background }) => {
+        const dark = background === 'forest' || background === 'green'
+        const finderServices = [
+          { key: 'install', n: '01', title: 'Siding Installation', body: "Transform your home's appearance and durability with fiber cement, wood, and more — installed with precise, high-quality craftsmanship.", media: null, label: 'Siding Installation' },
+          { key: 'replace', n: '02', title: 'Siding Replacement', body: 'Outdated, damaged, or failing siding replaced for a fresh, modern look with long-lasting protection.', media: null, label: 'Siding Replacement' },
+          { key: 'repair', n: '03', title: 'Siding Repair', body: 'Full-wall repairs from corner to corner, restoring weather-, pest-, or age-affected siding.', media: null, label: 'Siding Repair' },
+        ]
+        return (
+          <section style={{ ...bandStyle(background as Band) }}>
+            <div className="container" style={{ padding: '84px 24px' }}>
+              {title ? <SectionHeader eyebrow={eyebrow || ''} title={title} copy={copy} dark={dark} maxWidth={720} marginBottom={40} /> : null}
+              <ServiceFinder services={finderServices as never} />
+            </div>
+          </section>
+        )
+      },
+    },
+
+    // ─────────── STYLE EXPLORER ───────────
+    StyleExplorerBlock: {
+      label: 'Style explorer',
+      fields: { eyebrow: { type: 'text', label: 'Eyebrow' }, title: { type: 'textarea', label: 'Title' }, copy: { type: 'textarea', label: 'Copy' }, background: bandField },
+      defaultProps: { eyebrow: 'Design explorer', title: 'Picture your home’s perfect new exterior', copy: 'Choose an architectural style and a ColorPlus® finish to preview a look for your home.', background: 'soft' },
+      render: ({ eyebrow, title, copy, background }) => {
+        const dark = background === 'forest' || background === 'green'
+        return (
+          <section style={{ ...bandStyle(background as Band) }}>
+            <div className="container" style={{ padding: '84px 24px' }}>
+              {title ? <SectionHeader eyebrow={eyebrow || ''} title={title} copy={copy} dark={dark} maxWidth={720} marginBottom={40} /> : null}
+              <StyleExplorer />
+            </div>
+          </section>
+        )
+      },
+    },
+
+    // ─────────── ESTIMATE SLIDER ───────────
+    EstimateSliderBlock: {
+      label: 'Estimate slider',
+      fields: { eyebrow: { type: 'text', label: 'Eyebrow' }, title: { type: 'textarea', label: 'Title' }, copy: { type: 'textarea', label: 'Copy' }, background: bandField },
+      defaultProps: { eyebrow: 'Ballpark it', title: 'Estimate your project in seconds', copy: 'Slide to your home’s approximate siding area for an instant ballpark range.', background: 'forest' },
+      render: ({ eyebrow, title, copy, background }) => {
+        const dark = background === 'forest' || background === 'green'
+        return (
+          <section style={{ ...bandStyle(background as Band) }}>
+            <div className="container" style={{ padding: '84px 24px', maxWidth: 820 }}>
+              {title ? <SectionHeader eyebrow={eyebrow || ''} title={title} copy={copy} dark={dark} maxWidth={720} marginBottom={40} /> : null}
+              <EstimateSlider />
+            </div>
+          </section>
+        )
+      },
+    },
+
+    // ─────────── FIRE TEST ───────────
+    FireTestBlock: {
+      label: 'Fire-test demo',
+      fields: { eyebrow: { type: 'text', label: 'Eyebrow' }, title: { type: 'textarea', label: 'Title' }, copy: { type: 'textarea', label: 'Copy' }, background: bandField },
+      defaultProps: { eyebrow: 'Built to protect', title: 'See how fiber cement stands up to fire', copy: 'Compare fiber cement and wood under the same conditions.', background: 'forest' },
+      render: ({ eyebrow, title, copy, background }) => {
+        const dark = background === 'forest' || background === 'green'
+        return (
+          <section style={{ ...bandStyle(background as Band) }}>
+            <div className="container" style={{ padding: '84px 24px', maxWidth: 820 }}>
+              {title ? <SectionHeader eyebrow={eyebrow || ''} title={title} copy={copy} dark={dark} maxWidth={720} marginBottom={20} /> : null}
+              <FireTest />
+            </div>
+          </section>
+        )
+      },
+    },
+
+    // ─────────── FAQ ───────────
+    FAQBlock: {
+      label: 'FAQ accordion',
+      fields: {
+        eyebrow: { type: 'text', label: 'Eyebrow' },
+        title: { type: 'textarea', label: 'Title' },
+        background: bandField,
+        items: {
+          type: 'array',
+          label: 'Questions',
+          getItemSummary: (i: { q?: string }) => i.q || 'Question',
+          arrayFields: { q: { type: 'text', label: 'Question' }, a: { type: 'textarea', label: 'Answer' } },
+          defaultItemProps: { q: 'A question?', a: 'The answer.' },
+        },
+      },
+      defaultProps: {
+        eyebrow: 'FAQ',
+        title: 'Frequently asked questions',
+        background: 'white',
+        items: [{ q: 'A common question?', a: 'A helpful answer.' }],
+      },
+      render: ({ eyebrow, title, items, background }) => {
+        const dark = background === 'forest' || background === 'green'
+        return (
+          <section style={{ ...bandStyle(background as Band) }}>
+            <div className="container" style={{ padding: '84px 24px', maxWidth: 880 }}>
+              {title ? <SectionHeader eyebrow={eyebrow || ''} title={title} dark={dark} maxWidth={720} marginBottom={36} /> : null}
+              <FAQ items={(items || []) as never} />
+            </div>
+          </section>
+        )
+      },
+    },
+
+    // ─────────── GALLERY GRID ───────────
+    GalleryBlock: {
+      label: 'Gallery grid (live)',
+      fields: { eyebrow: { type: 'text', label: 'Eyebrow' }, title: { type: 'textarea', label: 'Title' }, copy: { type: 'textarea', label: 'Copy' }, background: bandField },
+      defaultProps: { eyebrow: 'Our work', title: 'Bay Area siding transformations', copy: '', background: 'white' },
+      render: ({ eyebrow, title, copy, background }) => {
+        const dark = background === 'forest' || background === 'green'
+        return (
+          <section style={{ ...bandStyle(background as Band) }}>
+            <div className="container" style={{ padding: '64px 24px 84px' }}>
+              {title ? <SectionHeader eyebrow={eyebrow || ''} title={title} copy={copy} dark={dark} maxWidth={720} marginBottom={40} /> : null}
+              <GalleryProjectsLive />
+            </div>
+          </section>
+        )
+      },
+    },
+
+    // ─────────── CONTACT FORM ───────────
+    ContactBlock: {
+      label: 'Contact form',
+      fields: { eyebrow: { type: 'text', label: 'Eyebrow' }, title: { type: 'textarea', label: 'Title' }, copy: { type: 'textarea', label: 'Copy' }, background: bandField },
+      defaultProps: { eyebrow: 'Get in touch', title: 'Request your free estimate', copy: 'Tell us about your project and we’ll be in touch shortly.', background: 'soft' },
+      render: ({ eyebrow, title, copy, background }) => {
+        const dark = background === 'forest' || background === 'green'
+        return (
+          <section style={{ ...bandStyle(background as Band) }}>
+            <div className="container" style={{ padding: '84px 24px', maxWidth: 880 }}>
+              {title ? <SectionHeader eyebrow={eyebrow || ''} title={title} copy={copy} dark={dark} maxWidth={720} marginBottom={36} /> : null}
+              <ContactForm />
+            </div>
+          </section>
+        )
+      },
+    },
+
+    // ─────────── BLOG / RESOURCES LIST ───────────
+    BlogListBlock: {
+      label: 'Articles list (live)',
+      fields: { eyebrow: { type: 'text', label: 'Eyebrow' }, title: { type: 'textarea', label: 'Title' }, copy: { type: 'textarea', label: 'Copy' }, background: bandField },
+      defaultProps: { eyebrow: 'Resources', title: 'Guides, costs & design ideas', copy: '', background: 'white' },
+      render: ({ eyebrow, title, copy, background }) => {
+        const dark = background === 'forest' || background === 'green'
+        return (
+          <section style={{ ...bandStyle(background as Band) }}>
+            <div className="container" style={{ padding: '64px 24px 84px' }}>
+              {title ? <SectionHeader eyebrow={eyebrow || ''} title={title} copy={copy} dark={dark} maxWidth={720} marginBottom={40} /> : null}
+              <BlogPostsLive />
+            </div>
+          </section>
+        )
+      },
     },
   },
 }
