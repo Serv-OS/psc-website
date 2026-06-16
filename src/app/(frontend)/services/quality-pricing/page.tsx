@@ -5,7 +5,8 @@ import { FAQ, type FAQItem } from '@/components/ui/FAQ'
 import { JsonLd } from '@/components/ui/JsonLd'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { EstimateSlider } from '@/components/pricing/EstimateSlider'
-import { getPage, getSiteSettings } from '@/lib/data'
+import { PuckRender } from '@/builder/PuckRender'
+import { builtLayout, getPage, getSiteSettings } from '@/lib/data'
 import { breadcrumbLd, faqPageLd } from '@/lib/jsonld'
 import { DEFAULT_PRICING } from '@/lib/quote'
 
@@ -47,7 +48,9 @@ const faqs: FAQItem[] = [
 ]
 
 export default async function QualityPricingPage() {
-  const settings = await getSiteSettings()
+  const [page, settings] = await Promise.all([getPage('quality-pricing'), getSiteSettings()])
+  const layout = builtLayout(page)
+  if (layout) return <PuckRender data={layout} />
   const pricing = {
     ...DEFAULT_PRICING,
     markup: settings?.pricing?.markup ?? DEFAULT_PRICING.markup,

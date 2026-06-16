@@ -4,7 +4,8 @@ import type { Metadata } from 'next'
 import { JsonLd } from '@/components/ui/JsonLd'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { ContactForm } from '@/components/contact/ContactForm'
-import { getPage, getSiteSettings } from '@/lib/data'
+import { PuckRender } from '@/builder/PuckRender'
+import { builtLayout, getPage, getSiteSettings } from '@/lib/data'
 import { contactPageLd } from '@/lib/jsonld'
 import { resolveBiz } from '@/lib/site'
 
@@ -36,7 +37,9 @@ const working = [
 const mapQuery = encodeURIComponent('763 Polhemus Road, Suite 2, San Mateo, CA 94402')
 
 export default async function ContactPage() {
-  const settings = await getSiteSettings()
+  const [page, settings] = await Promise.all([getPage('contact-us'), getSiteSettings()])
+  const layout = builtLayout(page)
+  if (layout) return <PuckRender data={layout} />
   const biz = resolveBiz(settings)
 
   return (

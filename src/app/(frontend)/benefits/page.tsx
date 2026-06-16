@@ -5,7 +5,8 @@ import { JsonLd } from '@/components/ui/JsonLd'
 import { MediaImage } from '@/components/ui/MediaImage'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { FireTest } from '@/components/benefits/FireTest'
-import { getPage, imageSlot } from '@/lib/data'
+import { PuckRender } from '@/builder/PuckRender'
+import { builtLayout, getPage, imageSlot } from '@/lib/data'
 import { breadcrumbLd } from '@/lib/jsonld'
 
 export const revalidate = 300
@@ -36,6 +37,8 @@ const trust = [
 
 export default async function BenefitsPage() {
   const page = await getPage('benefits')
+  const layout = builtLayout(page)
+  if (layout) return <PuckRender data={layout} />
 
   return (
     <>

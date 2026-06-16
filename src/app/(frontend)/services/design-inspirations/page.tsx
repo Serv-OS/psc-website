@@ -5,7 +5,8 @@ import { FAQ, type FAQItem } from '@/components/ui/FAQ'
 import { JsonLd } from '@/components/ui/JsonLd'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { StyleExplorer } from '@/components/design/StyleExplorer'
-import { getPage } from '@/lib/data'
+import { PuckRender } from '@/builder/PuckRender'
+import { builtLayout, getPage } from '@/lib/data'
 import { breadcrumbLd, faqPageLd } from '@/lib/jsonld'
 
 export const revalidate = 300
@@ -49,6 +50,9 @@ const faqs: FAQItem[] = [
 ]
 
 export default async function DesignInspirationsPage() {
+  const layout = builtLayout(await getPage('design-inspirations'))
+  if (layout) return <PuckRender data={layout} />
+
   return (
     <>
       <JsonLd data={[breadcrumbLd([{ name: 'Home', url: '/' }, { name: 'Services', url: '/services' }, { name: 'Design Inspirations', url: '/services/design-inspirations' }]), faqPageLd(faqs)]} />

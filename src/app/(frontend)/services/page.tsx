@@ -5,7 +5,8 @@ import { JsonLd } from '@/components/ui/JsonLd'
 import { MediaImage } from '@/components/ui/MediaImage'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { ServiceFinder } from '@/components/services/ServiceFinder'
-import { getPage, getSiteSettings, imageSlot } from '@/lib/data'
+import { PuckRender } from '@/builder/PuckRender'
+import { builtLayout, getPage, getSiteSettings, imageSlot } from '@/lib/data'
 import { breadcrumbLd, serviceCatalogLd } from '@/lib/jsonld'
 import { resolveBiz, SITE } from '@/lib/site'
 
@@ -30,6 +31,8 @@ const materials = [
 
 export default async function ServicesPage() {
   const [page, settings] = await Promise.all([getPage('services'), getSiteSettings()])
+  const layout = builtLayout(page)
+  if (layout) return <PuckRender data={layout} />
   const biz = resolveBiz(settings)
 
   const finderServices = [

@@ -4,7 +4,8 @@ import type { Metadata } from 'next'
 import { JsonLd } from '@/components/ui/JsonLd'
 import { MediaImage } from '@/components/ui/MediaImage'
 import { SectionHeader } from '@/components/ui/SectionHeader'
-import { asMedia, getBlogPosts } from '@/lib/data'
+import { PuckRender } from '@/builder/PuckRender'
+import { asMedia, builtLayout, getBlogPosts, getPage } from '@/lib/data'
 import { breadcrumbLd } from '@/lib/jsonld'
 
 export const revalidate = 300
@@ -33,7 +34,9 @@ function fmtDate(d?: string | null) {
 }
 
 export default async function ResourcesPage() {
-  const posts = await getBlogPosts()
+  const [posts, page] = await Promise.all([getBlogPosts(), getPage('resources')])
+  const layout = builtLayout(page)
+  if (layout) return <PuckRender data={layout} />
 
   return (
     <>

@@ -44,6 +44,16 @@ export const getPage = cache(async (slug: string): Promise<Page | null> => {
   }
 })
 
+/**
+ * Returns a page's visual-builder (Puck) layout, but only when it actually has
+ * blocks. Frontend pages use this to render the builder layout when the owner
+ * has built one, otherwise they fall back to their hand-coded design.
+ */
+export function builtLayout(page: Page | null): { content?: unknown[] } | null {
+  const l = (page?.layout as { content?: unknown[] } | null) || null
+  return l && Array.isArray(l.content) && l.content.length > 0 ? l : null
+}
+
 export const getServiceArea = cache(async (slug: string): Promise<ServiceArea | null> => {
   try {
     const payload = await getPayloadClient()

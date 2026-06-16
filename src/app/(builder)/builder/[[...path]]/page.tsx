@@ -21,5 +21,5 @@ export default async function BuilderPage({ params }: { params: Promise<{ path?:
   const res = await payload.find({ collection: 'pages', where: { slug: { equals: slug } }, limit: 1, depth: 0 })
   const data = (res.docs[0]?.layout as Data | undefined) || null
 
-  return <Editor slug={slug} initialData={data} />
+  return <Editor slug={slug} initialData={data} pages={[...PAGE_SLUGS]} />
 }

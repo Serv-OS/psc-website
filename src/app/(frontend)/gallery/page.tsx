@@ -4,7 +4,8 @@ import type { Metadata } from 'next'
 import { BeforeAfter } from '@/components/ui/BeforeAfter'
 import { JsonLd } from '@/components/ui/JsonLd'
 import { GalleryGrid } from '@/components/gallery/GalleryGrid'
-import { getFeaturedGallery, getGalleryProjects, getPage } from '@/lib/data'
+import { PuckRender } from '@/builder/PuckRender'
+import { builtLayout, getFeaturedGallery, getGalleryProjects, getPage } from '@/lib/data'
 import { breadcrumbLd } from '@/lib/jsonld'
 import type { GalleryProject } from '@/payload-types'
 
@@ -38,7 +39,9 @@ const FALLBACK: GalleryProject[] = [
 ].map((p) => ({ ...p, updatedAt: '', createdAt: '' }) as unknown as GalleryProject)
 
 export default async function GalleryPage() {
-  const [projects, featured] = await Promise.all([getGalleryProjects(), getFeaturedGallery()])
+  const [projects, featured, page] = await Promise.all([getGalleryProjects(), getFeaturedGallery(), getPage('gallery')])
+  const layout = builtLayout(page)
+  if (layout) return <PuckRender data={layout} />
   const list = projects.length > 0 ? projects : FALLBACK
   const feature = featured[0]
 

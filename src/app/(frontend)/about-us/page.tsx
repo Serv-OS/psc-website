@@ -5,7 +5,8 @@ import { BeforeAfter } from '@/components/ui/BeforeAfter'
 import { JsonLd } from '@/components/ui/JsonLd'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { MaterialTabs } from '@/components/about/MaterialTabs'
-import { getFeaturedGallery, getPage, getSiteSettings } from '@/lib/data'
+import { PuckRender } from '@/builder/PuckRender'
+import { builtLayout, getFeaturedGallery, getPage, getSiteSettings } from '@/lib/data'
 import { breadcrumbLd, generalContractorLd } from '@/lib/jsonld'
 import { resolveBiz } from '@/lib/site'
 
@@ -46,6 +47,8 @@ const servicesList = [
 
 export default async function AboutPage() {
   const [page, settings, featured] = await Promise.all([getPage('about-us'), getSiteSettings(), getFeaturedGallery()])
+  const layout = builtLayout(page)
+  if (layout) return <PuckRender data={layout} />
   const biz = resolveBiz(settings)
   const feature = featured[0]
 
