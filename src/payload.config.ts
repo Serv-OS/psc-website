@@ -89,6 +89,12 @@ export default buildConfig({
       }
     : {}),
   plugins: [
+    // Vercel Blob storage (prod). The plugin registers a client component
+    // (VercelBlobClientUploadHandler) into the admin, so the generated
+    // importMap MUST include it or the whole admin panel renders blank in
+    // production. IMPORTANT: run `payload generate:importmap` with
+    // BLOB_READ_WRITE_TOKEN set, and keep the build on Turbopack — webpack
+    // cannot bundle that component's node:* server imports.
     ...(process.env.BLOB_READ_WRITE_TOKEN
       ? [
           vercelBlobStorage({

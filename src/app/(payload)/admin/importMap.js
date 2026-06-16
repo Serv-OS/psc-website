@@ -24,6 +24,7 @@ import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0
 import { BuilderNavLink as BuilderNavLink_51d259dbf6e2322ecee5968455848264 } from '../../../admin/BuilderNavLink'
 import { QuoteBuilderNavLink as QuoteBuilderNavLink_c8240cde80feb56c5f72d8bb8c76eb78 } from '../../../admin/QuoteBuilderNavLink'
 import { DashboardKpis as DashboardKpis_38ab40ec7473c7cde834b5160355ccb1 } from '../../../admin/DashboardKpis'
+import { VercelBlobClientUploadHandler as VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e } from '@payloadcms/storage-vercel-blob/client'
 import { QuoteBuilder as QuoteBuilder_996a1e24c1981bd0c2ac5039cc6f72c4 } from '../../../admin/QuoteBuilder'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
@@ -55,6 +56,7 @@ export const importMap = {
   "/admin/BuilderNavLink#BuilderNavLink": BuilderNavLink_51d259dbf6e2322ecee5968455848264,
   "/admin/QuoteBuilderNavLink#QuoteBuilderNavLink": QuoteBuilderNavLink_c8240cde80feb56c5f72d8bb8c76eb78,
   "/admin/DashboardKpis#DashboardKpis": DashboardKpis_38ab40ec7473c7cde834b5160355ccb1,
+  "@payloadcms/storage-vercel-blob/client#VercelBlobClientUploadHandler": VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e,
   "/admin/QuoteBuilder#QuoteBuilder": QuoteBuilder_996a1e24c1981bd0c2ac5039cc6f72c4,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }
