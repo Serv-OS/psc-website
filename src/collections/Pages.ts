@@ -2,9 +2,10 @@ import type { CollectionConfig } from 'payload'
 
 import { anyone, authenticated } from '../access'
 import { seoField } from '../fields/seo'
+import { ALL_CITIES } from '../lib/cities'
 
-/** The fixed set of editable marketing pages (one doc each). */
-export const PAGE_SLUGS = [
+/** Core marketing pages (one doc each). */
+const MARKETING_PAGES = [
   { label: 'Home', value: 'home' },
   { label: 'About Us', value: 'about-us' },
   { label: 'Services', value: 'services' },
@@ -14,10 +15,14 @@ export const PAGE_SLUGS = [
   { label: 'Benefits', value: 'benefits' },
   { label: 'Contact Us', value: 'contact-us' },
   { label: 'Resources (Blog hub)', value: 'resources' },
-  { label: 'Location · San Mateo', value: 'siding-san-mateo' },
-  { label: 'Location · Redwood City', value: 'siding-redwood-city' },
-  { label: 'Location · Palo Alto', value: 'siding-palo-alto' },
-] as const
+]
+
+/** Location pages — derived from the city list so every city is editable in the
+ * builder, and new cities appear automatically when added to lib/cities.ts. */
+const LOCATION_PAGES = ALL_CITIES.map((c) => ({ label: `Location · ${c.name}`, value: `siding-${c.slug}` }))
+
+/** The full set of editable pages shown in the visual builder's page switcher. */
+export const PAGE_SLUGS: { label: string; value: string }[] = [...MARKETING_PAGES, ...LOCATION_PAGES]
 
 /**
  * Editable copy + image slots for each marketing page. The page components carry
