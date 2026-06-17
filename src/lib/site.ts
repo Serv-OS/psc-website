@@ -1,4 +1,5 @@
 import type { SiteSetting } from '@/payload-types'
+import { ALL_CITIES } from './cities'
 
 export const SITE_URL = (
   process.env.NEXT_PUBLIC_SERVER_URL ||
@@ -28,16 +29,9 @@ export const SITE = {
     yelp: 'https://www.yelp.com/biz/peninsula-siding-company-san-mateo-5',
     pinterest: 'https://www.pinterest.com/peninsulasidingcompany/',
   },
-  areaServed: [
-    'San Mateo',
-    'Redwood City',
-    'Palo Alto',
-    'Atherton',
-    'Brisbane',
-    'Colma',
-    'El Granada',
-    'Moss Beach',
-  ],
+  areaServed: ALL_CITIES.map((c) => c.name),
+  geo: { latitude: 37.5403, longitude: -122.3372 },
+  priceRange: '$$$',
   rating: { value: 5, count: 50 },
 } as const
 
@@ -57,6 +51,8 @@ export interface Biz {
   announcement: string
   socials: { facebook: string; instagram: string; yelp: string; pinterest: string }
   areaServed: readonly string[]
+  geo: { latitude: number; longitude: number }
+  priceRange: string
   rating: { value: number; count: number }
   logoUrl?: string
 }
@@ -121,10 +117,12 @@ export const DEFAULT_FOOTER_COLUMNS: FooterColumn[] = [
   {
     heading: 'Areas we serve',
     links: [
-      ...CITY_LINKS,
-      { label: 'Atherton', href: '/contact-us' },
-      { label: 'Brisbane', href: '/contact-us' },
-      { label: 'El Granada', href: '/contact-us' },
+      { label: 'All service areas', href: '/service-areas' },
+      { label: 'San Mateo', href: '/siding-san-mateo' },
+      { label: 'Burlingame', href: '/siding-burlingame' },
+      { label: 'Redwood City', href: '/siding-redwood-city' },
+      { label: 'Palo Alto', href: '/siding-palo-alto' },
+      { label: 'Half Moon Bay', href: '/siding-half-moon-bay' },
     ],
   },
   {

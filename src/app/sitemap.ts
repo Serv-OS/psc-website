@@ -17,6 +17,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/benefits',
     '/contact-us',
     '/resources',
+    '/service-areas',
   ]
 
   const now = new Date()
@@ -27,9 +28,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: path === '' ? 1 : 0.7,
   }))
 
-  // City pages (CMS or default slugs)
+  // City pages — union of code-defined cities and any CMS-only service areas.
   const areas = await getServiceAreas()
-  const citySlugs = areas.length > 0 ? areas.map((a) => a.slug) : CITY_SLUGS
+  const citySlugs = Array.from(new Set([...CITY_SLUGS, ...areas.map((a) => a.slug)]))
   for (const slug of citySlugs) {
     entries.push({ url: `${SITE_URL}/siding-${slug}`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 })
   }

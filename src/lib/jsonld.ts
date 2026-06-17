@@ -27,6 +27,9 @@ export function generalContractorLd(b: Biz, opts: { url?: string; areaServed?: s
       foundingDate: '1989',
     },
     address: address(b),
+    geo: { '@type': 'GeoCoordinates', latitude: b.geo.latitude, longitude: b.geo.longitude },
+    hasMap: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${b.name}, ${b.street}, ${b.city}, ${b.region} ${b.zip}`)}`,
+    priceRange: b.priceRange,
     areaServed: opts.areaServed || [...b.areaServed],
     aggregateRating: {
       '@type': 'AggregateRating',
@@ -109,6 +112,8 @@ export function cityContractorLd(b: Biz, city: string, url: string) {
     telephone: b.phoneE164,
     url: `${SITE_URL}${url}`,
     address: address(b),
+    geo: { '@type': 'GeoCoordinates', latitude: b.geo.latitude, longitude: b.geo.longitude },
+    priceRange: b.priceRange,
     areaServed: { '@type': 'City', name: `${city}, California` },
     aggregateRating: {
       '@type': 'AggregateRating',
