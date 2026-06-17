@@ -18,7 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: page?.seo?.metaTitle || 'About Peninsula Siding Company | San Mateo & Bay Area Siding Experts',
     description:
       page?.seo?.metaDescription ||
-      "San Mateo's Elite Preferred James Hardie® siding contractor since 2012 — a division of SEA Construction (est. 1989). Premium fiber cement & cedar siding across the Bay Area.",
+      "San Mateo's Elite Preferred James Hardie® siding contractor since 2012 — part of SEA Construction (est. 1989). Bay Area fiber cement & cedar siding experts.",
     alternates: { canonical: '/about-us' },
   }
 }

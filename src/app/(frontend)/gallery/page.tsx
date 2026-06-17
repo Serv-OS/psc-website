@@ -17,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: page?.seo?.metaTitle || 'Siding Gallery | Before & After Transformations in the Bay Area',
     description:
       page?.seo?.metaDescription ||
-      'See real Bay Area siding transformations from Peninsula Siding Company. Drag through before & after photos of fiber cement, cedar, board & batten and shingle projects.',
+      'See real Bay Area siding transformations from Peninsula Siding — before & after photos of fiber cement, cedar, board & batten and shingle projects.',
     alternates: { canonical: '/gallery' },
   }
 }

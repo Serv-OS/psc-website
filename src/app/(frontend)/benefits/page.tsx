@@ -17,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: page?.seo?.metaTitle || 'Benefits of New Siding | Fire-Resistant, Durable & Built for NorCal',
     description:
       page?.seo?.metaDescription ||
-      'Why Bay Area homeowners choose Peninsula Siding — expert in-house installation, James Hardie® & LP® SmartSide® materials, Class 1A fire-rated options, and NorCal-rated durability.',
+      'Why Bay Area homeowners choose Peninsula Siding — expert installation, James Hardie® & LP® materials, Class 1A fire-rated, NorCal-proven durability.',
     alternates: { canonical: '/benefits' },
   }
 }

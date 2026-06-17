@@ -44,6 +44,12 @@ export const metadata: Metadata = {
     siteName: 'Peninsula Siding Company',
     locale: 'en_US',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Peninsula Siding Company | Bay Area Siding Experts',
+    description:
+      'James Hardie® fiber cement & cedar siding across the Bay Area — installation, repair & replacement. We beat any like-for-like quote by 10%.',
+  },
   robots: { index: true, follow: true },
 }
 
