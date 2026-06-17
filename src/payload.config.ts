@@ -76,7 +76,9 @@ export default buildConfig({
     ? // push:true auto-creates/syncs the schema on boot so the first Vercel deploy
       // works without a manual migration step. Switch to committed migrations later.
       postgresAdapter({ pool: { connectionString: databaseURI }, push: true })
-    : sqliteAdapter({ client: { url: databaseURI } }),
+    : // push defaults on (auto-syncs schema); set SQLITE_PUSH=false locally to skip
+      // the interactive data-loss prompt when iterating against an existing psc.db.
+      sqliteAdapter({ client: { url: databaseURI }, push: process.env.SQLITE_PUSH !== 'false' }),
   secret: process.env.PAYLOAD_SECRET || 'INSECURE-DEV-SECRET-CHANGE-ME',
   typescript: { outputFile: path.resolve(dirname, 'payload-types.ts') },
   ...(process.env.RESEND_API_KEY

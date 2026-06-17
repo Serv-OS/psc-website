@@ -133,22 +133,24 @@ img {
   align-items: center;
 }
 
+/* !important so inline `gridTemplateColumns` overrides (e.g. hero "1.05fr .95fr")
+ * still collapse on small screens — inline styles otherwise beat media queries. */
 @media (max-width: 1000px) {
   .cols-4 {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr) !important;
   }
   .cols-5 {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr) !important;
   }
 }
 
 @media (max-width: 900px) {
   .split {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
     gap: 32px;
   }
   .cols-3 {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr) !important;
   }
 }
 
@@ -157,7 +159,7 @@ img {
   .cols-3,
   .cols-4,
   .cols-5 {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
   }
 }
 
