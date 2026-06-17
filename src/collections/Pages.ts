@@ -15,6 +15,8 @@ const MARKETING_PAGES = [
   { label: 'Benefits', value: 'benefits' },
   { label: 'Contact Us', value: 'contact-us' },
   { label: 'Resources (Blog hub)', value: 'resources' },
+  { label: 'Terms & Conditions', value: 'terms' },
+  { label: 'Privacy Policy', value: 'privacy' },
 ]
 
 /** Location pages — derived from the city list so every city is editable in the
