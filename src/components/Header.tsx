@@ -17,7 +17,9 @@ const QUOTE_HREF = '/#quote'
 
 export function Header({ announcement, phone, logoUrl, nav }: Props) {
   const pathname = usePathname()
-  const [svcOpen, setSvcOpen] = useState(false)
+  // Track which item's dropdown is open (by href) — not a single shared flag,
+  // otherwise hovering one item opens every dropdown at once.
+  const [openItem, setOpenItem] = useState<string | null>(null)
   const [mobileOpen, setMobileOpen] = useState(false)
 
   const isActive = (href: string) =>
@@ -113,17 +115,17 @@ export function Header({ announcement, phone, logoUrl, nav }: Props) {
           {/* DESKTOP NAV */}
           <nav className="nav-desktop">
             {nav.map((item) =>
-              'children' in item && item.children ? (
+              'children' in item && item.children && item.children.length > 0 ? (
                 <div
                   key={item.href}
                   style={{ position: 'relative' }}
-                  onMouseEnter={() => setSvcOpen(true)}
-                  onMouseLeave={() => setSvcOpen(false)}
+                  onMouseEnter={() => setOpenItem(item.href)}
+                  onMouseLeave={() => setOpenItem(null)}
                 >
                   <Link href={item.href} style={linkStyle(isActive(item.href))}>
                     {item.label} <span style={{ fontSize: 10 }}>▾</span>
                   </Link>
-                  {svcOpen && (
+                  {openItem === item.href && (
                     <div style={{ position: 'absolute', top: '100%', left: '50%', transform: 'translateX(-50%)', paddingTop: 14 }}>
                       <div
                         style={{
@@ -204,7 +206,7 @@ export function Header({ announcement, phone, logoUrl, nav }: Props) {
                 <Link href={item.href} onClick={() => setMobileOpen(false)}>
                   {item.label}
                 </Link>
-                {'children' in item && item.children
+                {'children' in item && item.children && item.children.length > 0
                   ? item.children
                       .filter((c) => c.href !== item.href)
                       .map((c) => (
