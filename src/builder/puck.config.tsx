@@ -703,15 +703,50 @@ export const config: Config = {
     // ─────────── SERVICE FINDER ───────────
     ServiceFinderBlock: {
       label: 'Service finder',
-      fields: { eyebrow: { type: 'text', label: 'Eyebrow' }, title: { type: 'textarea', label: 'Title' }, copy: { type: 'textarea', label: 'Copy' }, background: bandField },
-      defaultProps: { eyebrow: 'Find your fit', title: 'Not sure what you need?', copy: 'Tell us about your home and we’ll point you to the right service.', background: 'soft' },
-      render: ({ eyebrow, title, copy, background }) => {
+      fields: {
+        eyebrow: { type: 'text', label: 'Eyebrow' },
+        title: { type: 'textarea', label: 'Title' },
+        copy: { type: 'textarea', label: 'Copy' },
+        background: bandField,
+        services: {
+          type: 'array',
+          label: 'Service cards',
+          getItemSummary: (i: { title?: string }) => i.title || 'Service',
+          arrayFields: {
+            n: { type: 'text', label: 'Number (e.g. 01)' },
+            title: { type: 'text', label: 'Title' },
+            body: { type: 'textarea', label: 'Body' },
+            label: { type: 'text', label: 'Chip label' },
+            image: imageField('Photo'),
+          },
+          defaultItemProps: { n: '01', title: 'Service', body: 'Short description.', label: 'Service', image: null },
+        },
+      },
+      defaultProps: {
+        eyebrow: 'Find your fit', title: 'Not sure what you need?', copy: 'Tell us about your home and we’ll point you to the right service.', background: 'soft',
+        services: [
+          { n: '01', title: 'Siding Installation', body: "Transform your home's appearance and durability with fiber cement, wood, and more — installed with precise, high-quality craftsmanship.", label: 'Siding Installation', image: null },
+          { n: '02', title: 'Siding Replacement', body: 'Outdated, damaged, or failing siding replaced for a fresh, modern look with long-lasting protection.', label: 'Siding Replacement', image: null },
+          { n: '03', title: 'Siding Repair', body: 'Full-wall repairs from corner to corner, restoring weather-, pest-, or age-affected siding.', label: 'Siding Repair', image: null },
+        ],
+      },
+      render: ({ eyebrow, title, copy, background, services }) => {
         const dark = background === 'forest' || background === 'green'
-        const finderServices = [
-          { key: 'install', n: '01', title: 'Siding Installation', body: "Transform your home's appearance and durability with fiber cement, wood, and more — installed with precise, high-quality craftsmanship.", media: null, label: 'Siding Installation' },
-          { key: 'replace', n: '02', title: 'Siding Replacement', body: 'Outdated, damaged, or failing siding replaced for a fresh, modern look with long-lasting protection.', media: null, label: 'Siding Replacement' },
-          { key: 'repair', n: '03', title: 'Siding Repair', body: 'Full-wall repairs from corner to corner, restoring weather-, pest-, or age-affected siding.', media: null, label: 'Siding Repair' },
+        // Recommendation chips map to the first three cards by position.
+        const KEYS = ['install', 'replace', 'repair']
+        const list = services && services.length ? services : [
+          { n: '01', title: 'Siding Installation', body: "Transform your home's appearance and durability with fiber cement, wood, and more — installed with precise, high-quality craftsmanship.", label: 'Siding Installation', image: null },
+          { n: '02', title: 'Siding Replacement', body: 'Outdated, damaged, or failing siding replaced for a fresh, modern look with long-lasting protection.', label: 'Siding Replacement', image: null },
+          { n: '03', title: 'Siding Repair', body: 'Full-wall repairs from corner to corner, restoring weather-, pest-, or age-affected siding.', label: 'Siding Repair', image: null },
         ]
+        const finderServices = list.map((s: { n?: string; title?: string; body?: string; label?: string; image?: { url?: string; alt?: string } | null }, i: number) => ({
+          key: KEYS[i] || `svc${i}`,
+          n: s.n || String(i + 1).padStart(2, '0'),
+          title: s.title || '',
+          body: s.body || '',
+          label: s.label || s.title || `Service ${i + 1}`,
+          media: s.image?.url ? { url: s.image.url, alt: s.image.alt } : null,
+        }))
         return (
           <section style={{ ...bandStyle(background as Band) }}>
             <div className="container" style={{ padding: '84px 24px' }}>

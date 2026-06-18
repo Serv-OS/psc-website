@@ -46,7 +46,7 @@ async function main() {
       headers: { 'content-type': 'application/json', Authorization: `JWT ${token}` },
       body: JSON.stringify({ slug, data }),
     })
-    console.log(`  ${slug.padEnd(20)} ${res.status} ${(await res.text()).slice(0, 80)}`)
+    console.log(`  ${slug.padEnd(20)} ${res.status} ${(await res.text()).slice(0, 600)}`)
   }
 }
 

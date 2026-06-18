@@ -118,6 +118,11 @@ const services = layout([
     title: 'Not sure what you need? Start here.',
     copy: '',
     background: 'white',
+    services: [
+      { n: '01', title: 'Siding Installation', body: "Transform your home's appearance and durability with fiber cement, wood, and more — installed with precise, high-quality craftsmanship.", label: 'Siding Installation', image: null },
+      { n: '02', title: 'Siding Replacement', body: 'Outdated, damaged, or failing siding replaced for a fresh, modern look with long-lasting protection.', label: 'Siding Replacement', image: null },
+      { n: '03', title: 'Siding Repair', body: 'Full-wall repairs from corner to corner, restoring weather-, pest-, or age-affected siding.', label: 'Siding Repair', image: null },
+    ],
   }),
   block('Heading', 'materials-head-services', {
     eyebrow: 'Premium materials we install',
