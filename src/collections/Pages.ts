@@ -19,12 +19,21 @@ const MARKETING_PAGES = [
   { label: 'Privacy Policy', value: 'privacy' },
 ]
 
-/** Location pages — derived from the city list so every city is editable in the
- * builder, and new cities appear automatically when added to lib/cities.ts. */
+/** Location pages — derived from the city list. These remain valid page slugs
+ * (so the slug enum and the optional builder override still accept them), but
+ * they are NOT shown in the visual builder switcher: city content is edited via
+ * the Service Areas collection, and the pages render from shared code. */
 const LOCATION_PAGES = ALL_CITIES.map((c) => ({ label: `Location · ${c.name}`, value: `siding-${c.slug}` }))
 
-/** The full set of editable pages shown in the visual builder's page switcher. */
+/** Every valid page slug — backs the `slug` select enum below and save-route
+ * validation. Do NOT trim this set: it maps to a Postgres enum, and removing
+ * values would require a risky enum migration. */
 export const PAGE_SLUGS: { label: string; value: string }[] = [...MARKETING_PAGES, ...LOCATION_PAGES]
+
+/** Pages listed in the visual builder's page switcher. Marketing pages only —
+ * location pages are managed in the Service Areas collection, not the builder,
+ * so they no longer appear here as empty/unseeded entries. */
+export const BUILDER_PAGES: { label: string; value: string }[] = [...MARKETING_PAGES]
 
 /**
  * Editable copy + image slots for each marketing page. The page components carry

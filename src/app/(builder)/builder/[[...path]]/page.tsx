@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 import type { Data } from '@measured/puck'
 
 import { Editor } from '@/builder/Editor'
-import { PAGE_SLUGS } from '@/collections/Pages'
+import { BUILDER_PAGES, PAGE_SLUGS } from '@/collections/Pages'
 import { getPayloadClient } from '@/lib/payload'
 
 export const dynamic = 'force-dynamic'
@@ -21,5 +21,6 @@ export default async function BuilderPage({ params }: { params: Promise<{ path?:
   const res = await payload.find({ collection: 'pages', where: { slug: { equals: slug } }, limit: 1, depth: 0 })
   const data = (res.docs[0]?.layout as Data | undefined) || null
 
-  return <Editor slug={slug} initialData={data} pages={[...PAGE_SLUGS]} />
+  // Switcher lists marketing pages only; city pages are edited via Service Areas.
+  return <Editor slug={slug} initialData={data} pages={BUILDER_PAGES} />
 }
