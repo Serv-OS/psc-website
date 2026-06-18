@@ -470,6 +470,96 @@ const resources = layout([
   block('BlogListBlock', 'list-resources', { eyebrow: '', title: '', copy: '', background: 'white' }),
 ])
 
+/* ───────────────────────── Terms & Conditions ───────────────────────── */
+const terms = layout([
+  block('CenteredHero', 'terms-hero', {
+    badge: 'Legal',
+    heading: 'Terms & Conditions',
+    subheading:
+      'These Terms govern your use of peninsulasidingcompany.com and the products, estimates and services provided by Peninsula Siding Company. By using the site, requesting a quote, or communicating with us, you agree to these Terms.',
+    stats: [],
+    background: 'soft',
+  }),
+  block('Text', 'terms-services', {
+    content:
+      'Services, quotes & estimates. We provide siding and related exterior construction services. Quotes and estimates are based on the information available at the time and are not a binding contract until accepted in writing by both parties; they may change if the scope, site conditions, or material costs change. Online instant estimates are approximate ranges for guidance only and are not a formal quote.',
+    align: 'left',
+    background: 'white',
+  }),
+  block('Text', 'terms-sms-1', {
+    content:
+      'SMS / text messaging. By providing your mobile telephone number to Peninsula Siding Company — for example when you request a quote, complete a form, or contact us by phone or text — you agree to receive text (SMS/MMS) messages from us related to our services. This is a transactional and customer-care messaging program. Text messages are sent on our behalf by Point of Sale Unified Partners, our messaging service provider and the registered sender for this messaging program.',
+    align: 'left',
+    background: 'white',
+  }),
+  block('Text', 'terms-sms-2', {
+    content:
+      'Message types include appointment and installation scheduling and reminders, job and project status updates, quote and invoice notifications, account and service notices, and one-to-one replies from our team. Message frequency varies. Message and data rates may apply — we do not charge for the messages, but your mobile carrier’s standard rates may apply. To stop messages, reply STOP at any time; you will receive a one-time confirmation and can opt back in by replying START. For help, reply HELP, email info@peninsulasidingcompany.com, or call 650-287-4208. Mobile carriers are not liable for delayed or undelivered messages.',
+    align: 'left',
+    background: 'white',
+  }),
+  block('Text', 'terms-sms-3', {
+    content:
+      'We do not sell or share your mobile information, or your consent to receive text messages, with third parties or affiliates for their own marketing purposes. Your information is handled in accordance with our Privacy Policy at peninsulasidingcompany.com/privacy.',
+    align: 'left',
+    background: 'white',
+  }),
+  block('Text', 'terms-rest', {
+    content:
+      'Use of the site: you agree to use the site lawfully and not to disrupt it or access it without authorization. Intellectual property: all content on the site is owned by or licensed to Peninsula Siding Company and may not be reused without our prior written permission. Disclaimers: the site is provided “as is” without warranties to the fullest extent permitted by law; workmanship and product warranties are governed by the separate written agreement for your work. Governing law: these Terms are governed by the laws of the State of California, USA. Changes: we may update these Terms, and the version posted on the site is the current version. Contact: info@peninsulasidingcompany.com.',
+    align: 'left',
+    background: 'soft',
+  }),
+])
+
+/* ───────────────────────── Privacy Policy ───────────────────────── */
+const privacy = layout([
+  block('CenteredHero', 'priv-hero', {
+    badge: 'Legal',
+    heading: 'Privacy Policy',
+    subheading:
+      'How Peninsula Siding Company collects, uses, and protects your information. Text messages are sent on our behalf by Point of Sale Unified Partners, our messaging service provider.',
+    stats: [],
+    background: 'soft',
+  }),
+  block('Text', 'priv-collect', {
+    content:
+      'Information we collect. Contact details you provide (name, email, phone/mobile number, property address); project information you share when requesting a quote or service; and basic website usage and analytics data.',
+    align: 'left',
+    background: 'white',
+  }),
+  block('Text', 'priv-use', {
+    content:
+      'How we use it. To prepare quotes and estimates and provide our siding and construction services; to schedule and carry out work and communicate with you by phone, email and text (SMS/MMS) about your enquiry, quote, job and account; to operate and improve our website; and to comply with legal obligations.',
+    align: 'left',
+    background: 'white',
+  }),
+  block('Text', 'priv-sms', {
+    content:
+      'SMS / text messaging & your mobile information. We do not sell, rent, or share your personal information — including your mobile phone number and your consent to receive SMS messages — with third parties or affiliates for their marketing or promotional purposes. Mobile information is used only to deliver the text messages described in our Terms & Conditions and is shared only with our messaging service provider (Point of Sale Unified Partners) as needed to send those messages on our behalf. You can opt out of texts at any time by replying STOP.',
+    align: 'left',
+    background: 'white',
+  }),
+  block('Text', 'priv-share', {
+    content:
+      'How we share information. We share information only with trusted service providers who help us operate — such as our messaging provider, payment processor, and scheduling tools — and only to the extent needed to provide their service to us, under appropriate confidentiality obligations, or where required by law. We do not sell your personal information.',
+    align: 'left',
+    background: 'white',
+  }),
+  block('Text', 'priv-rights', {
+    content:
+      'Data retention & your rights. We keep your information only as long as needed to provide our services and meet legal requirements. You may request access to, correction of, or deletion of your personal information, and may opt out of marketing at any time, by contacting info@peninsulasidingcompany.com; to stop texts, reply STOP. We use reasonable safeguards to protect your information, and our services are intended for adults and not directed to children.',
+    align: 'left',
+    background: 'white',
+  }),
+  block('Text', 'priv-contact', {
+    content:
+      'Changes & contact. We may update this Privacy Policy, and the version posted on the site is the current version. Questions? Contact info@peninsulasidingcompany.com or 650-287-4208, 763 Polhemus Road, Suite 2, San Mateo, CA 94402.',
+    align: 'left',
+    background: 'soft',
+  }),
+])
+
 export const PAGE_LAYOUTS: Record<string, ReturnType<typeof layout>> = {
   'about-us': aboutUs,
   services,
@@ -479,4 +569,6 @@ export const PAGE_LAYOUTS: Record<string, ReturnType<typeof layout>> = {
   benefits,
   'contact-us': contactUs,
   resources,
+  terms,
+  privacy,
 }
