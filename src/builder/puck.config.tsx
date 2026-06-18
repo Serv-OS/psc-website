@@ -8,6 +8,7 @@ import { SectionHeader } from '@/components/ui/SectionHeader'
 import { FAQ } from '@/components/ui/FAQ'
 import { QuoteStudio } from '@/components/home/QuoteStudio'
 import { MaterialTabs, DEFAULT_TABS } from '@/components/about/MaterialTabs'
+import { AreasWeServe } from '@/components/areas/AreasWeServe'
 import { ServiceFinder } from '@/components/services/ServiceFinder'
 import { StyleExplorer } from '@/components/design/StyleExplorer'
 import { EstimateSlider } from '@/components/pricing/EstimateSlider'
@@ -694,6 +695,34 @@ export const config: Config = {
             <div className="container" style={{ padding: '84px 24px' }}>
               {title ? <SectionHeader eyebrow={eyebrow || ''} title={title} copy={copy} dark={dark} maxWidth={720} marginBottom={40} /> : null}
               <MaterialTabs tabs={tabs as never} />
+            </div>
+          </section>
+        )
+      },
+    },
+
+    // ─────────── AREAS WE SERVE ───────────
+    AreasWeServe: {
+      label: 'Areas we serve',
+      fields: {
+        eyebrow: { type: 'text', label: 'Eyebrow' },
+        title: { type: 'textarea', label: 'Title' },
+        copy: { type: 'textarea', label: 'Copy' },
+        background: bandField,
+      },
+      defaultProps: {
+        eyebrow: 'Areas we serve',
+        title: 'Trusted across the Peninsula since 2012',
+        copy: 'Based in San Mateo and serving the greater Bay Area. If your city isn’t listed, reach out — we likely serve your area.',
+        background: 'white',
+      },
+      render: ({ eyebrow, title, copy, background }) => {
+        const dark = background === 'forest' || background === 'green'
+        return (
+          <section style={{ ...bandStyle(background as Band) }}>
+            <div className="container" style={{ padding: '72px 24px' }}>
+              {title ? <SectionHeader eyebrow={eyebrow || ''} title={title} copy={copy} dark={dark} maxWidth={720} marginBottom={32} /> : null}
+              <AreasWeServe dark={dark} />
             </div>
           </section>
         )

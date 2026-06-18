@@ -172,7 +172,7 @@ const services = layout([
       { title: 'Licensed & insured', body: 'Fully bonded & accountable' },
     ],
   }),
-  block('Heading', 'areas-services', {
+  block('AreasWeServe', 'areas-services', {
     eyebrow: 'Areas we serve',
     title: 'Trusted across the Peninsula since 2012',
     copy: 'Based in San Mateo and serving the greater Bay Area. If your city isn’t listed, reach out — we likely serve your area.',

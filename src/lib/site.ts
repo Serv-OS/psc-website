@@ -95,6 +95,7 @@ export const NAV = [
     children: [
       { label: 'Design Inspirations', href: '/services/design-inspirations' },
       { label: 'Quality Pricing', href: '/services/quality-pricing' },
+      { label: 'Service Areas', href: '/service-areas' },
     ],
   },
   { label: 'Gallery', href: '/gallery' },
