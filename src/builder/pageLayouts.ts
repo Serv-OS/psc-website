@@ -55,6 +55,11 @@ const aboutUs = layout([
     title: 'The best siding brands, expertly installed',
     copy: 'We partner with trusted manufacturers to deliver exteriors that stand up to Bay Area weather and add lasting value.',
     background: 'white',
+    tabs: [
+      { label: 'James Hardie®', title: 'James Hardie® Fiber Cement Siding', body: 'Durable and low-maintenance, James Hardie siding resists fire, termites, and extreme weather. Made from a composite of sand, cement, and cellulose fibers, it mimics real wood while providing superior protection. As a James Hardie Elite Preferred Contractor, we guarantee precise installation and expert craftsmanship.', tags: '30-year siding warranty\n15-year ColorPlus® finish\nFire & termite resistant\nElite Preferred install', image: null },
+      { label: 'Cedar Valley', title: 'Cedar Valley Cedar Siding', body: 'For the natural beauty of Western Red Cedar, Cedar Valley siding provides exceptional strength and durability. High-quality cedar shingles mounted on a plywood backer with a fiberglass laminate protect your home while allowing for hundreds of factory-finished colors and stains — a personalized, elegant exterior.', tags: 'Western Red Cedar\nHundreds of finishes\nFiberglass-backed\nFactory finished', image: null },
+      { label: 'Shakertown®', title: 'Shakertown® Cedar Siding', body: 'Featuring Western Red Cedar, Shakertown siding combines traditional beauty with efficient installation. Eight-foot panels reduce material waste and installation time while creating a seamless, natural wood look. Available in pre-stained finishes that enhance curb appeal with long-lasting durability.', tags: '8-ft panels\nLess material waste\nPre-stained finishes\nSeamless wood look', image: null },
+    ],
   }),
   block('Heading', 'why-about', {
     eyebrow: 'Why choose us',

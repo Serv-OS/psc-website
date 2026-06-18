@@ -7,7 +7,7 @@ import { MediaImage } from '@/components/ui/MediaImage'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { FAQ } from '@/components/ui/FAQ'
 import { QuoteStudio } from '@/components/home/QuoteStudio'
-import { MaterialTabs } from '@/components/about/MaterialTabs'
+import { MaterialTabs, DEFAULT_TABS } from '@/components/about/MaterialTabs'
 import { ServiceFinder } from '@/components/services/ServiceFinder'
 import { StyleExplorer } from '@/components/design/StyleExplorer'
 import { EstimateSlider } from '@/components/pricing/EstimateSlider'
@@ -667,15 +667,33 @@ export const config: Config = {
     // ─────────── MATERIALS TABS ───────────
     MaterialsTabs: {
       label: 'Materials tabs',
-      fields: { eyebrow: { type: 'text', label: 'Eyebrow' }, title: { type: 'textarea', label: 'Title' }, copy: { type: 'textarea', label: 'Copy' }, background: bandField },
-      defaultProps: { eyebrow: 'Premium materials', title: 'The best siding brands, expertly installed', copy: 'We partner with trusted manufacturers to deliver exteriors that stand up to Bay Area weather and add lasting value.', background: 'white' },
-      render: ({ eyebrow, title, copy, background }) => {
+      fields: {
+        eyebrow: { type: 'text', label: 'Eyebrow' },
+        title: { type: 'textarea', label: 'Title' },
+        copy: { type: 'textarea', label: 'Copy' },
+        background: bandField,
+        tabs: {
+          type: 'array',
+          label: 'Material tabs',
+          getItemSummary: (i: { label?: string }) => i.label || 'Tab',
+          arrayFields: {
+            label: { type: 'text', label: 'Tab label' },
+            title: { type: 'text', label: 'Heading' },
+            body: { type: 'textarea', label: 'Body' },
+            tags: { type: 'textarea', label: 'Tags (one per line)' },
+            image: imageField('Photo'),
+          },
+          defaultItemProps: { label: 'Material', title: 'Material name', body: 'Short description.', tags: '', image: null },
+        },
+      },
+      defaultProps: { eyebrow: 'Premium materials', title: 'The best siding brands, expertly installed', copy: 'We partner with trusted manufacturers to deliver exteriors that stand up to Bay Area weather and add lasting value.', background: 'white', tabs: DEFAULT_TABS },
+      render: ({ eyebrow, title, copy, background, tabs }) => {
         const dark = background === 'forest' || background === 'green'
         return (
           <section style={{ ...bandStyle(background as Band) }}>
             <div className="container" style={{ padding: '84px 24px' }}>
               {title ? <SectionHeader eyebrow={eyebrow || ''} title={title} copy={copy} dark={dark} maxWidth={720} marginBottom={40} /> : null}
-              <MaterialTabs />
+              <MaterialTabs tabs={tabs as never} />
             </div>
           </section>
         )
