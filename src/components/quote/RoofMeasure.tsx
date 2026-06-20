@@ -3,7 +3,11 @@
 // Address search + satellite + draw-the-building measurement. Outputs the
 // building FOOTPRINT area (ft²) and PERIMETER (ft) from real map coordinates,
 // which the instant-quote page turns into siding wall area (perimeter × storeys).
-// Phase 2 will pre-fill the outline from Google's building data (Solar API).
+//
+// Drawing is done with click-to-add-vertex on a google.maps.Polygon — the old
+// DrawingManager library was removed in Maps JS v3.65, so we build the polygon
+// ourselves (also gives a cleaner, editable result). Phase 2 will pre-fill the
+// outline from Google's building data (Solar API).
 
 import { useEffect, useRef, useState, useCallback } from 'react'
 
@@ -11,16 +15,16 @@ const KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ''
 const M2_TO_FT2 = 10.763910417
 const M_TO_FT = 3.280839895
 
-// Load the Maps JS API once (places + drawing + geometry), shared across mounts.
+// Load the Maps JS API once (places + geometry — no drawing), shared across mounts.
 let mapsPromise: Promise<any> | null = null
 function loadMaps(): Promise<any> {
   if (typeof window === 'undefined') return Promise.reject(new Error('no window'))
-  if ((window as any).google?.maps?.drawing) return Promise.resolve((window as any).google)
+  if ((window as any).google?.maps?.geometry) return Promise.resolve((window as any).google)
   if (mapsPromise) return mapsPromise
   mapsPromise = new Promise((resolve, reject) => {
     if (!KEY) { reject(new Error('Missing NEXT_PUBLIC_GOOGLE_MAPS_API_KEY')); return }
     const s = document.createElement('script')
-    s.src = `https://maps.googleapis.com/maps/api/js?key=${KEY}&libraries=places,drawing,geometry&v=weekly`
+    s.src = `https://maps.googleapis.com/maps/api/js?key=${KEY}&libraries=places,geometry&v=weekly`
     s.async = true
     s.onload = () => resolve((window as any).google)
     s.onerror = () => reject(new Error('Failed to load Google Maps'))
@@ -36,7 +40,8 @@ export function RoofMeasure({ onMeasure }: { onMeasure: (m: Measurement | null) 
   const searchEl = useRef<HTMLInputElement>(null)
   const mapRef = useRef<any>(null)
   const polyRef = useRef<any>(null)
-  const drawingRef = useRef<any>(null)
+  const markersRef = useRef<any[]>([])
+  const drawModeRef = useRef(false)
   const addressRef = useRef('')
   const [ready, setReady] = useState(false)
   const [err, setErr] = useState('')
@@ -44,11 +49,11 @@ export function RoofMeasure({ onMeasure }: { onMeasure: (m: Measurement | null) 
   const [measure, setMeasure] = useState<Measurement | null>(null)
 
   const recompute = useCallback(() => {
-    const poly = polyRef.current
     const g = (window as any).google
+    const poly = polyRef.current
     if (!poly || !g) return
     const path = poly.getPath()
-    if (path.getLength() < 3) return
+    if (path.getLength() < 3) { setMeasure(null); onMeasure(null); return }
     const areaM2 = g.maps.geometry.spherical.computeArea(path)
     let perimM = g.maps.geometry.spherical.computeLength(path)
     perimM += g.maps.geometry.spherical.computeDistanceBetween(path.getAt(path.getLength() - 1), path.getAt(0))
@@ -61,26 +66,35 @@ export function RoofMeasure({ onMeasure }: { onMeasure: (m: Measurement | null) 
     onMeasure(m)
   }, [onMeasure])
 
+  const clearMarkers = () => { markersRef.current.forEach((mk) => mk.setMap(null)); markersRef.current = [] }
+
   const clearPoly = useCallback(() => {
     if (polyRef.current) { polyRef.current.setMap(null); polyRef.current = null }
+    clearMarkers()
     setMeasure(null); onMeasure(null)
   }, [onMeasure])
 
-  const attachPoly = useCallback((poly: any) => {
-    clearPoly()
-    polyRef.current = poly
-    poly.setEditable(true)
-    const path = poly.getPath()
-    const g = (window as any).google
-    ;['set_at', 'insert_at', 'remove_at'].forEach((ev) => g.maps.event.addListener(path, ev, recompute))
-    recompute()
-  }, [clearPoly, recompute])
-
   const startDraw = useCallback(() => {
     clearPoly()
+    drawModeRef.current = true
     setDrawing(true)
-    drawingRef.current?.setDrawingMode((window as any).google.maps.drawing.OverlayType.POLYGON)
   }, [clearPoly])
+
+  const finishDraw = useCallback(() => {
+    drawModeRef.current = false
+    setDrawing(false)
+    clearMarkers()
+    const g = (window as any).google
+    const poly = polyRef.current
+    if (poly && poly.getPath().getLength() >= 3) {
+      poly.setEditable(true)
+      const path = poly.getPath()
+      ;['set_at', 'insert_at', 'remove_at'].forEach((ev) => g.maps.event.addListener(path, ev, recompute))
+      recompute()
+    } else {
+      clearPoly()
+    }
+  }, [clearPoly, recompute])
 
   useEffect(() => {
     let cancelled = false
@@ -93,17 +107,22 @@ export function RoofMeasure({ onMeasure }: { onMeasure: (m: Measurement | null) 
       })
       mapRef.current = map
 
-      const dm = new g.maps.drawing.DrawingManager({
-        drawingMode: null,
-        drawingControl: false,
-        polygonOptions: { fillColor: '#206a38', fillOpacity: 0.25, strokeColor: '#206a38', strokeWeight: 2, editable: true },
-      })
-      dm.setMap(map)
-      drawingRef.current = dm
-      g.maps.event.addListener(dm, 'polygoncomplete', (poly: any) => {
-        dm.setDrawingMode(null)
-        setDrawing(false)
-        attachPoly(poly)
+      // Click to add a vertex while in draw mode.
+      g.maps.event.addListener(map, 'click', (e: any) => {
+        if (!drawModeRef.current || !e.latLng) return
+        if (!polyRef.current) {
+          polyRef.current = new g.maps.Polygon({
+            map, paths: [e.latLng], editable: false, clickable: false,
+            fillColor: '#206a38', fillOpacity: 0.25, strokeColor: '#206a38', strokeWeight: 2,
+          })
+        } else {
+          polyRef.current.getPath().push(e.latLng)
+        }
+        markersRef.current.push(new g.maps.Marker({
+          position: e.latLng, map, clickable: false,
+          icon: { path: g.maps.SymbolPath.CIRCLE, scale: 4, fillColor: '#fff', fillOpacity: 1, strokeColor: '#206a38', strokeWeight: 2 },
+        }))
+        recompute()
       })
 
       if (searchEl.current) {
@@ -125,7 +144,7 @@ export function RoofMeasure({ onMeasure }: { onMeasure: (m: Measurement | null) 
       setReady(true)
     }).catch((e) => setErr(e.message))
     return () => { cancelled = true }
-  }, [attachPoly, clearPoly])
+  }, [clearPoly, recompute])
 
   if (!KEY) {
     return (
@@ -147,12 +166,18 @@ export function RoofMeasure({ onMeasure }: { onMeasure: (m: Measurement | null) 
         <div ref={mapEl} style={{ width: '100%', height: 380 }} />
         {!ready && !err && <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#5b675e', background: '#f1f5f0' }}>Loading map…</div>}
         {err && <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#b91c1c', background: '#fef2f2', padding: 20, textAlign: 'center' }}>{err}</div>}
+        {drawing && <div style={{ position: 'absolute', top: 10, left: 10, right: 10, background: 'rgba(14,52,29,.92)', color: '#fff', fontSize: 13, fontWeight: 600, padding: '8px 12px', borderRadius: 10, textAlign: 'center' }}>Click each corner of the house, then press “Finish outline”.</div>}
       </div>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, alignItems: 'center', marginTop: 12 }}>
-        <button type="button" onClick={startDraw} disabled={!ready} className="btn btn-primary" style={{ padding: '10px 18px', fontSize: 14 }}>
-          {drawing ? 'Click each corner of the house…' : measure ? 'Redraw outline' : 'Draw the building outline'}
-        </button>
-        {measure && (
+        {!drawing && (
+          <button type="button" onClick={startDraw} disabled={!ready} className="btn btn-primary" style={{ padding: '10px 18px', fontSize: 14 }}>
+            {measure ? 'Redraw outline' : 'Draw the building outline'}
+          </button>
+        )}
+        {drawing && (
+          <button type="button" onClick={finishDraw} className="btn btn-primary" style={{ padding: '10px 18px', fontSize: 14 }}>Finish outline</button>
+        )}
+        {measure && !drawing && (
           <button type="button" onClick={clearPoly} className="btn btn-ghost" style={{ padding: '10px 18px', fontSize: 14 }}>Clear</button>
         )}
         {measure && (
@@ -162,7 +187,7 @@ export function RoofMeasure({ onMeasure }: { onMeasure: (m: Measurement | null) 
         )}
       </div>
       <div style={{ fontSize: 12.5, color: '#6a766d', marginTop: 8 }}>
-        Search your address, then click around the edge of your house roof to trace it. Drag the points to fine‑tune.
+        Search your address, click around the edge of your roof to trace it, then Finish. Drag the points to fine‑tune.
       </div>
     </div>
   )
