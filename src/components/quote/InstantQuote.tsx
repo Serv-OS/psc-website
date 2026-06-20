@@ -3,13 +3,15 @@
 // Customer-facing instant quote configurator. Flow:
 //   1 What are we replacing? (demo)  → 2 Measure (map)  → 3 Storeys & coverage
 //   4 Choose siding  → 5 Style it (texture · finish · colour, with a live preview)
-// → rough estimate (existing engine, now finish- and demo-aware) → What's included
-// → dry-rot note → captured as a Lead. Mirrors James Hardie's picker UX; the colour
-// preview is rendered in CSS so every ColorPlus colour updates instantly (no image library).
+//   6 What's included + dry-rot note → captured as a Lead. Mirrors James Hardie's picker.
+//
+// Colour preview: if a real photo exists at /siding/<profile>/<colour-slug>.jpg it is
+// shown (and recolours per selection); otherwise we fall back to a CSS render. Drop a
+// product's photo library into /public/siding/<profile>/ and add it to PHOTO_PRODUCTS.
 import { useMemo, useState } from 'react'
 import { RoofMeasure, type Measurement } from './RoofMeasure'
 import {
-  PROFILES, COVERAGE, computeCustomerEstimate,
+  PROFILES, COVERAGE, computeCustomerEstimate, battenBoardCount, BATTEN_SPACING_IN,
   DEMO_OPTIONS, TEXTURES, COLORS, INCLUDED, PRIMED_WARNING, COLORPLUS_NOTE,
   type ProfileKey, type CoverageKey, type DemoKey, type FinishKey, type SidingColor,
 } from '@/lib/quote'
@@ -17,8 +19,9 @@ import {
 const WALL_HEIGHT_PER_STORY = 9 // ft — footprint perimeter × this × storeys ≈ wall area to side
 const PRIMED_PREVIEW_HEX = '#C9C3B6' // unpainted primer grey
 const money = (n: number) => '$' + Math.round(n).toLocaleString('en-US')
-// Products with a real photo set at /public/siding/<profile>/<colour-slug>.jpg
-// (recoloured from a James Hardie base render). Others fall back to the CSS render.
+// Products that have a real photo library at /public/siding/<profile>/<colour-slug>.jpg
+// (+ primed.jpg). Add a profile here once its images are dropped in. Missing files fall
+// back to the CSS render automatically (per-image onError), so partial libraries are fine.
 const PHOTO_PRODUCTS = new Set<ProfileKey>(['lap'])
 const colorSlug = (name: string) => name.toLowerCase().replace(/\s+/g, '-')
 
@@ -64,6 +67,7 @@ export function InstantQuote() {
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState('')
+  const [failedImgs, setFailedImgs] = useState<Set<string>>(new Set())
 
   const chooseProfile = (k: ProfileKey) => {
     setProfile(k)
@@ -76,17 +80,23 @@ export function InstantQuote() {
     return Math.round(m.perimeterFt * WALL_HEIGHT_PER_STORY * stories * COVERAGE[coverage].factor)
   }, [m, stories, coverage])
 
+  // Board & batten: number of 12-ft batten boards (16" OC), folded into the estimate.
+  const battenBoards = useMemo(
+    () => (m && profile === 'panel' ? battenBoardCount(m.perimeterFt, stories, COVERAGE[coverage].factor) : 0),
+    [m, profile, stories, coverage],
+  )
+
   const est = useMemo(
-    () => (sqft > 0 ? computeCustomerEstimate({ profile, sqft, stories, finish, demoKey }) : null),
-    [profile, sqft, stories, finish, demoKey],
+    () => (sqft > 0 ? computeCustomerEstimate({ profile, sqft, stories, finish, demoKey, battenBoards }) : null),
+    [profile, sqft, stories, finish, demoKey, battenBoards],
   )
 
   const previewHex = finish === 'primed' ? PRIMED_PREVIEW_HEX : color.hex
   const previewLabel = finish === 'primed' ? 'Primed (unpainted)' : color.name
   const textureLabel = TEXTURES[profile].find((t) => t.key === texture)?.label ?? ''
   const replacing = demoKey !== 'newbuild'
-  const hasPhoto = PHOTO_PRODUCTS.has(profile)
   const photoSrc = `/siding/${profile}/${finish === 'primed' ? 'primed' : colorSlug(color.name)}.jpg`
+  const showPhoto = PHOTO_PRODUCTS.has(profile) && !failedImgs.has(photoSrc)
 
   const submit = async () => {
     if (!name.trim() || !email.trim() || !phone.trim()) { setError('Please add your name, email and phone.'); return }
@@ -214,9 +224,15 @@ export function InstantQuote() {
 
           {/* live preview — real recoloured photo where available, else CSS render */}
           <div style={{ position: 'relative', borderRadius: 14, overflow: 'hidden', border: '1px solid #e3e9e3', background: 'linear-gradient(180deg,#cfe0ee 0%,#e9f0e4 62%)' }}>
-            {hasPhoto ? (
+            {showPhoto ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={photoSrc} src={photoSrc} alt={`${PROFILES[profile].label} in ${previewLabel}`} style={{ display: 'block', width: '100%', aspectRatio: '4 / 3', objectFit: 'cover', objectPosition: 'center 32%' }} />
+              <img
+                key={photoSrc}
+                src={photoSrc}
+                alt={`${PROFILES[profile].label} in ${previewLabel}`}
+                onError={() => setFailedImgs((s) => new Set(s).add(photoSrc))}
+                style={{ display: 'block', width: '100%', aspectRatio: '3 / 2', objectFit: 'cover', objectPosition: 'center 40%' }}
+              />
             ) : (
               <div style={{ position: 'relative', aspectRatio: '16 / 9' }}>
                 <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '24%', background: '#2c3631', clipPath: 'polygon(0 100%,12% 0,88% 0,100% 100%)', zIndex: 3 }} />
@@ -230,7 +246,7 @@ export function InstantQuote() {
               <div style={{ fontSize: 10.5, color: '#7a857d', fontWeight: 700, letterSpacing: '.4px', textTransform: 'uppercase' }}>{PROFILES[profile].label} · {textureLabel}</div>
               <div style={{ fontSize: 15, color: '#16261c', fontWeight: 800 }}>{previewLabel}</div>
             </div>
-            {!hasPhoto && (
+            {!showPhoto && (
               // eslint-disable-next-line @next/next/no-img-element
               <img src={PROFILES[profile].img} alt="" aria-hidden style={{ position: 'absolute', right: 12, bottom: 12, width: 70, height: 52, objectFit: 'cover', borderRadius: 8, zIndex: 4, border: '2px solid rgba(255,255,255,.85)', boxShadow: '0 4px 12px rgba(0,0,0,.18)' }} />
             )}
@@ -291,10 +307,32 @@ export function InstantQuote() {
             </div>
           )}
         </div>
+
+        {/* 6 · What's included */}
+        <div style={card}>
+          <div style={stepLabel}>6 · What&apos;s included</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {replacing && (
+              <Included title="Removal &amp; disposal of your old siding" body={INCLUDED.removalDisposal} />
+            )}
+            <Included title="All permits &amp; inspections" body={INCLUDED.permits} />
+            <Included title="Complete installation, to spec" body={INCLUDED.installation} />
+            {profile === 'panel' && est && (
+              <Included
+                title="Vertical battens included"
+                body={`Your board & batten price includes roughly ${battenBoards} HardieTrim batten boards (12 ft each), set ${BATTEN_SPACING_IN}" on-centre over the panel joints.`}
+              />
+            )}
+          </div>
+          <div style={{ marginTop: 14, background: '#fafaf8', border: '1px solid #e6e3da', borderRadius: 12, padding: '12px 14px' }}>
+            <div style={{ fontSize: 12.5, fontWeight: 800, color: '#5b4a2e', marginBottom: 4 }}>A note on dry rot</div>
+            <div style={{ fontSize: 12, color: '#6a665c', lineHeight: 1.5 }}>{INCLUDED.dryRotExclusion}</div>
+          </div>
+        </div>
       </div>
 
-      {/* Right: estimate + what's included + lead */}
-      <div style={{ ...card, position: 'sticky', top: 90 }}>
+      {/* Right: estimate + lead (sticky so it stays in view while scrolling) */}
+      <div style={{ ...card, position: 'sticky', top: 80, alignSelf: 'start' }}>
         <div style={stepLabel}>Your rough estimate</div>
         {est ? (
           <>
@@ -302,28 +340,12 @@ export function InstantQuote() {
             <div style={{ fontSize: 13, color: '#6a766d', marginTop: 6, lineHeight: 1.5 }}>
               ~{sqft.toLocaleString('en-US')} sq ft of {PROFILES[profile].label.toLowerCase()} · {stories} storey · {COVERAGE[coverage].label.toLowerCase()}<br />
               {finish === 'primed' ? 'Primed for paint' : `ColorPlus ${color.name}`} · {demoKey === 'newbuild' ? 'new build' : `replacing ${DEMO_OPTIONS[demoKey].label.toLowerCase()}`}
+              {profile === 'panel' && battenBoards > 0 && <> · ~{battenBoards} battens</>}
             </div>
           </>
         ) : (
           <div style={{ fontSize: 14, color: '#6a766d' }}>Search your address and trace your roof to see a ballpark.</div>
         )}
-
-        {/* What's included */}
-        <div style={{ height: 1, background: '#eef2ee', margin: '18px 0' }} />
-        <div style={{ fontSize: 13, fontWeight: 800, color: '#16261c', marginBottom: 10 }}>What&apos;s included</div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          {replacing && (
-            <Included title="Removal &amp; disposal of your old siding" body={INCLUDED.removalDisposal} />
-          )}
-          <Included title="All permits &amp; inspections" body={INCLUDED.permits} />
-          <Included title="Complete installation, to spec" body={INCLUDED.installation} />
-        </div>
-
-        {/* Dry-rot note */}
-        <div style={{ marginTop: 14, background: '#fafaf8', border: '1px solid #e6e3da', borderRadius: 12, padding: '12px 14px' }}>
-          <div style={{ fontSize: 12.5, fontWeight: 800, color: '#5b4a2e', marginBottom: 4 }}>A note on dry rot</div>
-          <div style={{ fontSize: 12, color: '#6a665c', lineHeight: 1.5 }}>{INCLUDED.dryRotExclusion}</div>
-        </div>
 
         {/* Lead form */}
         <div style={{ height: 1, background: '#eef2ee', margin: '18px 0' }} />

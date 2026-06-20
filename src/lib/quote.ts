@@ -86,6 +86,20 @@ export const PRIMED_WARNING =
 export const COLORPLUS_NOTE =
   'ColorPlus® Technology is a factory baked-on finish — it arrives in your chosen colour, never needs field painting, and carries a 15-year limited finish warranty against peeling, cracking and chipping.'
 
+// ── Board & batten: batten count + cost ─────────────────────────────────────
+// Battens run vertically; standard look is 16" on-centre (HardieTrim batten is
+// 0.75" × 2.5" × 12 ft). runs = floor(width×12 / spacing) + 1; boards = runs ×
+// ceil(height / 12ft) + 10% waste. Battens only apply to the 'panel' profile.
+export const BATTEN_SPACING_IN = 16
+export const BATTEN_UNIT_COST: Record<FinishKey, number> = { colorplus: 21, primed: 14 }
+export function battenBoardCount(perimeterFt: number, stories: number, coverageFactor: number, spacingIn = BATTEN_SPACING_IN): number {
+  if (!perimeterFt) return 0
+  const widthFt = perimeterFt * coverageFactor
+  const runs = Math.floor((widthFt * 12) / spacingIn) + 1
+  const boardsPerRun = Math.ceil((9 * stories) / 12)
+  return Math.ceil(runs * boardsPerRun * 1.1)
+}
+
 /** Internal pricing constants. Owner-tunable copies live in SiteSettings.pricing. */
 export interface PricingConstants {
   markup: number
@@ -111,6 +125,8 @@ export interface CustomerEstimateInput {
   stories: number
   finish?: FinishKey
   demoKey?: DemoKey
+  /** Number of 12-ft batten boards (board & batten only). */
+  battenBoards?: number
 }
 
 export interface CustomerEstimate {
@@ -121,6 +137,7 @@ export interface CustomerEstimate {
   permits: number
   debris: number
   demo: number
+  batten: number
   totalCost: number
   sale: number
   low: number
@@ -129,7 +146,7 @@ export interface CustomerEstimate {
 
 /** Returns the full cost breakdown internally + the public-facing rounded range. */
 export function computeCustomerEstimate(
-  { profile, sqft, stories, finish = 'colorplus', demoKey }: CustomerEstimateInput,
+  { profile, sqft, stories, finish = 'colorplus', demoKey, battenBoards = 0 }: CustomerEstimateInput,
   pricing: PricingConstants = DEFAULT_PRICING,
 ): CustomerEstimate {
   const fin = FINISH_PRICING[profile][finish]
@@ -139,11 +156,12 @@ export function computeCustomerEstimate(
   const permits = sqft * pricing.permitsPerSqft
   const debris = sqft * pricing.debrisPerSqft
   const demo = demoKey ? sqft * DEMO_OPTIONS[demoKey].ratePerSqft : 0
-  const totalCost = material + install + installMat + permits + debris + demo
+  const batten = profile === 'panel' ? battenBoards * BATTEN_UNIT_COST[finish] : 0
+  const totalCost = material + install + installMat + permits + debris + demo + batten
   const sale = totalCost * pricing.markup
   const low = Math.round((sale * pricing.rangeLow) / 100) * 100
   const high = Math.round((sale * pricing.rangeHigh) / 100) * 100
-  return { sqft, material, install, installMat, permits, debris, demo, totalCost, sale, low, high }
+  return { sqft, material, install, installMat, permits, debris, demo, batten, totalCost, sale, low, high }
 }
 
 /** Guided square footage = home-size base × coverage factor. */
