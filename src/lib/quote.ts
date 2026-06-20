@@ -13,13 +13,14 @@ export interface Profile {
   blurb: string
   cost: number
   install: number
+  img: string
 }
 
 export const PROFILES: Record<ProfileKey, Profile> = {
-  lap: { label: 'Lap Siding', blurb: 'Classic horizontal boards', cost: 4.8, install: 5.5 },
-  panel: { label: 'Board & Batten', blurb: 'Bold vertical lines', cost: 5.0, install: 5.5 },
-  shingle: { label: 'Shingle', blurb: 'Coastal cottage texture', cost: 11.0, install: 6.5 },
-  artisan: { label: 'Artisan V-Rustic', blurb: 'Deep premium shadow', cost: 9.0, install: 8.0 },
+  lap: { label: 'Lap Siding', blurb: 'Classic horizontal boards', cost: 4.8, install: 5.5, img: '/siding/lap.jpg' },
+  panel: { label: 'Board & Batten', blurb: 'Bold vertical lines', cost: 5.0, install: 5.5, img: '/siding/panel.jpg' },
+  shingle: { label: 'Shingle', blurb: 'Coastal cottage texture', cost: 11.0, install: 6.5, img: '/siding/shingle.jpg' },
+  artisan: { label: 'Artisan V-Rustic', blurb: 'Deep premium shadow', cost: 9.0, install: 8.0, img: '/siding/artisan.jpg' },
 }
 
 export type SizeKey = 'small' | 'medium' | 'large' | 'xl'

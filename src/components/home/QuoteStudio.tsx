@@ -163,8 +163,14 @@ export function QuoteStudio({ pricing = DEFAULT_PRICING }: { pricing?: PricingCo
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 10 }}>
             {(Object.keys(PROFILES) as ProfileKey[]).map((k) => (
               <button key={k} style={optionStyle(profile === k)} onClick={() => setProfile(k)}>
-                <div style={{ fontSize: '14.5px', fontWeight: 700, color: '#16261c' }}>{PROFILES[k].label}</div>
-                <div style={{ fontSize: 12, color: '#6a766d', marginTop: 2 }}>{PROFILES[k].blurb}</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 11 }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={PROFILES[k].img} alt={PROFILES[k].label} loading="lazy" style={{ width: 46, height: 46, borderRadius: 9, objectFit: 'cover', flexShrink: 0 }} />
+                  <div>
+                    <div style={{ fontSize: '14.5px', fontWeight: 700, color: '#16261c' }}>{PROFILES[k].label}</div>
+                    <div style={{ fontSize: 12, color: '#6a766d', marginTop: 2 }}>{PROFILES[k].blurb}</div>
+                  </div>
+                </div>
               </button>
             ))}
           </div>

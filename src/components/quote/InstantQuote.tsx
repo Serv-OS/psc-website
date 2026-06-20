@@ -108,11 +108,15 @@ export function InstantQuote() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
             {(Object.keys(PROFILES) as ProfileKey[]).map((k) => (
               <button key={k} type="button" onClick={() => setProfile(k)} style={{
-                textAlign: 'left', padding: 14, borderRadius: 14, cursor: 'pointer', fontFamily: 'inherit',
+                textAlign: 'left', padding: 0, borderRadius: 14, cursor: 'pointer', fontFamily: 'inherit', overflow: 'hidden',
                 background: profile === k ? '#e7f1e8' : '#fff', border: profile === k ? '2px solid #206a38' : '2px solid #e0e7e0',
               }}>
-                <div style={{ fontWeight: 700, color: '#16261c', fontSize: 14.5 }}>{PROFILES[k].label}</div>
-                <div style={{ fontSize: 12.5, color: '#6a766d', marginTop: 3 }}>{PROFILES[k].blurb}</div>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={PROFILES[k].img} alt={PROFILES[k].label} loading="lazy" style={{ display: 'block', width: '100%', height: 104, objectFit: 'cover' }} />
+                <div style={{ padding: '10px 12px 12px' }}>
+                  <div style={{ fontWeight: 700, color: '#16261c', fontSize: 14.5 }}>{PROFILES[k].label}</div>
+                  <div style={{ fontSize: 12.5, color: '#6a766d', marginTop: 3 }}>{PROFILES[k].blurb}</div>
+                </div>
               </button>
             ))}
           </div>
