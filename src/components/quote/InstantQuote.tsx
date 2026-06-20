@@ -287,7 +287,7 @@ export function InstantQuote() {
             <div style={{ fontSize: 30, fontWeight: 800, color: '#16261c', letterSpacing: '-.5px' }}>{money(est.low)} – {money(est.high)}</div>
             <div style={{ fontSize: 13, color: '#6a766d', marginTop: 6, lineHeight: 1.5 }}>
               ~{sqft.toLocaleString('en-US')} sq ft of {PROFILES[profile].label.toLowerCase()} · {stories} storey · {COVERAGE[coverage].label.toLowerCase()}<br />
-              {finish === 'primed' ? 'Primed for paint' : `ColorPlus ${color.name}`} · replacing {DEMO_OPTIONS[demoKey].label.toLowerCase()}
+              {finish === 'primed' ? 'Primed for paint' : `ColorPlus ${color.name}`} · {demoKey === 'newbuild' ? 'new build' : `replacing ${DEMO_OPTIONS[demoKey].label.toLowerCase()}`}
             </div>
           </>
         ) : (
