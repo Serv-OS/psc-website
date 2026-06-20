@@ -17,6 +17,10 @@ import {
 const WALL_HEIGHT_PER_STORY = 9 // ft — footprint perimeter × this × storeys ≈ wall area to side
 const PRIMED_PREVIEW_HEX = '#C9C3B6' // unpainted primer grey
 const money = (n: number) => '$' + Math.round(n).toLocaleString('en-US')
+// Products with a real photo set at /public/siding/<profile>/<colour-slug>.jpg
+// (recoloured from a James Hardie base render). Others fall back to the CSS render.
+const PHOTO_PRODUCTS = new Set<ProfileKey>(['lap'])
+const colorSlug = (name: string) => name.toLowerCase().replace(/\s+/g, '-')
 
 /** CSS background that renders the siding pattern for a profile/texture in a given colour. */
 function sidingBackground(hex: string, profile: ProfileKey, texture: string): string {
@@ -81,6 +85,8 @@ export function InstantQuote() {
   const previewLabel = finish === 'primed' ? 'Primed (unpainted)' : color.name
   const textureLabel = TEXTURES[profile].find((t) => t.key === texture)?.label ?? ''
   const replacing = demoKey !== 'newbuild'
+  const hasPhoto = PHOTO_PRODUCTS.has(profile)
+  const photoSrc = `/siding/${profile}/${finish === 'primed' ? 'primed' : colorSlug(color.name)}.jpg`
 
   const submit = async () => {
     if (!name.trim() || !email.trim() || !phone.trim()) { setError('Please add your name, email and phone.'); return }
@@ -206,20 +212,28 @@ export function InstantQuote() {
         <div style={card}>
           <div style={stepLabel}>5 · Style your {PROFILES[profile].label}</div>
 
-          {/* live preview house */}
-          <div style={{ position: 'relative', borderRadius: 14, overflow: 'hidden', aspectRatio: '16 / 9', background: 'linear-gradient(180deg,#cfe0ee 0%,#e9f0e4 62%)', border: '1px solid #e3e9e3' }}>
-            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '24%', background: '#2c3631', clipPath: 'polygon(0 100%,12% 0,88% 0,100% 100%)', zIndex: 3 }} />
-            <div style={{ position: 'absolute', left: '5%', right: '5%', top: '21%', bottom: 0, borderRadius: '6px 6px 0 0', overflow: 'hidden', boxShadow: 'inset 0 1px 0 rgba(255,255,255,.3)', zIndex: 1, background: sidingBackground(previewHex, profile, texture) }} />
-            <div style={{ position: 'absolute', left: '13%', bottom: 0, width: '14%', height: '48%', background: '#3a4a40', borderRadius: '5px 5px 0 0', zIndex: 2, boxShadow: '0 0 0 3px rgba(255,255,255,.3)' }} />
-            <div style={{ position: 'absolute', right: '15%', bottom: '20%', width: '17%', height: '27%', background: 'linear-gradient(135deg,#dbe8f2,#b9cfe0)', borderRadius: 4, zIndex: 2, boxShadow: '0 0 0 4px rgba(255,255,255,.6)' }} />
-            <div style={{ position: 'absolute', right: '40%', bottom: '20%', width: '13%', height: '27%', background: 'linear-gradient(135deg,#dbe8f2,#b9cfe0)', borderRadius: 4, zIndex: 2, boxShadow: '0 0 0 4px rgba(255,255,255,.6)' }} />
+          {/* live preview — real recoloured photo where available, else CSS render */}
+          <div style={{ position: 'relative', borderRadius: 14, overflow: 'hidden', border: '1px solid #e3e9e3', background: 'linear-gradient(180deg,#cfe0ee 0%,#e9f0e4 62%)' }}>
+            {hasPhoto ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img key={photoSrc} src={photoSrc} alt={`${PROFILES[profile].label} in ${previewLabel}`} style={{ display: 'block', width: '100%', aspectRatio: '4 / 3', objectFit: 'cover', objectPosition: 'center 32%' }} />
+            ) : (
+              <div style={{ position: 'relative', aspectRatio: '16 / 9' }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '24%', background: '#2c3631', clipPath: 'polygon(0 100%,12% 0,88% 0,100% 100%)', zIndex: 3 }} />
+                <div style={{ position: 'absolute', left: '5%', right: '5%', top: '21%', bottom: 0, borderRadius: '6px 6px 0 0', overflow: 'hidden', boxShadow: 'inset 0 1px 0 rgba(255,255,255,.3)', zIndex: 1, background: sidingBackground(previewHex, profile, texture) }} />
+                <div style={{ position: 'absolute', left: '13%', bottom: 0, width: '14%', height: '48%', background: '#3a4a40', borderRadius: '5px 5px 0 0', zIndex: 2, boxShadow: '0 0 0 3px rgba(255,255,255,.3)' }} />
+                <div style={{ position: 'absolute', right: '15%', bottom: '20%', width: '17%', height: '27%', background: 'linear-gradient(135deg,#dbe8f2,#b9cfe0)', borderRadius: 4, zIndex: 2, boxShadow: '0 0 0 4px rgba(255,255,255,.6)' }} />
+                <div style={{ position: 'absolute', right: '40%', bottom: '20%', width: '13%', height: '27%', background: 'linear-gradient(135deg,#dbe8f2,#b9cfe0)', borderRadius: 4, zIndex: 2, boxShadow: '0 0 0 4px rgba(255,255,255,.6)' }} />
+              </div>
+            )}
             <div style={{ position: 'absolute', left: 12, top: 12, zIndex: 4, background: 'rgba(255,255,255,.94)', borderRadius: 9, padding: '7px 11px', boxShadow: '0 4px 12px rgba(0,0,0,.12)' }}>
               <div style={{ fontSize: 10.5, color: '#7a857d', fontWeight: 700, letterSpacing: '.4px', textTransform: 'uppercase' }}>{PROFILES[profile].label} · {textureLabel}</div>
               <div style={{ fontSize: 15, color: '#16261c', fontWeight: 800 }}>{previewLabel}</div>
             </div>
-            {/* real texture reference */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={PROFILES[profile].img} alt="" aria-hidden style={{ position: 'absolute', right: 12, bottom: 12, width: 70, height: 52, objectFit: 'cover', borderRadius: 8, zIndex: 4, border: '2px solid rgba(255,255,255,.85)', boxShadow: '0 4px 12px rgba(0,0,0,.18)' }} />
+            {!hasPhoto && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={PROFILES[profile].img} alt="" aria-hidden style={{ position: 'absolute', right: 12, bottom: 12, width: 70, height: 52, objectFit: 'cover', borderRadius: 8, zIndex: 4, border: '2px solid rgba(255,255,255,.85)', boxShadow: '0 4px 12px rgba(0,0,0,.18)' }} />
+            )}
           </div>
 
           {/* texture */}
