@@ -38,6 +38,54 @@ export const COVERAGE: Record<CoverageKey, { label: string; factor: number }> = 
   front: { label: 'Front only', factor: 0.35 },
 }
 
+// ── What we're replacing (demolition) ───────────────────────────────────────
+export type DemoKey = 'siding' | 'stucco' | 'trim' | 'newbuild'
+export const DEMO_OPTIONS: Record<DemoKey, { label: string; sub: string; ratePerSqft: number }> = {
+  siding: { label: 'Existing siding', sub: 'Wood, fiber-cement, vinyl, aluminium or similar', ratePerSqft: 2.6 },
+  stucco: { label: 'Stucco', sub: 'Cement stucco — heavier tear-off & disposal', ratePerSqft: 4.35 },
+  trim: { label: 'Trim only', sub: 'Existing siding stays; we replace the trim', ratePerSqft: 1 },
+  newbuild: { label: 'New build', sub: 'Nothing to remove — bare sheathing', ratePerSqft: 0 },
+}
+
+// ── Surface textures per profile (visual only — no price difference) ─────────
+export interface Texture { key: string; label: string }
+export const TEXTURES: Record<ProfileKey, Texture[]> = {
+  lap: [
+    { key: 'cedarmill', label: 'Select Cedarmill (Wood Grain)' },
+    { key: 'smooth', label: 'Smooth' },
+  ],
+  panel: [
+    { key: 'cedarmill', label: 'Cedarmill (Wood Grain)' },
+    { key: 'smooth', label: 'Smooth' },
+    { key: 'stucco', label: 'Stucco' },
+    { key: 'sierra8', label: 'Sierra 8' },
+  ],
+  shingle: [
+    { key: 'straight', label: 'Straight Edge' },
+    { key: 'staggered', label: 'Staggered Edge' },
+  ],
+  artisan: [
+    { key: 'lap', label: 'Artisan Lap' },
+    { key: 'vgroove', label: 'V-Groove' },
+    { key: 'shiplap', label: 'Shiplap' },
+  ],
+}
+
+// ── Finish: ColorPlus® (factory) vs Primed for paint ────────────────────────
+export type FinishKey = 'colorplus' | 'primed'
+/** Per-profile material + install $/sqft by finish (sourced from STAFF_PRODUCTS). */
+export const FINISH_PRICING: Record<ProfileKey, Record<FinishKey, { cost: number; install: number }>> = {
+  lap: { colorplus: { cost: 4.8, install: 5.5 }, primed: { cost: 2.25, install: 4.5 } },
+  panel: { colorplus: { cost: 5.0, install: 5.5 }, primed: { cost: 2.4, install: 5.5 } },
+  shingle: { colorplus: { cost: 11.0, install: 6.5 }, primed: { cost: 8.0, install: 5.5 } },
+  artisan: { colorplus: { cost: 9.0, install: 8.0 }, primed: { cost: 9.0, install: 8.0 } },
+}
+
+export const PRIMED_WARNING =
+  'Primed James Hardie® siding ships pre-primed but not painted, so it must be finished with a quality 100% acrylic exterior topcoat within 180 days of installation per the manufacturer’s guidelines. Please schedule your painter within this window — painting on time protects the boards from moisture and keeps your product warranty intact.'
+export const COLORPLUS_NOTE =
+  'ColorPlus® Technology is a factory baked-on finish — it arrives in your chosen colour, never needs field painting, and carries a 15-year limited finish warranty against peeling, cracking and chipping.'
+
 /** Internal pricing constants. Owner-tunable copies live in SiteSettings.pricing. */
 export interface PricingConstants {
   markup: number
@@ -61,6 +109,8 @@ export interface CustomerEstimateInput {
   profile: ProfileKey
   sqft: number
   stories: number
+  finish?: FinishKey
+  demoKey?: DemoKey
 }
 
 export interface CustomerEstimate {
@@ -70,6 +120,7 @@ export interface CustomerEstimate {
   installMat: number
   permits: number
   debris: number
+  demo: number
   totalCost: number
   sale: number
   low: number
@@ -78,21 +129,21 @@ export interface CustomerEstimate {
 
 /** Returns the full cost breakdown internally + the public-facing rounded range. */
 export function computeCustomerEstimate(
-  { profile, sqft, stories }: CustomerEstimateInput,
+  { profile, sqft, stories, finish = 'colorplus', demoKey }: CustomerEstimateInput,
   pricing: PricingConstants = DEFAULT_PRICING,
-  profiles: Record<ProfileKey, Profile> = PROFILES,
 ): CustomerEstimate {
-  const prof = profiles[profile]
-  const material = prof.cost * sqft
-  const install = prof.install * sqft
+  const fin = FINISH_PRICING[profile][finish]
+  const material = fin.cost * sqft
+  const install = fin.install * sqft
   const installMat = (sqft / 1000) * stories * pricing.installMatPer1000PerStory
   const permits = sqft * pricing.permitsPerSqft
   const debris = sqft * pricing.debrisPerSqft
-  const totalCost = material + install + installMat + permits + debris
+  const demo = demoKey ? sqft * DEMO_OPTIONS[demoKey].ratePerSqft : 0
+  const totalCost = material + install + installMat + permits + debris + demo
   const sale = totalCost * pricing.markup
   const low = Math.round((sale * pricing.rangeLow) / 100) * 100
   const high = Math.round((sale * pricing.rangeHigh) / 100) * 100
-  return { sqft, material, install, installMat, permits, debris, totalCost, sale, low, high }
+  return { sqft, material, install, installMat, permits, debris, demo, totalCost, sale, low, high }
 }
 
 /** Guided square footage = home-size base × coverage factor. */
@@ -107,23 +158,40 @@ export interface SidingColor {
   hex: string
 }
 
+/** James Hardie Statement Collection® — 19 colours (hex approximated for the on-screen visualiser). */
 export const COLORS: SidingColor[] = [
-  { name: 'Arctic White', hex: '#E9EAE5' },
-  { name: 'Light Mist', hex: '#D3D6CF' },
-  { name: 'Pearl Grey', hex: '#B9BCB6' },
-  { name: 'Cobble Stone', hex: '#CABFA4' },
-  { name: 'Navajo Beige', hex: '#C6B093' },
+  { name: 'Arctic White', hex: '#ECEBE4' },
+  { name: 'Cobble Stone', hex: '#C9BCA0' },
+  { name: 'Navajo Beige', hex: '#C2AE8E' },
+  { name: 'Khaki Brown', hex: '#8C7B66' },
   { name: 'Monterey Taupe', hex: '#9C8E7B' },
-  { name: 'Khaki Brown', hex: '#8B7B68' },
-  { name: 'Mountain Sage', hex: '#8C9379' },
   { name: 'Timber Bark', hex: '#6E5D4E' },
-  { name: 'Aged Pewter', hex: '#7C807E' },
-  { name: 'Grey Slate', hex: '#6E746F' },
+  { name: 'Rich Espresso', hex: '#4A3B30' },
+  { name: 'Mountain Sage', hex: '#8C9379' },
+  { name: 'Light Mist', hex: '#D3D6CF' },
+  { name: 'Pearl Gray', hex: '#B9BCB6' },
+  { name: 'Gray Slate', hex: '#6E746F' },
   { name: 'Boothbay Blue', hex: '#6E8A95' },
-  { name: 'Night Grey', hex: '#4B4E4D' },
-  { name: 'Iron Grey', hex: '#3B3D3C' },
   { name: 'Evening Blue', hex: '#3F525A' },
+  { name: 'Deep Ocean', hex: '#2E4654' },
+  { name: 'Aged Pewter', hex: '#7C807E' },
+  { name: 'Night Gray', hex: '#4B4E4D' },
+  { name: 'Iron Gray', hex: '#3B3D3C' },
+  { name: 'Countrylane Red', hex: '#7E3B34' },
+  { name: 'Midnight Black', hex: '#23231F' },
 ]
+
+// ── "What's included" copy (customer-facing) ────────────────────────────────
+export const INCLUDED = {
+  removalDisposal:
+    'When we’re replacing existing siding, our crew handles the complete removal of your current cladding and hauls every bit of it away for proper disposal — no debris left in your yard and no dump runs for you to manage. We leave your home clean and fully prepared for the new James Hardie® system.',
+  permits:
+    'We pull every permit your project requires and coordinate all inspections from start to finish, working directly with your local building department. There’s no paperwork or red tape for you to navigate, and the installation stays fully compliant and on schedule.',
+  installation:
+    'Complete, professional installation built to James Hardie’s published specification: a weather-resistive barrier (such as HardieWrap®), proper flashing at every penetration and transition, manufacturer-approved fasteners, quality sealant and caulking, and finished trim throughout. Every material and all the labour needed to finish the job to spec is included.',
+  dryRotExclusion:
+    'Replacement of underlying plywood or sheathing is not included in this estimate. Occasionally hidden dry rot or structural damage is only revealed once the old siding is removed; if we find any, we’ll document it, walk you through it, and provide a separate quote to repair it before we proceed. In most cases our on-site assessor can flag the likelihood of this during your assessment, so you’ll have a clear picture well before the project begins.',
+}
 
 // ── Staff Quote Builder (internal) ──────────────────────────────────────────
 
