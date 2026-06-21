@@ -64,7 +64,9 @@ export default async function FrontendLayout({ children }: { children: React.Rea
   return (
     <html lang="en" className={poppins.variable}>
       <body>
-        <div style={{ overflowX: 'hidden' }}>
+        {/* overflow-x: clip (not hidden) prevents horizontal scroll WITHOUT creating a
+            scroll container that would break position: sticky on descendant elements. */}
+        <div style={{ overflowX: 'clip' }}>
           <Header announcement={biz.announcement} phone={biz.phone} logoUrl={logoUrl} nav={nav} />
           {children}
           <Footer biz={biz} logoUrl={logoUrl} columns={footerColumns} />
