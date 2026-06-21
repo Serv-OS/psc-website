@@ -5,9 +5,10 @@
 //   4 Choose siding  → 5 Style it (texture · finish · colour, with a live preview)
 //   6 What's included + dry-rot note → captured as a Lead. Mirrors James Hardie's picker.
 //
-// Colour preview: if a real photo exists at /siding/<profile>/<colour-slug>.jpg it is
-// shown (and recolours per selection); otherwise we fall back to a CSS render. Drop a
-// product's photo library into /public/siding/<profile>/ and add it to PHOTO_PRODUCTS.
+// Colour preview: if a real photo exists at /siding/<profile>/<texture>/<colour-slug>.jpg
+// it is shown (and swaps per selection); otherwise we fall back to a CSS render. Drop a
+// product's photo library into /public/siding/<profile>/<texture>/ and add the profile to
+// PHOTO_PRODUCTS. Textures without a library fall back to the CSS render automatically.
 import { useMemo, useState } from 'react'
 import { RoofMeasure, type Measurement } from './RoofMeasure'
 import {
@@ -95,7 +96,7 @@ export function InstantQuote() {
   const previewLabel = finish === 'primed' ? 'Primed (unpainted)' : color.name
   const textureLabel = TEXTURES[profile].find((t) => t.key === texture)?.label ?? ''
   const replacing = demoKey !== 'newbuild'
-  const photoSrc = `/siding/${profile}/${finish === 'primed' ? 'primed' : colorSlug(color.name)}.jpg`
+  const photoSrc = `/siding/${profile}/${texture}/${finish === 'primed' ? 'primed' : colorSlug(color.name)}.jpg`
   const showPhoto = PHOTO_PRODUCTS.has(profile) && !failedImgs.has(photoSrc)
 
   const submit = async () => {
