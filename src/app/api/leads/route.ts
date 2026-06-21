@@ -70,6 +70,35 @@ async function forwardToCrm(args: {
   }
 }
 
+// Instant-quote submissions get the full treatment in the CRM: contact + location
+// + lead + deal + a DRAFT quote built by the real quote engine, round-robin assigned.
+// The CRM function is JWT-protected → authenticate with the CRM anon key (public) via env.
+const CRM_INSTANT_QUOTE_URL =
+  process.env.CRM_INSTANT_QUOTE_URL ||
+  'https://xxazlzkhwraqfeqjzviz.supabase.co/functions/v1/instant-quote'
+
+async function forwardInstantQuoteToCrm(args: { name: string; email: string; phone: string; c: any; body: any }) {
+  const { name, email, phone, c, body } = args
+  try {
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+    if (process.env.CRM_ANON_KEY) headers.Authorization = `Bearer ${process.env.CRM_ANON_KEY}`
+    await fetch(CRM_INSTANT_QUOTE_URL, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        secret: process.env.CRM_INGEST_SECRET || undefined,
+        customer: { name, email, phone, address: c.address, city: c.city, zip: c.zip, notes: c.notes || body?.notes },
+        selection: body?.selection || {},
+        project: body?.project || {},
+        estimate: body?.estimate || {},
+        page_url: body?.page_url || null,
+      }),
+    })
+  } catch (e) {
+    console.error('CRM instant-quote forward failed', e)
+  }
+}
+
 // Soft in-memory rate limit (per server instance): 6 submissions / 10 min / IP.
 const hits = new Map<string, number[]>()
 const WINDOW = 10 * 60 * 1000
@@ -139,8 +168,13 @@ export async function POST(req: Request) {
     const payload = await getPayloadClient()
     await payload.create({ collection: 'leads', data: data as never, overrideAccess: true })
 
-    // Mirror the lead into the ServOS CRM for lead management (best-effort).
-    await forwardToCrm({ type, name, email, phone, c, body })
+    // Mirror into the ServOS CRM (best-effort). Instant-quote → full lead+deal+quote;
+    // everything else → a plain lead.
+    if (data.source === 'instant-quote') {
+      await forwardInstantQuoteToCrm({ name, email, phone, c, body })
+    } else {
+      await forwardToCrm({ type, name, email, phone, c, body })
+    }
 
     // Notify sales (only when an email adapter is configured).
     if (process.env.RESEND_API_KEY) {

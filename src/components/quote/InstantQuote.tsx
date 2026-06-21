@@ -120,8 +120,17 @@ export function InstantQuote() {
             color: finish === 'primed' ? 'Primed for paint' : color.name,
             finish: finish === 'primed' ? 'Primed' : 'ColorPlus',
             replacing: DEMO_OPTIONS[demoKey].label,
+            // raw keys for the CRM quote engine
+            profileKey: profile,
+            finishKey: finish,
           },
-          project: { sqft, stories },
+          project: {
+            sqft, stories,
+            demoKey,
+            battenBoards: profile === 'panel' ? battenBoards : 0,
+            perimeterFt: m?.perimeterFt ?? 0,
+            coverage: COVERAGE[coverage].label,
+          },
           estimate: { low: est.low, high: est.high },
           source: 'instant-quote',
         }),
