@@ -125,7 +125,7 @@ export function QuoteStudio({ pricing = DEFAULT_PRICING }: { pricing?: PricingCo
       if (!res.ok) throw new Error('Request failed')
       setSubmitted(true)
     } catch {
-      setError('Something went wrong. Please call 650-287-4208 or try again.')
+      setError('Something went wrong. Please call 650-910-5521 or try again.')
     } finally {
       setSubmitting(false)
     }

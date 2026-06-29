@@ -17,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: page?.seo?.metaTitle || 'Contact Peninsula Siding Company | Free Siding Consultation | San Mateo, CA',
     description:
       page?.seo?.metaDescription ||
-      "Book a free siding consultation with Peninsula Siding Company in San Mateo — call 650-287-4208 or send your details and we'll get right back to you.",
+      "Book a free siding consultation with Peninsula Siding Company in San Mateo — call 650-910-5521 or send your details and we'll get right back to you.",
     alternates: { canonical: '/contact-us' },
   }
 }

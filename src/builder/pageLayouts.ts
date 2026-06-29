@@ -432,7 +432,7 @@ const contactUs = layout([
     columns: '3',
     background: 'soft',
     items: [
-      { title: 'Call us', body: '650-287-4208' },
+      { title: 'Call us', body: '650-910-5521' },
       { title: 'Email', body: 'info@peninsulasidingcompany.com' },
       { title: 'Visit (by appointment)', body: '763 Polhemus Road, Suite 2, San Mateo, CA 94402' },
     ],
@@ -504,7 +504,7 @@ const terms = layout([
   }),
   block('Text', 'terms-sms-2', {
     content:
-      'Message types include appointment and installation scheduling and reminders, job and project status updates, quote and invoice notifications, account and service notices, and one-to-one replies from our team. Message frequency varies. Message and data rates may apply — we do not charge for the messages, but your mobile carrier’s standard rates may apply. To stop messages, reply STOP at any time; you will receive a one-time confirmation and can opt back in by replying START. For help, reply HELP, email info@peninsulasidingcompany.com, or call 650-287-4208. Mobile carriers are not liable for delayed or undelivered messages.',
+      'Message types include appointment and installation scheduling and reminders, job and project status updates, quote and invoice notifications, account and service notices, and one-to-one replies from our team. Message frequency varies. Message and data rates may apply — we do not charge for the messages, but your mobile carrier’s standard rates may apply. To stop messages, reply STOP at any time; you will receive a one-time confirmation and can opt back in by replying START. For help, reply HELP, email info@peninsulasidingcompany.com, or call 650-910-5521. Mobile carriers are not liable for delayed or undelivered messages.',
     align: 'left',
     background: 'white',
   }),
@@ -564,7 +564,7 @@ const privacy = layout([
   }),
   block('Text', 'priv-contact', {
     content:
-      'Changes & contact. We may update this Privacy Policy, and the version posted on the site is the current version. Questions? Contact info@peninsulasidingcompany.com or 650-287-4208, 763 Polhemus Road, Suite 2, San Mateo, CA 94402.',
+      'Changes & contact. We may update this Privacy Policy, and the version posted on the site is the current version. Questions? Contact info@peninsulasidingcompany.com or 650-910-5521, 763 Polhemus Road, Suite 2, San Mateo, CA 94402.',
     align: 'left',
     background: 'soft',
   }),

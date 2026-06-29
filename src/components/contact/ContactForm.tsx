@@ -89,7 +89,7 @@ export function ContactForm() {
           <h2 style={{ fontSize: 22, fontWeight: 800, color: '#16261c' }}>Thanks, {f.name.split(' ')[0]}!</h2>
           <p style={{ maxWidth: 420, margin: '10px auto 0', fontSize: 15, color: '#56635a', lineHeight: 1.6 }}>
             Your request is in. A Peninsula Siding specialist will reach out within one business day to book your free consultation. For anything urgent, call us at{' '}
-            <a href="tel:6502874208" style={{ color: '#206a38', fontWeight: 600 }}>650-287-4208</a>.
+            <a href="tel:6509105521" style={{ color: '#206a38', fontWeight: 600 }}>650-910-5521</a>.
           </p>
         </div>
       </div>

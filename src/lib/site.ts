@@ -12,9 +12,9 @@ export const SITE_URL = (
 export const SITE = {
   name: 'Peninsula Siding Company, Inc.',
   shortName: 'Peninsula Siding Company',
-  phone: '650-287-4208',
-  phoneE164: '+1-650-287-4208',
-  phoneHref: 'tel:6502874208',
+  phone: '650-910-5521',
+  phoneE164: '+1-650-910-5521',
+  phoneHref: 'tel:6509105521',
   email: 'info@peninsulasidingcompany.com',
   street: '763 Polhemus Road, Suite 2',
   city: 'San Mateo',

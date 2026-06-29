@@ -52,7 +52,7 @@ export const SiteSettings: GlobalConfig = {
               type: 'row',
               fields: [
                 { name: 'companyName', type: 'text', defaultValue: 'Peninsula Siding Company, Inc.', admin: { width: '50%' } },
-                { name: 'phone', type: 'text', defaultValue: '650-287-4208', admin: { width: '50%' } },
+                { name: 'phone', type: 'text', defaultValue: '650-910-5521', admin: { width: '50%' } },
               ],
             },
             {
