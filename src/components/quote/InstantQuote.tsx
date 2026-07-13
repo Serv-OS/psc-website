@@ -1,7 +1,7 @@
 'use client'
 
 // Customer-facing instant quote configurator. Flow:
-//   1 What are we replacing? (demo)  → 2 Measure (map)  → 3 Storeys & coverage
+//   1 What are we replacing? (demo)  → 2 Measure (map)  → 3 Stories & coverage
 //   4 Choose siding  → 5 Style it (texture · finish · colour, with a live preview)
 //   6 What's included + dry-rot note → captured as a Lead. Mirrors James Hardie's picker.
 //
@@ -17,7 +17,7 @@ import {
   type ProfileKey, type CoverageKey, type DemoKey, type FinishKey, type SidingColor,
 } from '@/lib/quote'
 
-const WALL_HEIGHT_PER_STORY = 9 // ft — footprint perimeter × this × storeys ≈ wall area to side
+const WALL_HEIGHT_PER_STORY = 9 // ft — footprint perimeter × this × stories ≈ wall area to side
 const PRIMED_PREVIEW_HEX = '#C9C3B6' // unpainted primer grey
 const money = (n: number) => '$' + Math.round(n).toLocaleString('en-US')
 // Products that have a real photo library at /public/siding/<profile>/<colour-slug>.jpg
@@ -75,7 +75,7 @@ export function InstantQuote() {
     setTexture(TEXTURES[k][0].key) // reset texture to a valid one for the new profile
   }
 
-  // Siding wall area ≈ perimeter × wall height × storeys × coverage factor.
+  // Siding wall area ≈ perimeter × wall height × stories × coverage factor.
   const sqft = useMemo(() => {
     if (!m) return 0
     return Math.round(m.perimeterFt * WALL_HEIGHT_PER_STORY * stories * COVERAGE[coverage].factor)
@@ -112,7 +112,7 @@ export function InstantQuote() {
           company: hp,
           customer: {
             name, email, phone, address: m?.address || '',
-            notes: `Instant map quote — replacing: ${DEMO_OPTIONS[demoKey].label}. Footprint ${m?.areaFt2.toLocaleString('en-US')} sq ft, perimeter ${m?.perimeterFt.toLocaleString('en-US')} ft, ${stories} storey, coverage: ${COVERAGE[coverage].label}. Siding area ~${sqft.toLocaleString('en-US')} sq ft. ${PROFILES[profile].label} · ${textureLabel} · ${finish === 'primed' ? 'Primed for paint' : 'ColorPlus ' + color.name}.`,
+            notes: `Instant map quote — replacing: ${DEMO_OPTIONS[demoKey].label}. Footprint ${m?.areaFt2.toLocaleString('en-US')} sq ft, perimeter ${m?.perimeterFt.toLocaleString('en-US')} ft, ${stories} story, coverage: ${COVERAGE[coverage].label}. Siding area ~${sqft.toLocaleString('en-US')} sq ft. ${PROFILES[profile].label} · ${textureLabel} · ${finish === 'primed' ? 'Primed for paint' : 'ColorPlus ' + color.name}.`,
           },
           selection: {
             profile: PROFILES[profile].label,
@@ -195,10 +195,10 @@ export function InstantQuote() {
           <RoofMeasure onMeasure={setM} />
         </div>
 
-        {/* 3 · Storeys & coverage */}
+        {/* 3 · Stories & coverage */}
         <div style={card}>
-          <div style={stepLabel}>3 · Storeys &amp; coverage</div>
-          <div style={{ fontSize: 13, color: '#46544a', marginBottom: 8 }}>How many storeys?</div>
+          <div style={stepLabel}>3 · Stories &amp; coverage</div>
+          <div style={{ fontSize: 13, color: '#46544a', marginBottom: 8 }}>How many stories?</div>
           <div style={{ display: 'flex', gap: 10, marginBottom: 18 }}>
             {[1, 2].map((v) => <button key={v} type="button" style={pill(stories === v)} onClick={() => setStories(v)}>{v} stor{v === 1 ? 'ey' : 'eys'}</button>)}
           </div>
@@ -348,7 +348,7 @@ export function InstantQuote() {
           <>
             <div style={{ fontSize: 30, fontWeight: 800, color: '#16261c', letterSpacing: '-.5px' }}>{money(est.low)} – {money(est.high)}</div>
             <div style={{ fontSize: 13, color: '#6a766d', marginTop: 6, lineHeight: 1.5 }}>
-              ~{sqft.toLocaleString('en-US')} sq ft of {PROFILES[profile].label.toLowerCase()} · {stories} storey · {COVERAGE[coverage].label.toLowerCase()}<br />
+              ~{sqft.toLocaleString('en-US')} sq ft of {PROFILES[profile].label.toLowerCase()} · {stories} story · {COVERAGE[coverage].label.toLowerCase()}<br />
               {finish === 'primed' ? 'Primed for paint' : `ColorPlus ${color.name}`} · {demoKey === 'newbuild' ? 'new build' : `replacing ${DEMO_OPTIONS[demoKey].label.toLowerCase()}`}
               {profile === 'panel' && battenBoards > 0 && <> · ~{battenBoards} battens</>}
             </div>

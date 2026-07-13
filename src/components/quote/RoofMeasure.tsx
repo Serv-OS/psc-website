@@ -2,7 +2,7 @@
 
 // Address search + satellite + draw-the-building measurement. Outputs the
 // building FOOTPRINT area (ft²) and PERIMETER (ft) from real map coordinates,
-// which the instant-quote page turns into siding wall area (perimeter × storeys).
+// which the instant-quote page turns into siding wall area (perimeter × stories).
 //
 // Drawing is done with click-to-add-vertex on a google.maps.Polygon — the old
 // DrawingManager library was removed in Maps JS v3.65, so we build the polygon
