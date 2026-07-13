@@ -105,7 +105,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         <div className="container" style={{ padding: '56px 24px', textAlign: 'center' }}>
           <h2 style={{ fontSize: 'clamp(22px,2.8vw,32px)', fontWeight: 800, color: '#fff', letterSpacing: '-.6px' }}>Ready to price your project?</h2>
           <p style={{ maxWidth: 540, margin: '12px auto 0', fontSize: 16, color: '#bcd9c2' }}>Build an instant estimate in 60 seconds — we&apos;ll beat any like-for-like quote by 10%.</p>
-          <Link href="/#quote" className="btn btn-light" style={{ display: 'inline-block', marginTop: 22, fontSize: 16, padding: '15px 28px', borderRadius: 13 }}>Build my instant quote &rarr;</Link>
+          <Link href="/instant-quote" className="btn btn-light" style={{ display: 'inline-block', marginTop: 22, fontSize: 16, padding: '15px 28px', borderRadius: 13 }}>Build my instant quote &rarr;</Link>
         </div>
       </section>
     </>

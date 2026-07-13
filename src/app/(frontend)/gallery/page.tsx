@@ -82,7 +82,7 @@ export default async function GalleryPage() {
         <div className="container" style={{ padding: '48px 24px 84px' }}>
           <GalleryGrid projects={list} />
           <div style={{ textAlign: 'center', marginTop: 48 }}>
-            <Link href="/#quote" className="btn btn-primary" style={{ fontSize: 16, padding: '16px 32px', borderRadius: 13 }}>Start my transformation &rarr;</Link>
+            <Link href="/instant-quote" className="btn btn-primary" style={{ fontSize: 16, padding: '16px 32px', borderRadius: 13 }}>Start my transformation &rarr;</Link>
           </div>
         </div>
       </section>

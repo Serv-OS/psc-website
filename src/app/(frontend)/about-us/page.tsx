@@ -121,7 +121,7 @@ export default async function AboutPage() {
             <p style={{ marginTop: 18, fontSize: 16, lineHeight: 1.65, color: '#bcd2bf', maxWidth: 420 }}>
               Drag the handle to see how we transform outdated exteriors into beautiful, durable, energy-efficient homes built for Bay Area living — and yours could be next.
             </p>
-            <Link href="/#quote" className="btn btn-primary" style={{ marginTop: 28, fontSize: 15, padding: '14px 26px' }}>Get a free siding estimate</Link>
+            <Link href="/instant-quote" className="btn btn-primary" style={{ marginTop: 28, fontSize: 15, padding: '14px 26px' }}>Get a free siding estimate</Link>
           </div>
           <BeforeAfter before={feature?.beforeImage} after={feature?.afterImage} aspect="16/11" />
         </div>
@@ -178,7 +178,7 @@ export default async function AboutPage() {
             <h2 style={{ fontSize: 'clamp(24px,2.8vw,34px)', fontWeight: 800, color: '#fff', letterSpacing: '-.6px' }}>Let&apos;s protect and elevate your home.</h2>
             <p style={{ fontSize: 16, color: '#bcd9c2', marginTop: 8 }}>Build your quote in 60 seconds — we&apos;ll beat any like-for-like quote by 10%.</p>
           </div>
-          <Link href="/#quote" className="btn btn-light" style={{ fontSize: 16, padding: '16px 30px', borderRadius: 13 }}>Start my free quote &rarr;</Link>
+          <Link href="/instant-quote" className="btn btn-light" style={{ fontSize: 16, padding: '16px 30px', borderRadius: 13 }}>Start my free quote &rarr;</Link>
         </div>
       </section>
     </>

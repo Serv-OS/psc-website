@@ -13,7 +13,7 @@ type Props = {
   nav: NavItem[]
 }
 
-const QUOTE_HREF = '/#quote'
+const QUOTE_HREF = '/instant-quote'
 
 export function Header({ announcement, phone, logoUrl, nav }: Props) {
   const pathname = usePathname()

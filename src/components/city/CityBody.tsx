@@ -30,7 +30,7 @@ export function CityBody({ city, heroMedia }: { city: CityData; heroMedia?: Medi
             <h1 style={{ fontSize: 'clamp(31px,4vw,50px)', fontWeight: 800, letterSpacing: '-1.3px', lineHeight: 1.07, color: '#16261c', marginTop: 18 }}>{city.h1}</h1>
             <p style={{ marginTop: 18, fontSize: '16.5px', lineHeight: 1.7, color: '#46544a', maxWidth: 540 }}>{city.intro}</p>
             <div style={{ marginTop: 28, display: 'flex', flexWrap: 'wrap', gap: 14 }}>
-              <Link href="/#quote" className="btn btn-primary" style={{ fontSize: '15.5px', padding: '15px 28px' }}>Get my {city.name} estimate</Link>
+              <Link href="/instant-quote" className="btn btn-primary" style={{ fontSize: '15.5px', padding: '15px 28px' }}>Get my {city.name} estimate</Link>
               <a href={`tel:${phoneDigits}`} className="btn btn-ghost" style={{ fontSize: '15.5px', padding: '15px 28px' }}>✆ {SITE.phone}</a>
             </div>
           </div>
@@ -100,7 +100,7 @@ export function CityBody({ city, heroMedia }: { city: CityData; heroMedia?: Medi
             A family-owned, Elite Preferred James Hardie® contractor right here on the Peninsula. Free, no-obligation quotes — and we&apos;ll beat any like-for-like quote by 10%.
           </p>
           <div style={{ marginTop: 28, display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 14 }}>
-            <Link href="/#quote" className="btn btn-light" style={{ fontSize: 16, padding: '16px 30px', borderRadius: 13 }}>Build my instant quote &rarr;</Link>
+            <Link href="/instant-quote" className="btn btn-light" style={{ fontSize: 16, padding: '16px 30px', borderRadius: 13 }}>Build my instant quote &rarr;</Link>
             <Link href="/contact-us" className="btn" style={{ fontSize: 16, padding: '16px 30px', borderRadius: 13, background: 'rgba(255,255,255,.1)', color: '#fff', border: '1.5px solid rgba(255,255,255,.3)' }}>Contact us</Link>
           </div>
         </div>

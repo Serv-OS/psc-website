@@ -88,7 +88,7 @@ export function StyleExplorer() {
               )
             })}
           </div>
-          <Link href="/#quote" className="btn btn-primary" style={{ marginTop: 24, alignSelf: 'flex-start', fontSize: '14.5px', padding: '13px 22px', borderRadius: 11 }}>
+          <Link href="/instant-quote" className="btn btn-primary" style={{ marginTop: 24, alignSelf: 'flex-start', fontSize: '14.5px', padding: '13px 22px', borderRadius: 11 }}>
             Quote this look &rarr;
           </Link>
         </div>

@@ -138,7 +138,7 @@ export default async function ContactPage() {
           <p style={{ maxWidth: 560, margin: '12px auto 0', fontSize: 16, color: '#bcd9c2', lineHeight: 1.6 }}>
             Build an instant estimate in 60 seconds — then book your free consultation. We&apos;ll beat any like-for-like quote by 10%.
           </p>
-          <Link href="/#quote" className="btn btn-light" style={{ display: 'inline-block', marginTop: 24, fontSize: 16, padding: '16px 30px', borderRadius: 13 }}>Build my instant quote &rarr;</Link>
+          <Link href="/instant-quote" className="btn btn-light" style={{ display: 'inline-block', marginTop: 24, fontSize: 16, padding: '16px 30px', borderRadius: 13 }}>Build my instant quote &rarr;</Link>
         </div>
       </section>
     </>

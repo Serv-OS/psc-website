@@ -45,7 +45,7 @@ const aboutUs = layout([
     text:
       'Drag the handle to see how we transform outdated exteriors into beautiful, durable, energy-efficient homes built for Bay Area living — and yours could be next.',
     buttonLabel: 'Get a free siding estimate',
-    buttonHref: '/#quote',
+    buttonHref: '/instant-quote',
     beforeImage: img('3-before.jpg', 'Bay Area home — before new siding'),
     afterImage: img('3-after.jpg', 'Bay Area home — after new siding'),
     background: 'forest',
@@ -94,7 +94,7 @@ const aboutUs = layout([
     heading: 'Let’s protect and elevate your home.',
     copy: "Build your quote in 60 seconds — we'll beat any like-for-like quote by 10%.",
     buttonLabel: 'Start my free quote →',
-    buttonHref: '/#quote',
+    buttonHref: '/instant-quote',
     background: 'green',
   }),
 ])
@@ -107,7 +107,7 @@ const services = layout([
     subheading:
       'As the region’s trusted siding specialists, we deliver expert workmanship using high-quality materials to enhance your home’s beauty, durability, and value — exteriors built to last.',
     primaryLabel: 'Get my free estimate',
-    primaryHref: '/#quote',
+    primaryHref: '/instant-quote',
     secondaryLabel: 'Explore materials',
     secondaryHref: '#materials',
     image: img('6-after.jpg', 'Finished James Hardie siding project in the Bay Area'),
@@ -182,7 +182,7 @@ const services = layout([
     heading: 'Request your free siding consultation',
     copy: 'A detailed, no-obligation quote — we’ll review your needs, material options, and design preferences to find the best solution for durability, curb appeal, and long-term value.',
     buttonLabel: 'Build my instant quote →',
-    buttonHref: '/#quote',
+    buttonHref: '/instant-quote',
     background: 'green',
   }),
 ])
@@ -257,7 +257,7 @@ const designInspirations = layout([
     heading: 'Found a look you love?',
     copy: 'Take your style and color straight into an instant estimate — or book a free design consultation with product samples at your home.',
     buttonLabel: 'Build my instant quote →',
-    buttonHref: '/#quote',
+    buttonHref: '/instant-quote',
     background: 'green',
   }),
 ])
@@ -272,7 +272,7 @@ const qualityPricing = layout([
     primaryLabel: 'See how pricing works',
     primaryHref: '#estimate',
     secondaryLabel: 'Get my instant estimate',
-    secondaryHref: '/#quote',
+    secondaryHref: '/instant-quote',
     image: img('9-after.jpg', 'Detailed Bay Area siding proposal and finished project'),
     background: 'white',
   }),
@@ -330,7 +330,7 @@ const qualityPricing = layout([
     heading: 'Request your free siding consultation',
     copy: 'A detailed, no-obligation proposal tailored to your home and goals — and our promise to beat any like-for-like quote by 10%.',
     buttonLabel: 'Build my instant quote →',
-    buttonHref: '/#quote',
+    buttonHref: '/instant-quote',
     background: 'green',
   }),
 ])
@@ -349,7 +349,7 @@ const gallery = layout([
     heading: 'Start your transformation',
     copy: 'See what premium new siding could do for your home — get an instant estimate in 60 seconds.',
     buttonLabel: 'Start my transformation →',
-    buttonHref: '/#quote',
+    buttonHref: '/instant-quote',
     background: 'green',
   }),
 ])
@@ -405,7 +405,7 @@ const benefits = layout([
     heading: 'Protect and transform your home',
     copy: 'Get a free consultation and a detailed quote — and see how the right siding pays you back in protection, efficiency, and resale value.',
     buttonLabel: 'Build my instant quote →',
-    buttonHref: '/#quote',
+    buttonHref: '/instant-quote',
     background: 'green',
   }),
 ])
@@ -463,7 +463,7 @@ const contactUs = layout([
     heading: 'Prefer to see a number first?',
     copy: 'Build an instant estimate in 60 seconds — then book your free consultation. We’ll beat any like-for-like quote by 10%.',
     buttonLabel: 'Build my instant quote →',
-    buttonHref: '/#quote',
+    buttonHref: '/instant-quote',
     background: 'green',
   }),
 ])

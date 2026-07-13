@@ -61,7 +61,7 @@ export default async function ServicesPage() {
               As the region&apos;s trusted siding specialists, we deliver expert workmanship using high-quality materials to enhance your home&apos;s beauty, durability, and value — exteriors built to last.
             </p>
             <div style={{ marginTop: 30, display: 'flex', flexWrap: 'wrap', gap: 14 }}>
-              <Link href="/#quote" className="btn btn-primary" style={{ fontSize: '15.5px', padding: '15px 28px' }}>Get my free estimate</Link>
+              <Link href="/instant-quote" className="btn btn-primary" style={{ fontSize: '15.5px', padding: '15px 28px' }}>Get my free estimate</Link>
               <Link href="#materials" className="btn btn-ghost" style={{ fontSize: '15.5px', padding: '15px 28px' }}>Explore materials</Link>
             </div>
           </div>
@@ -169,7 +169,7 @@ export default async function ServicesPage() {
             A detailed, no-obligation quote — we&apos;ll review your needs, material options, and design preferences to find the best solution for durability, curb appeal, and long-term value.
           </p>
           <div style={{ marginTop: 28, display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 14 }}>
-            <Link href="/#quote" className="btn btn-light" style={{ fontSize: 16, padding: '16px 30px', borderRadius: 13 }}>Build my instant quote &rarr;</Link>
+            <Link href="/instant-quote" className="btn btn-light" style={{ fontSize: 16, padding: '16px 30px', borderRadius: 13 }}>Build my instant quote &rarr;</Link>
             <Link href="/contact-us" className="btn" style={{ fontSize: 16, padding: '16px 30px', borderRadius: 13, background: 'rgba(255,255,255,.1)', color: '#fff', border: '1.5px solid rgba(255,255,255,.3)' }}>Contact us</Link>
           </div>
         </div>

@@ -32,7 +32,7 @@ export function EstimateSlider({ pricing = DEFAULT_PRICING }: { pricing?: Pricin
         <div style={{ fontSize: 30, fontWeight: 800, color: '#fff', letterSpacing: '-1px', marginTop: 6 }}>{fmtUSD(est.low)} – {fmtUSD(est.high)}</div>
         <div style={{ fontSize: 12, color: '#8fae96', marginTop: 8, lineHeight: 1.5 }}>Ballpark for a typical two-story ColorPlus® project. Your on-site visit confirms the exact figure.</div>
       </div>
-      <Link href="/#quote" className="btn btn-primary" style={{ marginTop: 20, display: 'block', textAlign: 'center', fontSize: 15, padding: 14, borderRadius: 12 }}>
+      <Link href="/instant-quote" className="btn btn-primary" style={{ marginTop: 20, display: 'block', textAlign: 'center', fontSize: 15, padding: 14, borderRadius: 12 }}>
         Build my detailed quote &rarr;
       </Link>
     </div>

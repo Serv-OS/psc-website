@@ -4,7 +4,7 @@
  *  Customer-facing code NEVER exposes cost/markup/profit — only the range.
  * ========================================================================== */
 
-// ── Customer instant-quote engine (Home /#quote) ────────────────────────────
+// ── Customer instant-quote engine (Home /instant-quote) ────────────────────────────
 
 export type ProfileKey = 'lap' | 'panel' | 'shingle' | 'artisan'
 

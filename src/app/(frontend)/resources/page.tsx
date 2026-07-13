@@ -62,7 +62,7 @@ export default async function ResourcesPage() {
           {posts.length === 0 ? (
             <div style={{ textAlign: 'center', maxWidth: 560, margin: '0 auto' }}>
               <SectionHeader eyebrow="Coming soon" title="Fresh siding guides on the way" copy="We're putting our best advice together. In the meantime, build an instant estimate or get in touch." marginBottom={24} />
-              <Link href="/#quote" className="btn btn-primary" style={{ fontSize: 16, padding: '15px 28px' }}>Build my instant quote &rarr;</Link>
+              <Link href="/instant-quote" className="btn btn-primary" style={{ fontSize: 16, padding: '15px 28px' }}>Build my instant quote &rarr;</Link>
             </div>
           ) : (
             <div className="cols-3">

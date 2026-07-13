@@ -157,7 +157,7 @@ export function ContactForm() {
         {submitting ? 'Sending…' : 'Send my request'}
       </button>
       <p style={{ marginTop: 14, fontSize: '12.5px', color: '#8a958c', textAlign: 'center', lineHeight: 1.5 }}>
-        Prefer a number first? <Link href="/#quote" style={{ color: '#206a38', fontWeight: 600 }}>Build an instant estimate</Link> in 60 seconds.
+        Prefer a number first? <Link href="/instant-quote" style={{ color: '#206a38', fontWeight: 600 }}>Build an instant estimate</Link> in 60 seconds.
       </p>
     </div>
   )

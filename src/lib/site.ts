@@ -140,7 +140,7 @@ export const DEFAULT_FOOTER_COLUMNS: FooterColumn[] = [
     heading: 'Get in touch',
     links: [
       { label: 'Contact Us', href: '/contact-us' },
-      { label: 'Free Quote', href: '/#quote' },
+      { label: 'Free Quote', href: '/instant-quote' },
       { label: 'Resources', href: '/resources' },
       { label: 'Privacy Policy', href: '/privacy-policy' },
     ],

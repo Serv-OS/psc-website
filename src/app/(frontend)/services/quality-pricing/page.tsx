@@ -82,7 +82,7 @@ export default async function QualityPricingPage() {
             </p>
             <div style={{ marginTop: 30, display: 'flex', flexWrap: 'wrap', gap: 14 }}>
               <Link href="#estimate" className="btn btn-primary" style={{ fontSize: '15.5px', padding: '15px 28px' }}>See how pricing works</Link>
-              <Link href="/#quote" className="btn btn-ghost" style={{ fontSize: '15.5px', padding: '15px 28px' }}>Get my instant estimate</Link>
+              <Link href="/instant-quote" className="btn btn-ghost" style={{ fontSize: '15.5px', padding: '15px 28px' }}>Get my instant estimate</Link>
             </div>
           </div>
           <div style={{ animation: 'psc-fade .6s .1s ease both', background: 'linear-gradient(135deg,#206a38,#0e341d)', borderRadius: 22, padding: 34, color: '#fff', boxShadow: '0 24px 56px rgba(14,52,29,.22)' }}>
@@ -174,7 +174,7 @@ export default async function QualityPricingPage() {
             A detailed, no-obligation proposal tailored to your home and goals — and our promise to beat any like-for-like quote by 10%.
           </p>
           <div style={{ marginTop: 28, display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 14 }}>
-            <Link href="/#quote" className="btn btn-light" style={{ fontSize: 16, padding: '16px 30px', borderRadius: 13 }}>Build my instant quote &rarr;</Link>
+            <Link href="/instant-quote" className="btn btn-light" style={{ fontSize: 16, padding: '16px 30px', borderRadius: 13 }}>Build my instant quote &rarr;</Link>
             <Link href="/contact-us" className="btn" style={{ fontSize: 16, padding: '16px 30px', borderRadius: 13, background: 'rgba(255,255,255,.1)', color: '#fff', border: '1.5px solid rgba(255,255,255,.3)' }}>Contact us</Link>
           </div>
         </div>

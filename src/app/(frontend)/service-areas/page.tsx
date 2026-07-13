@@ -157,7 +157,7 @@ export default async function ServiceAreasPage() {
             instant estimate in 60 seconds.
           </p>
           <div style={{ marginTop: 28, display: 'flex', flexWrap: 'wrap', gap: 14, justifyContent: 'center' }}>
-            <Link href="/#quote" className="btn btn-light" style={{ fontSize: '15.5px', padding: '15px 28px' }}>
+            <Link href="/instant-quote" className="btn btn-light" style={{ fontSize: '15.5px', padding: '15px 28px' }}>
               Get my instant estimate
             </Link>
             <a
@@ -232,7 +232,7 @@ export default async function ServiceAreasPage() {
           <div style={{ marginTop: 26, display: 'flex', flexWrap: 'wrap', gap: 14, justifyContent: 'center' }}>
             <Link href="/contact-us" className="btn btn-light" style={{ fontSize: '15.5px', padding: '15px 28px' }}>Contact us</Link>
             <Link
-              href="/#quote"
+              href="/instant-quote"
               className="btn"
               style={{ fontSize: '15.5px', padding: '15px 28px', background: 'transparent', color: '#fff', border: '1.5px solid rgba(255,255,255,.35)' }}
             >

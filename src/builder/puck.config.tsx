@@ -6,7 +6,6 @@ import { BeforeAfter } from '@/components/ui/BeforeAfter'
 import { MediaImage } from '@/components/ui/MediaImage'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { FAQ } from '@/components/ui/FAQ'
-import { QuoteStudio } from '@/components/home/QuoteStudio'
 import { MaterialTabs, DEFAULT_TABS } from '@/components/about/MaterialTabs'
 import { AreasWeServe } from '@/components/areas/AreasWeServe'
 import { ServiceFinder } from '@/components/services/ServiceFinder'
@@ -102,9 +101,9 @@ export const config: Config = {
         heading: 'Siding that protects and transforms your Bay Area home.',
         subheading: 'Premium James Hardie® materials, expert craftsmanship, and a quote you can build in 60 seconds.',
         primaryLabel: 'Get my instant estimate',
-        primaryHref: '/#quote',
+        primaryHref: '/instant-quote',
         secondaryLabel: 'Design my exterior',
-        secondaryHref: '/#quote',
+        secondaryHref: '/instant-quote',
         image: null,
         background: 'white',
       },
@@ -302,7 +301,7 @@ export const config: Config = {
         heading: 'Old exteriors, reimagined.',
         text: 'Drag the handle to see the transformation. Yours could be next.',
         buttonLabel: 'Get my free estimate',
-        buttonHref: '/#quote',
+        buttonHref: '/instant-quote',
         beforeImage: null,
         afterImage: null,
         background: 'forest',
@@ -397,31 +396,58 @@ export const config: Config = {
       ),
     },
 
-    // ─────────── QUOTE ENGINE ───────────
+    // ─────────── INSTANT-QUOTE CTA ───────────
     QuoteEngine: {
-      label: 'Instant quote engine',
+      label: 'Instant quote CTA',
       fields: {
         eyebrow: { type: 'text', label: 'Eyebrow' },
         title: { type: 'textarea', label: 'Title' },
         copy: { type: 'textarea', label: 'Copy' },
+        buttonLabel: { type: 'text', label: 'Button label' },
+        buttonHref: { type: 'text', label: 'Button link' },
       },
       defaultProps: {
         eyebrow: 'Design it · Price it · Book it',
-        title: 'Find your perfect James Hardie® siding',
-        copy: 'Pick a profile, texture and ColorPlus® finish — then get an instant estimate.',
+        title: 'Get your instant siding estimate',
+        copy: 'Measure your home on the map, choose your siding and colour, and get a ballpark price in about 60 seconds — no waiting, no pressure.',
+        buttonLabel: 'Get my instant quote →',
+        buttonHref: '/instant-quote',
       },
-      render: ({ eyebrow, title, copy }) => (
-        <section style={{ background: '#f4f6f3' }}>
-          <div className="container" style={{ padding: '84px 24px' }}>
-            <div style={{ maxWidth: 720, margin: '0 auto 50px', textAlign: 'center' }}>
-              {eyebrow ? <div style={eyebrowStyle(false)}>{eyebrow}</div> : null}
-              <h2 style={{ fontSize: 'clamp(28px,3.6vw,44px)', fontWeight: 800, letterSpacing: '-1.1px', marginTop: 12, color: '#16261c' }}>{title}</h2>
-              {copy ? <p style={{ marginTop: 14, fontSize: '16.5px', color: '#56635a', lineHeight: 1.6 }}>{copy}</p> : null}
+      render: ({ eyebrow, title, copy, buttonLabel, buttonHref }) => {
+        const steps = [
+          { n: '1', t: 'Measure', d: 'Find your home on the map' },
+          { n: '2', t: 'Style it', d: 'Pick siding, texture & colour' },
+          { n: '3', t: 'Get your price', d: 'Instant ballpark estimate' },
+        ]
+        return (
+          <section style={{ background: '#f4f6f3' }}>
+            <div className="container" style={{ padding: '72px 24px' }}>
+              <div style={{ position: 'relative', overflow: 'hidden', background: 'linear-gradient(135deg,#206a38,#0e341d)', borderRadius: 26, padding: 'clamp(34px,5vw,62px)', textAlign: 'center', color: '#fff', boxShadow: '0 26px 60px rgba(14,52,29,.25)' }}>
+                <div style={{ position: 'absolute', inset: 0, background: 'repeating-linear-gradient(135deg,rgba(255,255,255,.04) 0 1px,transparent 1px 26px)', pointerEvents: 'none' }} />
+                <div style={{ position: 'relative', maxWidth: 780, margin: '0 auto' }}>
+                  {eyebrow ? <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: '1.5px', color: '#7fd28d', textTransform: 'uppercase' }}>{eyebrow}</div> : null}
+                  <h2 style={{ fontSize: 'clamp(28px,3.8vw,46px)', fontWeight: 800, letterSpacing: '-1.1px', marginTop: 12, lineHeight: 1.08 }}>{title}</h2>
+                  {copy ? <p style={{ marginTop: 16, fontSize: 17, color: '#cfe6d4', lineHeight: 1.6, maxWidth: 620, marginLeft: 'auto', marginRight: 'auto' }}>{copy}</p> : null}
+                  <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 14, marginTop: 34 }}>
+                    {steps.map((s) => (
+                      <div key={s.n} style={{ display: 'flex', alignItems: 'center', gap: 12, background: 'rgba(255,255,255,.08)', border: '1px solid rgba(255,255,255,.14)', borderRadius: 14, padding: '12px 18px', minWidth: 210, textAlign: 'left' }}>
+                        <span style={{ flex: '0 0 auto', width: 30, height: 30, borderRadius: '50%', background: '#7fd28d', color: '#0e341d', fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 15 }}>{s.n}</span>
+                        <span>
+                          <span style={{ display: 'block', fontWeight: 700, fontSize: 15 }}>{s.t}</span>
+                          <span style={{ fontSize: 12.5, color: '#a8cdb0' }}>{s.d}</span>
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                  <Link href={buttonHref || '/instant-quote'} className="btn btn-light" style={{ marginTop: 36, display: 'inline-block', fontSize: 17, padding: '17px 36px', borderRadius: 14, fontWeight: 700 }}>
+                    {buttonLabel || 'Get my instant quote →'}
+                  </Link>
+                </div>
+              </div>
             </div>
-            <QuoteStudio />
-          </div>
-        </section>
-      ),
+          </section>
+        )
+      },
     },
 
     // ─────────── CTA ───────────
@@ -438,7 +464,7 @@ export const config: Config = {
         heading: 'Ready for your free estimate?',
         copy: "Build your quote in 60 seconds — we'll beat any like-for-like quote by 10%.",
         buttonLabel: 'Start my quote →',
-        buttonHref: '/#quote',
+        buttonHref: '/instant-quote',
         background: 'green',
       },
       render: ({ heading, copy, buttonLabel, buttonHref, background }) => (
