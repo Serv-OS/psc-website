@@ -275,12 +275,12 @@ const designInspirations = layout([
     columns: '3',
     background: 'soft',
     items: [
-      { title: 'HardiePlank® · Deep Ocean', body: '', image: img('jh-hp-deepocean-porch.jpg', 'HardiePlank in Deep Ocean on a home porch') },
-      { title: 'Full exterior transformation', body: '', image: img('jh-home-after.jpg', 'Finished James Hardie home exterior') },
-      { title: 'Modern farmhouse', body: '', image: img('3-after.jpg', 'James Hardie modern farmhouse exterior') },
-      { title: 'Classic lap siding', body: '', image: img('5-after.jpg', 'Classic James Hardie lap siding home') },
-      { title: 'Board-and-batten accents', body: '', image: img('9-after.jpg', 'James Hardie board-and-batten home') },
-      { title: 'Expertly installed', body: '', image: img('jh-install.jpg', 'Professional James Hardie installation') },
+      { title: 'Shingle-style with a stone base', body: '', image: img('jh-home-persimmon.jpg', 'James Hardie shingle-style craftsman home with a stone base') },
+      { title: 'Coastal-grey Colonial', body: '', image: img('jh-home-fernwood.jpg', 'James Hardie coastal-grey Colonial exterior with a shingle gable') },
+      { title: 'Charcoal HardiePlank®, red door', body: '', image: img('jh-home-roosevelt.jpg', 'James Hardie charcoal HardiePlank lap home with white trim and a red door') },
+      { title: 'Full-home siding transformation', body: '', image: img('jh-home-after.jpg', 'Finished James Hardie home exterior') },
+      { title: 'HardiePlank® lap in Deep Ocean', body: '', image: img('jh-hp-deepocean-porch.jpg', 'HardiePlank in Deep Ocean on a home porch') },
+      { title: 'Installed by our certified crew', body: '', image: img('jh-install.jpg', 'Professional James Hardie installation') },
     ],
   }),
   block('Hero', 'innovation-design', {

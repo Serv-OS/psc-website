@@ -1,7 +1,7 @@
 {
   "name": "psc-website",
-  "version": "0.5.26",
-  "description": "Peninsula Siding Company — marketing site, CMS, instant-quote engine & staff portal.",
+  "version": "0.5.27",
+  "description": "Peninsula Siding Company \u2014 marketing site, CMS, instant-quote engine & staff portal.",
   "license": "UNLICENSED",
   "type": "module",
   "engines": {
