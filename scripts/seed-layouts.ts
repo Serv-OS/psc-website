@@ -10,6 +10,10 @@ import { HOME_LAYOUT } from '../src/builder/homeLayout'
 
 const ALL_LAYOUTS: Record<string, unknown> = { home: HOME_LAYOUT, ...PAGE_LAYOUTS }
 
+// Optional: SLUG=design-inspirations pushes only that one layout.
+const ONLY = process.env.SLUG
+const LAYOUTS = ONLY ? { [ONLY]: ALL_LAYOUTS[ONLY] } : ALL_LAYOUTS
+
 const BASE = process.env.BASE || 'http://127.0.0.1:3100'
 const EMAIL = process.env.EMAIL || 'admin@peninsulasidingcompany.com'
 const PASS = process.env.PASS || 'ChangeMe!2026'
@@ -26,9 +30,9 @@ async function main() {
     console.error('Login failed:', loginRes.status, JSON.stringify(loginJson).slice(0, 200))
     process.exit(1)
   }
-  console.log('Logged in OK. Seeding', Object.keys(ALL_LAYOUTS).length, 'layouts to', BASE)
+  console.log('Logged in OK. Seeding', Object.keys(LAYOUTS).length, 'layouts to', BASE)
 
-  for (const [slug, data] of Object.entries(ALL_LAYOUTS)) {
+  for (const [slug, data] of Object.entries(LAYOUTS)) {
     const res = await fetch(`${BASE}/api/builder/save`, {
       method: 'POST',
       headers: { 'content-type': 'application/json', Authorization: `JWT ${token}` },

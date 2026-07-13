@@ -11,6 +11,15 @@ export const dynamic = 'force-dynamic'
 const VALID = new Set(PAGE_SLUGS.map((p) => p.value as string))
 const titleFor = (slug: string) => PAGE_SLUGS.find((p) => p.value === slug)?.label || slug
 
+// Most slugs render at /<slug>, but a few live under a nested path. Revalidate
+// the real URL so builder saves go live immediately (not the wrong path).
+const PATH_FOR: Record<string, string> = {
+  home: '/',
+  'design-inspirations': '/services/design-inspirations',
+  'quality-pricing': '/services/quality-pricing',
+}
+const pathForSlug = (slug: string) => PATH_FOR[slug] ?? `/${slug}`
+
 export async function POST(req: Request) {
   const payload = await getPayloadClient()
   const { user } = await payload.auth({ headers: await nextHeaders() })
@@ -29,7 +38,7 @@ export async function POST(req: Request) {
   }
 
   // Make the change live immediately (these pages use ISR).
-  revalidatePath(slug === 'home' ? '/' : `/${slug}`)
+  revalidatePath(pathForSlug(slug))
 
   return NextResponse.json({ ok: true })
 }
