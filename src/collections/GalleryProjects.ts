@@ -1,6 +1,20 @@
 import type { CollectionConfig } from 'payload'
+import { revalidatePath } from 'next/cache'
 
 import { anyone, authenticated } from '../access'
+
+// Gallery projects surface on /gallery plus the featured sliders on Home and
+// About Us — refresh all three on any create/update/delete so admin edits go
+// live immediately instead of waiting for the ISR window.
+function revalidateGallery() {
+  try {
+    revalidatePath('/gallery')
+    revalidatePath('/')
+    revalidatePath('/about-us')
+  } catch {
+    /* not in a request context (e.g. CLI) — ignore */
+  }
+}
 
 export const GALLERY_CATEGORIES = [
   { label: 'Fiber Cement', value: 'fiber' },
@@ -18,6 +32,10 @@ export const GalleryProjects: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'location', 'category', 'featured'],
     group: 'Content',
+  },
+  hooks: {
+    afterChange: [revalidateGallery],
+    afterDelete: [revalidateGallery],
   },
   fields: [
     {
