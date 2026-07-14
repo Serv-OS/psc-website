@@ -7,6 +7,10 @@ import { SectionHeader } from '@/components/ui/SectionHeader'
 import { ServiceFinder } from '@/components/services/ServiceFinder'
 import { PuckRender } from '@/builder/PuckRender'
 import { builtLayout, getPage, getSiteSettings, imageSlot } from '@/lib/data'
+
+// Render at request time so builder edits reflect the DB reliably (a throttled
+// build-time query would otherwise bake stale/default content).
+export const dynamic = 'force-dynamic'
 import { breadcrumbLd, serviceCatalogLd } from '@/lib/jsonld'
 import { resolveBiz, SITE } from '@/lib/site'
 

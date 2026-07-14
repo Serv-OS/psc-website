@@ -9,7 +9,10 @@ import { builtLayout, getFeaturedGallery, getGalleryProjects, getPage } from '@/
 import { breadcrumbLd } from '@/lib/jsonld'
 import type { GalleryProject } from '@/payload-types'
 
-export const revalidate = 300
+// Render at request time. A build-time prerender can silently bake an empty
+// gallery if the DB query is throttled during the mass build; rendering
+// dynamically reads the DB when it's reachable (and reflects admin edits live).
+export const dynamic = 'force-dynamic'
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getPage('gallery')

@@ -7,6 +7,10 @@ import { SectionHeader } from '@/components/ui/SectionHeader'
 import { MaterialTabs } from '@/components/about/MaterialTabs'
 import { PuckRender } from '@/builder/PuckRender'
 import { builtLayout, getFeaturedGallery, getPage, getSiteSettings } from '@/lib/data'
+
+// Render at request time so builder edits + gallery reflect the DB reliably
+// (a throttled build-time query would otherwise bake stale/default content).
+export const dynamic = 'force-dynamic'
 import { breadcrumbLd, generalContractorLd } from '@/lib/jsonld'
 import { resolveBiz } from '@/lib/site'
 
