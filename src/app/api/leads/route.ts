@@ -55,6 +55,8 @@ async function forwardToCrm(args: {
       notes: c.notes || body?.notes,
     }
   }
+  data.sms_consent = body?.sms_consent === true
+
   for (const k of Object.keys(data)) {
     if (data[k] === undefined || data[k] === null || data[k] === '') delete data[k]
   }
@@ -87,6 +89,7 @@ async function forwardInstantQuoteToCrm(args: { name: string; email: string; pho
       headers,
       body: JSON.stringify({
         secret: process.env.CRM_INGEST_SECRET || undefined,
+        sms_consent: body?.sms_consent === true,
         customer: { name, email, phone, address: c.address, city: c.city, zip: c.zip, notes: c.notes || body?.notes },
         selection: body?.selection || {},
         project: body?.project || {},

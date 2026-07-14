@@ -1,6 +1,7 @@
 'use client'
 
 import { useMemo, useState, type CSSProperties } from 'react'
+import { SmsConsent } from '../SmsConsent'
 
 import {
   COLORS,
@@ -63,6 +64,7 @@ export function QuoteStudio({ pricing = DEFAULT_PRICING }: { pricing?: PricingCo
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
+  const [smsOptIn, setSmsOptIn] = useState(false)
   const [address, setAddress] = useState('')
   const [notes, setNotes] = useState('')
   const [hp, setHp] = useState('') // honeypot
@@ -119,6 +121,7 @@ export function QuoteStudio({ pricing = DEFAULT_PRICING }: { pricing?: PricingCo
           selection: { profile: prof.label, texture, color: activeColor.name },
           project: { sqft: Math.round(sqft), stories: parseInt(stories, 10) },
           estimate: { low: est.low, high: est.high },
+          sms_consent: smsOptIn,
           source: 'home-quote',
         }),
       })
@@ -321,6 +324,7 @@ export function QuoteStudio({ pricing = DEFAULT_PRICING }: { pricing?: PricingCo
                   {error && (
                     <div style={{ marginTop: 12, background: '#fdecea', border: '1px solid #f3c9c2', borderRadius: 11, padding: '10px 14px', fontSize: '13.5px', color: '#c0392b', fontWeight: 500 }}>{error}</div>
                   )}
+                  <SmsConsent checked={smsOptIn} onChange={setSmsOptIn} />
                   <div style={{ display: 'flex', gap: 10, marginTop: 18 }}>
                     <button onClick={() => setQStep(2)} className="btn btn-ghost" style={{ flex: '0 0 auto', padding: '15px 20px', fontSize: 15, borderRadius: 13 }}>Back</button>
                     <button onClick={submit} disabled={submitting} className="btn btn-primary" style={{ flex: 1, padding: 15, fontSize: 15, border: 'none', opacity: submitting ? 0.7 : 1 }}>

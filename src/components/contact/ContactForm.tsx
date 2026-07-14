@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useState, type CSSProperties } from 'react'
+import { SmsConsent } from '../SmsConsent'
 
 const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/
 
@@ -45,6 +46,7 @@ function chip(active: boolean): CSSProperties {
 
 export function ContactForm() {
   const [f, setF] = useState({ name: '', email: '', phone: '', address: '', city: '', zip: '', interest: '', message: '', hp: '' })
+  const [smsOptIn, setSmsOptIn] = useState(false)
   const [error, setError] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [sent, setSent] = useState(false)
@@ -68,6 +70,7 @@ export function ContactForm() {
           customer: { name: f.name, email: f.email, phone: f.phone, address: f.address, city: f.city, zip: f.zip },
           interest: f.interest,
           message: f.message,
+          sms_consent: smsOptIn,
           source: 'contact-form',
         }),
       })
@@ -153,7 +156,9 @@ export function ContactForm() {
         </div>
       )}
 
-      <button onClick={submit} disabled={submitting} className="btn btn-primary" style={{ marginTop: 22, width: '100%', padding: 16, fontSize: 16, border: 'none', borderRadius: 13, opacity: submitting ? 0.7 : 1 }}>
+      <SmsConsent checked={smsOptIn} onChange={setSmsOptIn} />
+
+      <button onClick={submit} disabled={submitting} className="btn btn-primary" style={{ marginTop: 18, width: '100%', padding: 16, fontSize: 16, border: 'none', borderRadius: 13, opacity: submitting ? 0.7 : 1 }}>
         {submitting ? 'Sending…' : 'Send my request'}
       </button>
       <p style={{ marginTop: 14, fontSize: '12.5px', color: '#8a958c', textAlign: 'center', lineHeight: 1.5 }}>
