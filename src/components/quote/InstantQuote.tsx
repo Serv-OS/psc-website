@@ -11,6 +11,7 @@
 // PHOTO_PRODUCTS. Textures without a library fall back to the CSS render automatically.
 import { useMemo, useState } from 'react'
 import { RoofMeasure, type Measurement } from './RoofMeasure'
+import { SmsConsent } from '../SmsConsent'
 import {
   PROFILES, COVERAGE, computeCustomerEstimate, battenBoardCount, BATTEN_SPACING_IN,
   DEMO_OPTIONS, TEXTURES, COLORS, INCLUDED, PRIMED_WARNING, COLORPLUS_NOTE,
@@ -64,6 +65,7 @@ export function InstantQuote() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
+  const [smsOptIn, setSmsOptIn] = useState(false)
   const [hp, setHp] = useState('') // honeypot
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
@@ -132,6 +134,7 @@ export function InstantQuote() {
             coverage: COVERAGE[coverage].label,
           },
           estimate: { low: est.low, high: est.high },
+          sms_consent: smsOptIn,
           source: 'instant-quote',
         }),
       })
@@ -366,6 +369,7 @@ export function InstantQuote() {
           <input style={input} placeholder="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
           <input style={{ position: 'absolute', left: '-9999px' }} tabIndex={-1} autoComplete="off" value={hp} onChange={(e) => setHp(e.target.value)} aria-hidden />
           {error && <div style={{ fontSize: 13, color: '#b91c1c' }}>{error}</div>}
+          <SmsConsent checked={smsOptIn} onChange={setSmsOptIn} />
           <button type="button" onClick={submit} disabled={submitting} className="btn btn-primary" style={{ padding: '13px 20px', fontSize: 15, opacity: submitting ? 0.6 : 1 }}>
             {submitting ? 'Sending…' : 'Send me my quote'}
           </button>
