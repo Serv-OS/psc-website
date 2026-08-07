@@ -1,6 +1,7 @@
 import './globals.css'
 
 import type { Metadata } from 'next'
+import Script from 'next/script'
 import { Poppins } from 'next/font/google'
 
 import { Header } from '@/components/Header'
@@ -71,6 +72,25 @@ export default async function FrontendLayout({ children }: { children: React.Rea
           {children}
           <Footer biz={biz} logoUrl={logoUrl} columns={footerColumns} />
         </div>
+
+        {/* Sales chat. Qualifies the enquiry, prices it from the live catalogue
+            and writes the lead straight into the CRM. Served from the CRM so the
+            widget and the assistant behind it are never out of step.
+
+            Deliberately in the (frontend) layout only: the Payload admin and the
+            page builder must not carry it.
+
+            The heading, subtitle and colour live on the embed in the CRM under
+            Settings → Sales chat; they are passed here because the widget reads
+            them from this tag. Change them there and re-copy the snippet. */}
+        <Script
+          src="https://psc-crm.vercel.app/chat.js"
+          data-site-key="chat_4b7a8a496496f2171ccd"
+          data-title="Peninsula Siding Company"
+          data-subtitle="How can we help?"
+          data-accent="#008f1e"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   )
