@@ -83,7 +83,7 @@ export function InstantQuote() {
     return Math.round(m.perimeterFt * WALL_HEIGHT_PER_STORY * stories * COVERAGE[coverage].factor)
   }, [m, stories, coverage])
 
-  // Board & batten: number of 12-ft batten boards (16" OC), folded into the estimate.
+  // Board & batten: number of 12-ft batten boards (12" OC — one every foot), folded into the estimate.
   const battenBoards = useMemo(
     () => (m && profile === 'panel' ? battenBoardCount(m.perimeterFt, stories, COVERAGE[coverage].factor) : 0),
     [m, profile, stories, coverage],

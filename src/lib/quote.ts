@@ -87,10 +87,12 @@ export const COLORPLUS_NOTE =
   'ColorPlus® Technology is a factory baked-on finish — it arrives in your chosen colour, never needs field painting, and carries a 15-year limited finish warranty against peeling, cracking and chipping.'
 
 // ── Board & batten: batten count + cost ─────────────────────────────────────
-// Battens run vertically; standard look is 16" on-centre (HardieTrim batten is
-// 0.75" × 2.5" × 12 ft). runs = floor(width×12 / spacing) + 1; boards = runs ×
-// ceil(height / 12ft) + 10% waste. Battens only apply to the 'panel' profile.
-export const BATTEN_SPACING_IN = 16
+// Battens run vertically at 12" on-centre — the company rule: one batten every
+// 12 inches (HardieTrim batten is 0.75" × 2.5" × 12 ft). runs = floor(width×12
+// / spacing) + 1; boards = runs × ceil(height / 12ft) + 10% waste. Battens only
+// apply to the 'panel' profile. Keep this in step with the CRM quote engine
+// (psc-crm quoteEngine), which derives battens at the same spacing.
+export const BATTEN_SPACING_IN = 12
 export const BATTEN_UNIT_COST: Record<FinishKey, number> = { colorplus: 21, primed: 14 }
 export function battenBoardCount(perimeterFt: number, stories: number, coverageFactor: number, spacingIn = BATTEN_SPACING_IN): number {
   if (!perimeterFt) return 0
