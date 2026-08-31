@@ -73,9 +73,25 @@ export default buildConfig({
   globals: [SiteSettings],
   editor: lexicalEditor(),
   db: usePostgres
-    ? // push:true auto-creates/syncs the schema on boot so the first Vercel deploy
-      // works without a manual migration step. Switch to committed migrations later.
-      postgresAdapter({ pool: { connectionString: databaseURI }, push: true })
+    ? // push runs a full schema introspection + sync EVERY time Payload boots.
+      // On Vercel that is every cold start, against a database that bills for
+      // compute — it drained the Neon allowance and took the site down on
+      // 31 Aug 2026 (Payload could not init, so every page fell back to
+      // placeholder content with no images).
+      //
+      // The production schema already exists, so it simply does not need
+      // pushing. Local dev keeps the convenience.
+      //
+      // ⚠ CHANGING THE SCHEMA NOW NEEDS A MIGRATION. After editing a
+      // collection, run against the production database:
+      //     npx payload migrate:create   # writes to src/migrations
+      //     npx payload migrate          # applies it
+      // Without that, a new field exists in the code but not in the database
+      // and reads of it fail at runtime.
+      postgresAdapter({
+        pool: { connectionString: databaseURI },
+        push: process.env.NODE_ENV !== 'production',
+      })
     : // push defaults on (auto-syncs schema); set SQLITE_PUSH=false locally to skip
       // the interactive data-loss prompt when iterating against an existing psc.db.
       sqliteAdapter({ client: { url: databaseURI }, push: process.env.SQLITE_PUSH !== 'false' }),

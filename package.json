@@ -16,7 +16,9 @@
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
     "seed": "cross-env NODE_OPTIONS=--no-deprecation payload run ./scripts/seed.ts",
-    "migrate:media": "cross-env NODE_OPTIONS=--no-deprecation payload run ./scripts/migrate-wp-media.ts"
+    "migrate:media": "cross-env NODE_OPTIONS=--no-deprecation payload run ./scripts/migrate-wp-media.ts",
+    "migrate:create": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:create",
+    "migrate": "cross-env NODE_OPTIONS=--no-deprecation payload migrate"
   },
   "dependencies": {
     "@measured/puck": "^0.20.2",
