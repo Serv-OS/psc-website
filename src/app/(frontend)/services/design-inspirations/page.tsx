@@ -42,7 +42,7 @@ const designGuide = [
 ]
 
 const faqs: FAQItem[] = [
-  { q: 'What are the most popular siding colors for Bay Area homes?', a: "Soft greys, sage greens, warm taupes and crisp whites are the most requested ColorPlus® finishes on the Peninsula. They complement coastal light, hide fog-borne grime well, and suit the region's mix of Craftsman, Ranch and modern architecture." },
+  { q: 'What are the most popular siding colors for Bay Area homes?', a: "Soft grays, sage greens, warm taupes and crisp whites are the most requested ColorPlus® finishes on the Peninsula. They complement coastal light, hide fog-borne grime well, and suit the region's mix of Craftsman, Ranch and modern architecture." },
   { q: 'Can James Hardie siding be painted a custom color?', a: 'Yes. James Hardie offers primed products engineered to hold paint, so you can match any custom color. For lower long-term maintenance, most homeowners choose factory-applied ColorPlus® finishes, which resist fading and rarely need repainting.' },
   { q: 'What is the difference between the ColorPlus Statement and Dream Collections?', a: 'The Statement Collection features 15 regionally curated colors chosen to suit local architecture, while the Dream Collection offers over 700 customizable colors for full creative control. Both are backed by a 15-year ColorPlus® finish warranty.' },
   { q: 'Which siding style suits a Craftsman or modern home?', a: 'Craftsman homes shine with horizontal lap siding plus shingle accents in earthy tones, while modern homes favor smooth panels or board-and-batten in bold, dark colors with crisp white trim. Our design explorer suggests a profile and palette for each architectural style.' },

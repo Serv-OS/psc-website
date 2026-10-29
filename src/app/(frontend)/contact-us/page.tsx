@@ -29,7 +29,7 @@ const cover = [
 ]
 
 const working = [
-  { t: 'Design consultation', d: 'An expert visits with product samples, walks you through options, and helps you visualize the perfect siding, trim and window styles for your home.' },
+  { t: 'Design consultation', d: 'An expert visits with product samples, walks you through options, and helps you visualize the perfect siding and trim styles for your home.' },
   { t: 'Detailed quote', d: 'A clear, transparent quote outlining every part of your project — materials, steps and costs — so there are no surprises.' },
   { t: 'Expert installation', d: 'Skilled craftsmen install with precision, backed by our 5-year workmanship guarantee and full manufacturer warranties.' },
 ]
@@ -56,7 +56,7 @@ export default async function ContactPage() {
         <div style={{ maxWidth: 900, margin: '0 auto', padding: '40px 24px 44px', textAlign: 'center' }}>
           <h1 style={{ fontSize: 'clamp(32px,4.4vw,54px)', fontWeight: 800, letterSpacing: '-1.5px', lineHeight: 1.05, color: '#16261c' }}>Let&apos;s discuss your project</h1>
           <p style={{ maxWidth: 620, margin: '18px auto 0', fontSize: 17, lineHeight: 1.6, color: '#46544a' }}>
-            Not sure where to start? Share your ideas and we&apos;ll help you explore the best siding, window, and exterior solutions for your Bay Area home. No pressure, ever.
+            Not sure where to start? Share your ideas and we&apos;ll help you explore the best siding and exterior solutions for your Bay Area home. No pressure, ever.
           </p>
         </div>
       </section>

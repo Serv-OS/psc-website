@@ -203,7 +203,7 @@ export function InstantQuote() {
           <div style={stepLabel}>3 · Stories &amp; coverage</div>
           <div style={{ fontSize: 13, color: '#46544a', marginBottom: 8 }}>How many stories?</div>
           <div style={{ display: 'flex', gap: 10, marginBottom: 18 }}>
-            {[1, 2].map((v) => <button key={v} type="button" style={pill(stories === v)} onClick={() => setStories(v)}>{v} stor{v === 1 ? 'ey' : 'eys'}</button>)}
+            {[1, 2].map((v) => <button key={v} type="button" style={pill(stories === v)} onClick={() => setStories(v)}>{v} {v === 1 ? 'story' : 'stories'}</button>)}
           </div>
           <div style={{ fontSize: 13, color: '#46544a', marginBottom: 8 }}>How much of the house?</div>
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
@@ -282,7 +282,7 @@ export function InstantQuote() {
                 background: finish === 'colorplus' ? '#e7f1e8' : '#fff', border: finish === 'colorplus' ? '2px solid #206a38' : '2px solid #e0e7e0',
               }}>
                 <div style={{ fontWeight: 700, color: '#16261c', fontSize: 14 }}>ColorPlus® finish</div>
-                <div style={{ fontSize: 12, color: '#6a766d', marginTop: 3 }}>Factory colour · 15-yr warranty</div>
+                <div style={{ fontSize: 12, color: '#6a766d', marginTop: 3 }}>Factory color · 15-yr warranty</div>
               </button>
               <button type="button" onClick={() => setFinish('primed')} style={{
                 textAlign: 'left', padding: '12px 14px', borderRadius: 14, cursor: 'pointer', fontFamily: 'inherit',
@@ -297,7 +297,7 @@ export function InstantQuote() {
           {/* colour grid (ColorPlus only) or primed warning */}
           {finish === 'colorplus' ? (
             <div style={{ marginTop: 18 }}>
-              <div style={{ fontSize: 13, color: '#46544a', marginBottom: 10 }}>Colour <span style={{ color: '#8a988c' }}>· Statement Collection®</span></div>
+              <div style={{ fontSize: 13, color: '#46544a', marginBottom: 10 }}>Color <span style={{ color: '#8a988c' }}>· Statement Collection®</span></div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(10, 1fr)', gap: 8 }}>
                 {COLORS.map((c) => {
                   const active = color.name === c.name && finish === 'colorplus'

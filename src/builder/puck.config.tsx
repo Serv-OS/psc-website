@@ -187,7 +187,7 @@ export const config: Config = {
     ServicesGrid: {
       label: 'Services grid',
       fields: {
-        columns: { type: 'select', label: 'Columns', options: [{ label: '3', value: '3' }, { label: '4', value: '4' }] },
+        columns: { type: 'select', label: 'Columns', options: [{ label: '2', value: '2' }, { label: '3', value: '3' }, { label: '4', value: '4' }] },
         background: bandField,
         items: {
           type: 'array',
@@ -202,22 +202,21 @@ export const config: Config = {
         },
       },
       defaultProps: {
-        columns: '4',
+        columns: '3',
         background: 'white',
         items: [
           { title: 'Fiber Cement Siding', body: 'Durable, low-maintenance James Hardie® board.', image: null },
           { title: 'Real Wood Shingles', body: 'Timeless coastal character and warmth.', image: null },
           { title: 'Wood-Look Fiber Cement', body: 'Authentic grain without the upkeep.', image: null },
-          { title: 'Windows & Doors', body: 'Energy-efficient replacements that seal tight.', image: null },
         ],
       },
       render: ({ columns, items, background }) => (
         <section style={{ ...bandStyle(background as Band) }}>
           <div className="container" style={{ padding: '40px 24px 84px' }}>
-            <div className={columns === '3' ? 'cols-3' : 'cols-4'}>
+            <div className={`cols-${columns === '2' || columns === '3' ? columns : '4'}`} style={columns === '2' ? { maxWidth: 900, margin: '0 auto' } : undefined}>
               {(items || []).map((s: { title?: string; body?: string; image?: ImageValue }, i: number) => (
                 <div key={i} className="lift" style={{ border: '1px solid #e7ece7', borderRadius: 18, overflow: 'hidden', background: '#fbfcfa' }}>
-                  <MediaImage media={s.image?.url ? ({ url: s.image.url, alt: s.image.alt } as never) : null} label={s.title} style={{ aspectRatio: '4/3' }} placeholderStyle={{ background: 'repeating-linear-gradient(0deg,#dfe7df 0 8px,#e8eee8 8px 16px)' }} sizes="(max-width:640px) 100vw, 25vw" />
+                  <MediaImage media={s.image?.url ? ({ url: s.image.url, alt: s.image.alt } as never) : null} label={s.title} style={{ aspectRatio: '4/3' }} placeholderStyle={{ background: 'repeating-linear-gradient(0deg,#dfe7df 0 8px,#e8eee8 8px 16px)' }} sizes={columns === '2' ? '(max-width:640px) 100vw, 450px' : '(max-width:640px) 100vw, 25vw'} />
                   <div style={{ padding: '18px 18px 22px' }}>
                     <h3 style={{ fontSize: '16.5px', fontWeight: 700, color: '#16261c' }}>{s.title}</h3>
                     <p style={{ fontSize: '13.5px', color: '#5b675e', marginTop: 6, lineHeight: 1.5 }}>{s.body}</p>
@@ -351,7 +350,7 @@ export const config: Config = {
         background: 'white',
         items: [
           { quote: 'The crew was meticulous and transformed our curb appeal. Clear pricing, no surprises.', author: 'San Mateo homeowner', projectType: 'Whole-house re-side' },
-          { quote: 'Professional from first call to final walkthrough. They beat another quote and delivered top quality.', author: 'Redwood City homeowner', projectType: 'Siding + windows' },
+          { quote: 'Professional from first call to final walkthrough. They beat another quote and delivered top quality.', author: 'Redwood City homeowner', projectType: 'Siding replacement' },
           { quote: 'Excellent communication. The 5-year warranty gave us real peace of mind.', author: 'Palo Alto homeowner', projectType: 'Board & batten' },
         ],
       },
@@ -409,14 +408,14 @@ export const config: Config = {
       defaultProps: {
         eyebrow: 'Design it · Price it · Book it',
         title: 'Get your instant siding estimate',
-        copy: 'Measure your home on the map, choose your siding and colour, and get a ballpark price in about 60 seconds — no waiting, no pressure.',
+        copy: 'Measure your home on the map, choose your siding and color, and get a ballpark price in about 60 seconds — no waiting, no pressure.',
         buttonLabel: 'Get my instant quote →',
         buttonHref: '/instant-quote',
       },
       render: ({ eyebrow, title, copy, buttonLabel, buttonHref }) => {
         const steps = [
           { n: '1', t: 'Measure', d: 'Find your home on the map' },
-          { n: '2', t: 'Style it', d: 'Pick siding, texture & colour' },
+          { n: '2', t: 'Style it', d: 'Pick siding, texture & color' },
           { n: '3', t: 'Get your price', d: 'Instant ballpark estimate' },
         ]
         return (

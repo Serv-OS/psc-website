@@ -17,6 +17,7 @@ import { Testimonials } from './collections/Testimonials'
 import { Leads } from './collections/Leads'
 import { Quotes } from './collections/Quotes'
 import { SiteSettings } from './globals/SiteSettings'
+import { applyCopyFix } from './lib/copyFix'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -71,6 +72,10 @@ export default buildConfig({
     Users,
   ],
   globals: [SiteSettings],
+  // One-off: remove windows + US spelling in the saved page layouts. See lib/copyFix.ts.
+  onInit: async (payload) => {
+    await applyCopyFix(payload)
+  },
   editor: lexicalEditor(),
   db: usePostgres
     ? // push runs a full schema introspection + sync EVERY time Payload boots.

@@ -34,7 +34,7 @@ const included = [
 
 const steps = [
   { n: 1, t: 'Book your visit', d: "Call or submit our form and we'll schedule a convenient time to come to your home." },
-  { n: 2, t: 'Precise measurement', d: 'We measure accurately, review your existing siding’s condition, and discuss styles, colors and any window or door changes.' },
+  { n: 2, t: 'Precise measurement', d: 'We measure accurately, review your existing siding’s condition, and discuss styles, colors and trim details.' },
   { n: 3, t: 'Detailed proposal', d: 'We email a clear, itemized proposal — every potential cost outlined, plus the safety precautions we’ll take.' },
   { n: 4, t: 'Understand before you sign', d: "We walk you through products, process and warranties so you're fully confident in your investment." },
 ]

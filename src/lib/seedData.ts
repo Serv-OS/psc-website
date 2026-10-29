@@ -50,7 +50,7 @@ const GALLERY = [
 
 const TESTIMONIALS = [
   { author: 'San Mateo homeowner', location: 'San Mateo', projectType: 'Whole-house re-side', rating: 5, quote: 'The crew was meticulous and the new Hardie siding completely transformed our curb appeal. Clear pricing, no surprises.', order: 1 },
-  { author: 'Redwood City homeowner', location: 'Redwood City', projectType: 'Siding + windows', rating: 5, quote: 'Professional from the first call to the final walkthrough. They beat another quote and still delivered top quality.', order: 2 },
+  { author: 'Redwood City homeowner', location: 'Redwood City', projectType: 'Siding replacement', rating: 5, quote: 'Professional from the first call to the final walkthrough. They beat another quote and still delivered top quality.', order: 2 },
   { author: 'Palo Alto homeowner', location: 'Palo Alto', projectType: 'Board & batten', rating: 5, quote: 'Communication was excellent throughout. The 5-year warranty gave us real peace of mind. Highly recommend.', order: 3 },
 ]
 

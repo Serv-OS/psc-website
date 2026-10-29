@@ -193,7 +193,7 @@ const designInspirations = layout([
     eyebrow: 'Elite Preferred James Hardie® Contractor',
     heading: 'The beauty of wood. The strength of James Hardie®.',
     subheading:
-      'Explore the James Hardie® fiber cement siding lines we design and install across the Bay Area — engineered to resist fire, moisture, pests and time, and finished in ColorPlus® colours built to last.',
+      'Explore the James Hardie® fiber cement siding lines we design and install across the Bay Area — engineered to resist fire, moisture, pests and time, and finished in ColorPlus® colors built to last.',
     primaryLabel: 'Get my instant quote',
     primaryHref: '/instant-quote',
     secondaryLabel: 'See real homes',
@@ -224,13 +224,13 @@ const designInspirations = layout([
     background: 'soft',
   }),
   block('ServicesGrid', 'lines-design', {
-    columns: '2',
+    columns: '4',
     background: 'soft',
     items: [
       { title: 'HardiePlank® Lap Siding', body: 'America’s #1 brand of siding. Classic horizontal lap boards in Cedarmill® wood-grain or Smooth texture — the timeless choice for Craftsman, farmhouse and traditional homes.', image: img('jh-hp-mountainsage.jpg', 'HardiePlank lap siding in Mountain Sage') },
       { title: 'HardiePanel® Vertical Siding', body: 'Bold vertical panels for striking board-and-batten and contemporary facades — pair with HardieTrim® battens for modern-farmhouse character.', image: img('jh-panel-modern.jpg', 'HardiePanel vertical siding on a modern home') },
       { title: 'Hardie® Artisan® Collection', body: 'The architectural line: thicker boards, deeper shadow lines and crisp V-groove profiles for statement, design-forward exteriors.', image: img('jh-artisan-vgroove.jpg', 'Hardie Artisan V-Groove siding') },
-      { title: 'HardieTrim® & HardieSoffit®', body: 'The finishing details — crisp trim, fascia and vented soffit that frame windows, define edges and seal the whole system against the weather.', image: img('jh-detail-trim.jpg', 'HardieTrim around a window') },
+      { title: 'HardieTrim® & HardieSoffit®', body: 'The finishing details — crisp trim, fascia and vented soffit that define edges and seal the whole system against the weather.', image: img('jh-detail-trim.jpg', 'HardieTrim detail') },
     ],
   }),
   block('Heading', 'tex-head-design', {
@@ -250,19 +250,19 @@ const designInspirations = layout([
   }),
   block('StyleExplorerBlock', 'explorer-design', {
     eyebrow: 'ColorPlus® Technology',
-    title: 'Find your perfect colour',
-    copy: 'Pick a style and preview James Hardie® ColorPlus® finishes — baked-on colour that resists fading and rarely needs repainting, backed by a 15-year finish warranty.',
+    title: 'Find your perfect color',
+    copy: 'Pick a style and preview James Hardie® ColorPlus® finishes — baked-on color that resists fading and rarely needs repainting, backed by a 15-year finish warranty.',
     background: 'soft',
   }),
   block('NumberedCards', 'colorplus-design', {
     eyebrow: 'ColorPlus® palettes',
-    title: 'Three ways to choose your colour',
+    title: 'Three ways to choose your color',
     columns: '3',
     background: 'white',
     items: [
-      { n: '15', title: 'Statement Collection™', body: 'Fifteen regionally curated colours, pre-selected to flatter local architecture — the easiest place to start.' },
-      { n: '700+', title: 'Dream Collection™', body: 'Over seven hundred customisable colours for full creative control — match a mood board or your existing palette exactly.' },
-      { n: '∞', title: 'Primed & Custom', body: 'Prefer a one-of-a-kind shade? Primed products are engineered to hold any paint colour you choose.' },
+      { n: '15', title: 'Statement Collection™', body: 'Fifteen regionally curated colors, pre-selected to flatter local architecture — the easiest place to start.' },
+      { n: '700+', title: 'Dream Collection™', body: 'Over seven hundred customizable colors for full creative control — match a mood board or your existing palette exactly.' },
+      { n: '∞', title: 'Primed & Custom', body: 'Prefer a one-of-a-kind shade? Primed products are engineered to hold any paint color you choose.' },
     ],
   }),
   block('Heading', 'homes-head-design', {
@@ -276,7 +276,7 @@ const designInspirations = layout([
     background: 'soft',
     items: [
       { title: 'Shingle-style with a stone base', body: '', image: img('jh-home-persimmon.jpg', 'James Hardie shingle-style craftsman home with a stone base') },
-      { title: 'Coastal-grey Colonial', body: '', image: img('jh-home-fernwood.jpg', 'James Hardie coastal-grey Colonial exterior with a shingle gable') },
+      { title: 'Coastal-gray Colonial', body: '', image: img('jh-home-fernwood.jpg', 'James Hardie coastal-gray Colonial exterior with a shingle gable') },
       { title: 'Charcoal HardiePlank®, red door', body: '', image: img('jh-home-roosevelt.jpg', 'James Hardie charcoal HardiePlank lap home with white trim and a red door') },
       { title: 'Full-home siding transformation', body: '', image: img('jh-home-after.jpg', 'Finished James Hardie home exterior') },
       { title: 'HardiePlank® lap in Deep Ocean', body: '', image: img('jh-hp-deepocean-porch.jpg', 'HardiePlank in Deep Ocean on a home porch') },
@@ -300,16 +300,16 @@ const designInspirations = layout([
     title: 'James Hardie siding, answered',
     background: 'white',
     items: [
-      { q: 'What are the most popular James Hardie colours for Bay Area homes?', a: "Soft greys, sage greens, warm taupes and crisp whites are the most requested ColorPlus® finishes on the Peninsula. They complement coastal light, hide fog-borne grime well, and suit the region's mix of Craftsman, Ranch and modern architecture." },
-      { q: 'Can James Hardie siding be painted a custom colour?', a: 'Yes. James Hardie offers primed products engineered to hold paint, so you can match any custom colour. For lower long-term maintenance, most homeowners choose factory-applied ColorPlus® finishes, which resist fading and rarely need repainting.' },
-      { q: 'What’s the difference between the Statement and Dream Collections?', a: 'The Statement Collection™ features 15 regionally curated colours chosen to suit local architecture, while the Dream Collection™ offers over 700 customisable colours for full creative control. Both are backed by a 15-year ColorPlus® finish warranty.' },
-      { q: 'Which James Hardie profile suits a Craftsman or modern home?', a: 'Craftsman homes shine with HardiePlank® horizontal lap plus HardieShingle® accents in earthy tones, while modern homes favour HardiePanel® vertical siding or the Artisan® V-groove in bold, dark colours with crisp white HardieTrim®.' },
+      { q: 'What are the most popular James Hardie colors for Bay Area homes?', a: "Soft grays, sage greens, warm taupes and crisp whites are the most requested ColorPlus® finishes on the Peninsula. They complement coastal light, hide fog-borne grime well, and suit the region's mix of Craftsman, Ranch and modern architecture." },
+      { q: 'Can James Hardie siding be painted a custom color?', a: 'Yes. James Hardie offers primed products engineered to hold paint, so you can match any custom color. For lower long-term maintenance, most homeowners choose factory-applied ColorPlus® finishes, which resist fading and rarely need repainting.' },
+      { q: 'What’s the difference between the Statement and Dream Collections?', a: 'The Statement Collection™ features 15 regionally curated colors chosen to suit local architecture, while the Dream Collection™ offers over 700 customizable colors for full creative control. Both are backed by a 15-year ColorPlus® finish warranty.' },
+      { q: 'Which James Hardie profile suits a Craftsman or modern home?', a: 'Craftsman homes shine with HardiePlank® horizontal lap plus HardieShingle® accents in earthy tones, while modern homes favor HardiePanel® vertical siding or the Artisan® V-groove in bold, dark colors with crisp white HardieTrim®.' },
       { q: 'Is James Hardie fiber cement really fire-resistant?', a: 'Yes — James Hardie fiber cement is non-combustible and carries a Class A fire rating, which is why it’s a popular, design-forward choice in wildfire-aware Bay Area communities.' },
     ],
   }),
   block('CallToAction', 'cta-design', {
     heading: 'See your home in James Hardie®',
-    copy: 'Take your favourite line and colour straight into an instant estimate — or book a free design consultation with real product samples at your home.',
+    copy: 'Take your favorite line and color straight into an instant estimate — or book a free design consultation with real product samples at your home.',
     buttonLabel: 'Get my instant quote →',
     buttonHref: '/instant-quote',
     background: 'green',
@@ -357,7 +357,7 @@ const qualityPricing = layout([
     background: 'white',
     items: [
       { n: '1', title: 'Book your visit', body: "Call or submit our form and we'll schedule a convenient time to come to your home." },
-      { n: '2', title: 'Precise measurement', body: 'We measure accurately, review your existing siding’s condition, and discuss styles, colors and any window or door changes.' },
+      { n: '2', title: 'Precise measurement', body: 'We measure accurately, review your existing siding’s condition, and discuss styles, colors and trim details.' },
       { n: '3', title: 'Detailed proposal', body: 'We email a clear, itemized proposal — every potential cost outlined, plus the safety precautions we’ll take.' },
       { n: '4', title: 'Understand before you sign', body: "We walk you through products, process and warranties so you're fully confident in your investment." },
     ],
@@ -470,7 +470,7 @@ const contactUs = layout([
     badge: '',
     heading: 'Let’s discuss your project',
     subheading:
-      'Not sure where to start? Share your ideas and we’ll help you explore the best siding, window, and exterior solutions for your Bay Area home. No pressure, ever.',
+      'Not sure where to start? Share your ideas and we’ll help you explore the best siding and exterior solutions for your Bay Area home. No pressure, ever.',
     stats: [],
     background: 'soft',
   }),
@@ -508,7 +508,7 @@ const contactUs = layout([
     columns: '3',
     background: 'soft',
     items: [
-      { title: 'Design consultation', body: 'An expert visits with product samples, walks you through options, and helps you visualize the perfect siding, trim and window styles for your home.' },
+      { title: 'Design consultation', body: 'An expert visits with product samples, walks you through options, and helps you visualize the perfect siding and trim styles for your home.' },
       { title: 'Detailed quote', body: 'A clear, transparent quote outlining every part of your project — materials, steps and costs — so there are no surprises.' },
       { title: 'Expert installation', body: 'Skilled craftsmen install with precision, backed by our 5-year workmanship guarantee and full manufacturer warranties.' },
     ],

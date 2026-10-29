@@ -82,9 +82,9 @@ export const FINISH_PRICING: Record<ProfileKey, Record<FinishKey, { cost: number
 }
 
 export const PRIMED_WARNING =
-  'Primed James Hardie® siding ships pre-primed but not painted, so it must be finished with a quality 100% acrylic exterior topcoat within 180 days of installation per the manufacturer’s guidelines. Please schedule your painter within this window — painting on time protects the boards from moisture and keeps your product warranty intact.'
+  'Primed James Hardie® siding ships pre-primed but not painted, so it must be finished with a quality 100% acrylic exterior topcoat within 180 days of installation per the manufacturer’s guidelines. Please schedule your painter within that time — painting on time protects the boards from moisture and keeps your product warranty intact.'
 export const COLORPLUS_NOTE =
-  'ColorPlus® Technology is a factory baked-on finish — it arrives in your chosen colour, never needs field painting, and carries a 15-year limited finish warranty against peeling, cracking and chipping.'
+  'ColorPlus® Technology is a factory baked-on finish — it arrives in your chosen color, never needs field painting, and carries a 15-year limited finish warranty against peeling, cracking and chipping.'
 
 // ── Board & batten: batten count + cost ─────────────────────────────────────
 // Battens run vertically at 12" on-centre — the company rule: one batten every

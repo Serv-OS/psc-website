@@ -12,7 +12,6 @@ const INTERESTS = [
   'Wood / Cedar Siding',
   'Siding Repair',
   'Siding Replacement',
-  'Windows & Doors',
   'Not sure yet',
 ]
 

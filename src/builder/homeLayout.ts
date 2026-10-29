@@ -28,13 +28,12 @@ export const HOME_LAYOUT = {
       type: 'ServicesGrid',
       props: {
         id: 'Services-home',
-        columns: '4',
+        columns: '3',
         background: 'white',
         items: [
           { title: 'Fiber Cement Siding', body: 'Durable, low-maintenance James Hardie® board.', image: { url: '/api/media/file/13-after-768x768.jpg', alt: 'Fiber cement siding' } },
           { title: 'Real Wood Shingles', body: 'Timeless coastal character and warmth.', image: { url: '/api/media/file/7-after-768x768.jpg', alt: 'Cedar shingle siding' } },
           { title: 'Wood-Look Fiber Cement', body: 'Authentic grain without the upkeep.', image: { url: '/api/media/file/12-after-768x768.jpg', alt: 'Wood-look fiber cement siding' } },
-          { title: 'Windows & Doors', body: 'Energy-efficient replacements that seal tight.', image: { url: '/api/media/file/4-after.jpg', alt: 'Windows and doors replacement' } },
         ],
       },
     },
@@ -92,7 +91,7 @@ export const HOME_LAYOUT = {
         background: 'white',
         items: [
           { quote: 'The crew was meticulous and the new Hardie siding completely transformed our curb appeal. Clear pricing, no surprises.', author: 'San Mateo homeowner', projectType: 'Whole-house re-side' },
-          { quote: 'Professional from the first call to the final walkthrough. They beat another quote and still delivered top quality.', author: 'Redwood City homeowner', projectType: 'Siding + windows' },
+          { quote: 'Professional from the first call to the final walkthrough. They beat another quote and still delivered top quality.', author: 'Redwood City homeowner', projectType: 'Siding replacement' },
           { quote: 'Communication was excellent throughout. The 5-year warranty gave us real peace of mind. Highly recommend.', author: 'Palo Alto homeowner', projectType: 'Board & batten' },
         ],
       },

@@ -80,7 +80,7 @@ export default async function FrontendLayout({ children }: { children: React.Rea
             Deliberately in the (frontend) layout only: the Payload admin and the
             page builder must not carry it.
 
-            The heading, subtitle and colour live on the embed in the CRM under
+            The heading, subtitle and color live on the embed in the CRM under
             Settings → Sales chat; they are passed here because the widget reads
             them from this tag. Change them there and re-copy the snippet. */}
         <Script

@@ -31,7 +31,6 @@ const services = [
   { title: 'Fiber Cement Siding', body: 'Durable, low-maintenance James Hardie® board.', key: 'service-lap', label: 'lap siding', bg: 'repeating-linear-gradient(0deg,#dfe7df 0 8px,#e8eee8 8px 16px)' },
   { title: 'Real Wood Shingles', body: 'Timeless coastal character and warmth.', key: 'service-shingle', label: 'shingles', bg: 'repeating-linear-gradient(0deg,#dfe7df 0 18px,#e3ebe3 18px 20px)' },
   { title: 'Wood-Look Fiber Cement', body: 'Authentic grain without the upkeep.', key: 'service-batten', label: 'board & batten', bg: 'repeating-linear-gradient(90deg,#dfe7df 0 22px,#e3ebe3 22px 24px)' },
-  { title: 'Windows & Doors', body: 'Energy-efficient replacements that seal tight.', key: 'service-window', label: 'window', bg: 'repeating-linear-gradient(0deg,#e3ebe3 0 30px,#dfe7df 30px 32px),repeating-linear-gradient(90deg,#dfe7df 0 30px,#e8eee8 30px 32px)' },
 ]
 
 const process = [
@@ -51,7 +50,7 @@ const whyUs = [
 
 const fallbackReviews = [
   { quote: 'The crew was meticulous and the new Hardie siding completely transformed our curb appeal. Clear pricing, no surprises.', author: 'San Mateo homeowner', projectType: 'Whole-house re-side' },
-  { quote: 'Professional from the first call to the final walkthrough. They beat another quote and still delivered top quality.', author: 'Redwood City homeowner', projectType: 'Siding + windows' },
+  { quote: 'Professional from the first call to the final walkthrough. They beat another quote and still delivered top quality.', author: 'Redwood City homeowner', projectType: 'Siding replacement' },
   { quote: 'Communication was excellent throughout. The 5-year warranty gave us real peace of mind. Highly recommend.', author: 'Palo Alto homeowner', projectType: 'Board & batten' },
 ]
 
@@ -157,7 +156,7 @@ export default async function HomePage() {
       <section id="services" style={{ background: '#fff' }}>
         <div className="container" style={{ padding: '84px 24px' }}>
           <SectionHeader eyebrow="What we install" title="Complete exterior solutions, built to last" maxWidth={680} />
-          <div className="cols-4">
+          <div className="cols-3">
             {services.map((s) => (
               <div key={s.title} className="lift" style={{ border: '1px solid #e7ece7', borderRadius: 18, overflow: 'hidden', background: '#fbfcfa' }}>
                 <MediaImage media={imageSlot(page, s.key)} label={s.label} style={{ aspectRatio: '4/3' }} placeholderStyle={{ background: s.bg }} sizes="(max-width: 640px) 100vw, 25vw" />
