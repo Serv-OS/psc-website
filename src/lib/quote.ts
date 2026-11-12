@@ -154,7 +154,10 @@ export function computeCustomerEstimate(
   const fin = FINISH_PRICING[profile][finish]
   const material = fin.cost * sqft
   const install = fin.install * sqft
-  const installMat = (sqft / 1000) * stories * pricing.installMatPer1000PerStory
+  // Consumables follow sq ft only. The sq ft IS the whole wall, so multiplying by
+  // stories counted the same wall twice (the CRM engine made the same call). The
+  // setting keeps its old name so no site settings schema change is needed.
+  const installMat = (sqft / 1000) * pricing.installMatPer1000PerStory
   const permits = sqft * pricing.permitsPerSqft
   const debris = sqft * pricing.debrisPerSqft
   const demo = demoKey ? sqft * DEMO_OPTIONS[demoKey].ratePerSqft : 0
@@ -304,7 +307,7 @@ export function computeStaffQuote(
   })
   let installMat = 0
   for (const im of INSTALL_MATERIALS) {
-    installMat += im.cost * ((sqft / 1000) * stories * im.mult)
+    installMat += im.cost * ((sqft / 1000) * im.mult) // sq ft only, not storeys
   }
   const demoCost = demo && DEMO_RATES[demo] ? sqft * DEMO_RATES[demo] : 0
   const permits = sqft * pricing.permitsPerSqft
