@@ -101,7 +101,7 @@ export function QuoteBuilder() {
               <div><label style={lbl}>Total Sq Ft</label><input type="number" style={field} placeholder="0" value={sqft} onChange={(e) => setSqft(e.target.value)} /></div>
               <div><label style={lbl}>Stories</label>
                 <select style={{ ...field, background: '#fff' }} value={stories} onChange={(e) => setStories(e.target.value)}>
-                  <option value="1">1 Story</option><option value="2">2 Stories</option><option value="3">3 Stories</option>
+                  <option value="1">1 Story</option><option value="1.5">1.5 Stories</option><option value="2">2 Stories</option><option value="3">3 Stories</option>
                 </select>
               </div>
               <div><label style={lbl}>Demo</label>

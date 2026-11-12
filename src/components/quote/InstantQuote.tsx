@@ -203,7 +203,7 @@ export function InstantQuote() {
           <div style={stepLabel}>3 · Stories &amp; coverage</div>
           <div style={{ fontSize: 13, color: '#46544a', marginBottom: 8 }}>How many stories?</div>
           <div style={{ display: 'flex', gap: 10, marginBottom: 18 }}>
-            {[1, 2].map((v) => <button key={v} type="button" style={pill(stories === v)} onClick={() => setStories(v)}>{v} {v === 1 ? 'story' : 'stories'}</button>)}
+            {[1, 1.5, 2].map((v) => <button key={v} type="button" style={pill(stories === v)} onClick={() => setStories(v)}>{v} {v === 1 ? 'story' : 'stories'}</button>)}
           </div>
           <div style={{ fontSize: 13, color: '#46544a', marginBottom: 8 }}>How much of the house?</div>
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>

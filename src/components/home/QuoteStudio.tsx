@@ -119,7 +119,7 @@ export function QuoteStudio({ pricing = DEFAULT_PRICING }: { pricing?: PricingCo
           company: hp, // honeypot
           customer: { name, email, phone, address, notes },
           selection: { profile: prof.label, texture, color: activeColor.name },
-          project: { sqft: Math.round(sqft), stories: parseInt(stories, 10) },
+          project: { sqft: Math.round(sqft), stories: parseFloat(stories) || 1 },
           estimate: { low: est.low, high: est.high },
           sms_consent: smsOptIn,
           source: 'home-quote',
@@ -266,7 +266,7 @@ export function QuoteStudio({ pricing = DEFAULT_PRICING }: { pricing?: PricingCo
               <p style={{ fontSize: 13, color: '#6a766d', marginBottom: 16 }}>We use these to refine your estimate. No obligation.</p>
               <div style={{ fontSize: 13, fontWeight: 700, color: '#56635a', marginBottom: 9, textTransform: 'uppercase', letterSpacing: '.5px' }}>Number of stories</div>
               <div style={{ display: 'flex', gap: 8 }}>
-                {['1', '2', '3'].map((v) => (
+                {['1', '1.5', '2', '3'].map((v) => (
                   <button key={v} style={pill(stories === v)} onClick={() => setStories(v)}>{v}{v === '1' ? ' story' : ' stories'}</button>
                 ))}
               </div>
