@@ -1,4 +1,5 @@
 'use client'
+import { goToThankYou } from '@/lib/thankYou'
 
 import Link from 'next/link'
 import { useState, type CSSProperties } from 'react'
@@ -75,6 +76,7 @@ export function ContactForm() {
       })
       if (!res.ok) throw new Error()
       setSent(true)
+      goToThankYou('contact', { first: f.name.split(' ')[0] })
       setError(false)
     } catch {
       setError(true)

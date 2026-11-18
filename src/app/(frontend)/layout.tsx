@@ -25,6 +25,8 @@ const cleanCols = (cols: unknown): FooterColumn[] | null => {
   return out.length ? out : null
 }
 
+const GOOGLE_TAG_ID = (process.env.NEXT_PUBLIC_GOOGLE_TAG_ID || '').replace(/[^A-Za-z0-9-]/g, '')
+
 const poppins = Poppins({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700', '800'],
@@ -72,6 +74,18 @@ export default async function FrontendLayout({ children }: { children: React.Rea
           {children}
           <Footer biz={biz} logoUrl={logoUrl} columns={footerColumns} />
         </div>
+
+        {/* Google tag (Ads), only when its ID is set in the environment
+            (NEXT_PUBLIC_GOOGLE_TAG_ID, e.g. AW-123456789). Every page carries it,
+            so Ads can count a conversion when the /thank-you page loads. */}
+        {GOOGLE_TAG_ID && (
+          <>
+            <Script src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_TAG_ID}`} strategy="afterInteractive" />
+            <Script id="google-tag" strategy="afterInteractive">
+              {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;gtag('js',new Date());gtag('config','${GOOGLE_TAG_ID}');`}
+            </Script>
+          </>
+        )}
 
         {/* Sales chat. Qualifies the enquiry, prices it from the live catalogue
             and writes the lead straight into the CRM. Served from the CRM so the

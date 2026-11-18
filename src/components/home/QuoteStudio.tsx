@@ -1,4 +1,5 @@
 'use client'
+import { goToThankYou } from '@/lib/thankYou'
 
 import { useMemo, useState, type CSSProperties } from 'react'
 import { SmsConsent } from '../SmsConsent'
@@ -127,6 +128,7 @@ export function QuoteStudio({ pricing = DEFAULT_PRICING }: { pricing?: PricingCo
       })
       if (!res.ok) throw new Error('Request failed')
       setSubmitted(true)
+      goToThankYou('quote', { first: name.split(' ')[0], estimate: `${fmtUSD(est.low)} to ${fmtUSD(est.high)}` })
     } catch {
       setError('Something went wrong. Please call 650-910-5521 or try again.')
     } finally {

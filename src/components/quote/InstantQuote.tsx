@@ -1,4 +1,5 @@
 'use client'
+import { goToThankYou } from '@/lib/thankYou'
 
 // Customer-facing instant quote configurator. Flow:
 //   1 What are we replacing? (demo)  → 2 Measure (map)  → 3 Stories & coverage
@@ -140,6 +141,11 @@ export function InstantQuote() {
       })
       if (!res.ok) throw new Error('Request failed')
       setSubmitted(true)
+      goToThankYou('instant-quote', {
+        first: name.split(' ')[0],
+        estimate: est ? `${money(est.low)} to ${money(est.high)}` : undefined,
+        note: `${PROFILES[profile].label} (${finish === 'primed' ? 'primed' : color.name}) on about ${sqft.toLocaleString('en-US')} sq ft`,
+      })
     } catch {
       setError('Something went wrong. Please call 650-910-5521 or try again.')
     } finally {
