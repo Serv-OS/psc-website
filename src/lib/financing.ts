@@ -59,3 +59,10 @@ export const usd = (v: number, cents = false) =>
     minimumFractionDigits: cents ? 2 : 0,
     maximumFractionDigits: cents ? 2 : 0,
   })
+
+/* The example behind every "about $X a month" on the quote forms: the APR and
+ * term are printed next to it, as the rule above requires. */
+export const EXAMPLE_APR = 9.99
+export const EXAMPLE_YEARS = 10
+
+export type FinancingAnswer = 'yes' | 'maybe' | 'no' | ''

@@ -3,6 +3,8 @@ import { goToThankYou } from '@/lib/thankYou'
 
 import Link from 'next/link'
 import { useState, type CSSProperties } from 'react'
+import { FinancingQuestion } from '@/components/financing/FinancingQuestion'
+import type { FinancingAnswer } from '@/lib/financing'
 import { SmsConsent } from '../SmsConsent'
 
 const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/
@@ -47,6 +49,7 @@ function chip(active: boolean): CSSProperties {
 export function ContactForm() {
   const [f, setF] = useState({ name: '', email: '', phone: '', address: '', city: '', zip: '', interest: '', message: '', hp: '' })
   const [smsOptIn, setSmsOptIn] = useState(false)
+  const [financing, setFinancing] = useState<FinancingAnswer>('')
   const [error, setError] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [sent, setSent] = useState(false)
@@ -71,12 +74,13 @@ export function ContactForm() {
           interest: f.interest,
           message: f.message,
           sms_consent: smsOptIn,
+          financing: financing || undefined,
           source: 'contact-form',
         }),
       })
       if (!res.ok) throw new Error()
       setSent(true)
-      goToThankYou('contact', { first: f.name.split(' ')[0] })
+      goToThankYou('contact', { first: f.name.split(' ')[0], financing: financing || undefined })
       setError(false)
     } catch {
       setError(true)
@@ -156,6 +160,10 @@ export function ContactForm() {
           Please add your name, a valid email, and a phone number so we can reach you.
         </div>
       )}
+
+      <div style={{ marginTop: 18 }}>
+        <FinancingQuestion value={financing} onChange={setFinancing} />
+      </div>
 
       <SmsConsent checked={smsOptIn} onChange={setSmsOptIn} />
 

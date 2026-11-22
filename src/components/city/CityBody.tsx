@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { MediaImage } from '@/components/ui/MediaImage'
 import type { CityData } from '@/lib/cities'
 import { SITE } from '@/lib/site'
+import { FinancingStrip } from '@/components/financing/FinancingStrip'
 import type { Media } from '@/payload-types'
 
 const SERVICES = [
@@ -91,6 +92,8 @@ export function CityBody({ city, heroMedia }: { city: CityData; heroMedia?: Medi
           </div>
         </div>
       </section>
+
+      <FinancingStrip place={`city-${city.slug}`} city={city.name} />
 
       {/* LOCAL CTA */}
       <section style={{ background: 'linear-gradient(135deg,#206a38,#0e341d)' }}>

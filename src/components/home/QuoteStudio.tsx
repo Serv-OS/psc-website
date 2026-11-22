@@ -4,6 +4,9 @@ import { goToThankYou } from '@/lib/thankYou'
 import { useMemo, useState, type CSSProperties } from 'react'
 import { SmsConsent } from '../SmsConsent'
 
+import { FinancingQuestion } from '@/components/financing/FinancingQuestion'
+import { MonthlyEstimate } from '@/components/financing/MonthlyEstimate'
+import type { FinancingAnswer } from '@/lib/financing'
 import {
   COLORS,
   COVERAGE,
@@ -66,6 +69,7 @@ export function QuoteStudio({ pricing = DEFAULT_PRICING }: { pricing?: PricingCo
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
   const [smsOptIn, setSmsOptIn] = useState(false)
+  const [financing, setFinancing] = useState<FinancingAnswer>('')
   const [address, setAddress] = useState('')
   const [notes, setNotes] = useState('')
   const [hp, setHp] = useState('') // honeypot
@@ -123,12 +127,13 @@ export function QuoteStudio({ pricing = DEFAULT_PRICING }: { pricing?: PricingCo
           project: { sqft: Math.round(sqft), stories: parseFloat(stories) || 1 },
           estimate: { low: est.low, high: est.high },
           sms_consent: smsOptIn,
+          financing: financing || undefined,
           source: 'home-quote',
         }),
       })
       if (!res.ok) throw new Error('Request failed')
       setSubmitted(true)
-      goToThankYou('quote', { first: name.split(' ')[0], estimate: `${fmtUSD(est.low)} to ${fmtUSD(est.high)}` })
+      goToThankYou('quote', { first: name.split(' ')[0], estimate: `${fmtUSD(est.low)} to ${fmtUSD(est.high)}`, financing: financing || undefined, amount: est.high })
     } catch {
       setError('Something went wrong. Please call 650-910-5521 or try again.')
     } finally {
@@ -305,6 +310,7 @@ export function QuoteStudio({ pricing = DEFAULT_PRICING }: { pricing?: PricingCo
                   <div style={{ background: 'linear-gradient(135deg,#eef6ef,#f4f8f4)', border: '1px solid #cfe3d3', borderRadius: 16, padding: 20, textAlign: 'center' }}>
                     <div style={{ fontSize: '12.5px', fontWeight: 700, color: '#206a38', textTransform: 'uppercase', letterSpacing: '.6px' }}>Your estimated project</div>
                     <div style={{ fontSize: 30, fontWeight: 800, color: '#16261c', letterSpacing: '-1px', marginTop: 6 }}>{fmtUSD(est.low)} – {fmtUSD(est.high)}</div>
+                    <MonthlyEstimate low={est.low} high={est.high} compact />
                     <div style={{ fontSize: '12.5px', color: '#6a766d', marginTop: 6 }}>{Math.round(sqft).toLocaleString('en-US')} sq ft &middot; {prof.label} &middot; {activeColor.name}</div>
                   </div>
                   <p style={{ fontSize: '12.5px', color: '#7a857d', lineHeight: 1.5, marginTop: 12, textAlign: 'center' }}>
@@ -326,6 +332,7 @@ export function QuoteStudio({ pricing = DEFAULT_PRICING }: { pricing?: PricingCo
                   {error && (
                     <div style={{ marginTop: 12, background: '#fdecea', border: '1px solid #f3c9c2', borderRadius: 11, padding: '10px 14px', fontSize: '13.5px', color: '#c0392b', fontWeight: 500 }}>{error}</div>
                   )}
+                  <FinancingQuestion value={financing} onChange={setFinancing} />
                   <SmsConsent checked={smsOptIn} onChange={setSmsOptIn} />
                   <div style={{ display: 'flex', gap: 10, marginTop: 18 }}>
                     <button onClick={() => setQStep(2)} className="btn btn-ghost" style={{ flex: '0 0 auto', padding: '15px 20px', fontSize: 15, borderRadius: 13 }}>Back</button>

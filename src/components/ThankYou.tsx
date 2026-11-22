@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import { THANKS_KEY, type ThankYouDetails } from '@/lib/thankYou'
+import { ApplyButton } from '@/components/financing/ApplyButton'
+import { EXAMPLE_APR, EXAMPLE_YEARS, FIN, monthlyPayment, usd } from '@/lib/financing'
 
 type Saved = ThankYouDetails & { form?: string; at?: number }
 
@@ -45,6 +47,28 @@ export function ThankYou() {
           <div style={{ marginTop: 20, background: '#f4f8f4', border: '1px solid #dfe9df', borderRadius: 12, padding: 14, fontSize: 15, color: '#224631', fontWeight: 600 }}>
             Your estimate: {saved.estimate}{saved.note ? <div style={{ fontWeight: 400, fontSize: 13, marginTop: 4, color: '#56635a' }}>{saved.note}</div> : null}
           </div>
+        )}
+        {/* Financing: strike while they're keen. Yes/maybe get the full box,
+            everyone else a one line link. */}
+        {saved && (saved.financing === 'yes' || saved.financing === 'maybe') ? (
+          <div style={{ marginTop: 22, background: '#eef6ef', border: '1px solid #cfe3d3', borderRadius: 16, padding: 22, textAlign: 'left' }}>
+            <div style={{ fontSize: 17, fontWeight: 800, color: '#16261c' }}>Check your financing rate now</div>
+            <p style={{ fontSize: 14, color: '#46544a', marginTop: 6, lineHeight: 1.55 }}>
+              You said you&apos;re interested in financing. It takes about 2 minutes, uses a soft credit check that won&apos;t affect your score, and you&apos;ll know your options before we visit.
+            </p>
+            {saved.amount ? (
+              <div style={{ fontSize: 14, color: '#224631', marginTop: 10 }}>
+                <strong>About {usd(monthlyPayment(saved.amount, EXAMPLE_APR, EXAMPLE_YEARS))} a month*</strong> on {usd(saved.amount)}
+                <div style={{ fontSize: 11, color: '#8a958c', marginTop: 3 }}>*Example at {EXAMPLE_APR}% APR over {EXAMPLE_YEARS} years. Your rate depends on your credit; not an offer.</div>
+              </div>
+            ) : null}
+            <ApplyButton place="thank-you" style={{ display: 'block', textAlign: 'center', marginTop: 14, padding: '14px 20px', fontSize: 16 }}>Check your rate &rarr;</ApplyButton>
+            <div style={{ fontSize: 11, color: '#8a958c', marginTop: 8 }}>Through Enhancify and its lending partners, subject to credit approval. Rates from {FIN.lowestApr}% APR.</div>
+          </div>
+        ) : (
+          <p style={{ marginTop: 20, fontSize: 14, color: '#56635a' }}>
+            Want to spread the cost? <a href="/financing" style={{ color: '#206a38', fontWeight: 600 }}>See our financing options</a>.
+          </p>
         )}
         <p style={{ marginTop: 22, fontSize: 14, color: '#56635a' }}>
           Anything urgent? Call <a href="tel:6509105521" style={{ color: '#206a38', fontWeight: 600 }}>650-910-5521</a>.

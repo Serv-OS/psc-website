@@ -56,6 +56,7 @@ async function forwardToCrm(args: {
     }
   }
   data.sms_consent = body?.sms_consent === true
+  if (['yes', 'maybe', 'no'].includes(body?.financing)) data.financing = body.financing
 
   for (const k of Object.keys(data)) {
     if (data[k] === undefined || data[k] === null || data[k] === '') delete data[k]
@@ -90,6 +91,7 @@ async function forwardInstantQuoteToCrm(args: { name: string; email: string; pho
       body: JSON.stringify({
         secret: process.env.CRM_INGEST_SECRET || undefined,
         sms_consent: body?.sms_consent === true,
+        financing: ['yes', 'maybe', 'no'].includes(body?.financing) ? body.financing : undefined,
         customer: { name, email, phone, address: c.address, city: c.city, zip: c.zip, notes: c.notes || body?.notes },
         selection: body?.selection || {},
         project: body?.project || {},

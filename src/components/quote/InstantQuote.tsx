@@ -13,6 +13,9 @@ import { goToThankYou } from '@/lib/thankYou'
 import { useMemo, useState } from 'react'
 import { RoofMeasure, type Measurement } from './RoofMeasure'
 import { SmsConsent } from '../SmsConsent'
+import { FinancingQuestion } from '@/components/financing/FinancingQuestion'
+import { MonthlyEstimate } from '@/components/financing/MonthlyEstimate'
+import type { FinancingAnswer } from '@/lib/financing'
 import {
   PROFILES, COVERAGE, computeCustomerEstimate, battenBoardCount, BATTEN_SPACING_IN,
   DEMO_OPTIONS, TEXTURES, COLORS, INCLUDED, PRIMED_WARNING, COLORPLUS_NOTE,
@@ -67,6 +70,7 @@ export function InstantQuote() {
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
   const [smsOptIn, setSmsOptIn] = useState(false)
+  const [financing, setFinancing] = useState<FinancingAnswer>('')
   const [hp, setHp] = useState('') // honeypot
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
@@ -136,6 +140,7 @@ export function InstantQuote() {
           },
           estimate: { low: est.low, high: est.high },
           sms_consent: smsOptIn,
+          financing: financing || undefined,
           source: 'instant-quote',
         }),
       })
@@ -145,6 +150,8 @@ export function InstantQuote() {
         first: name.split(' ')[0],
         estimate: est ? `${money(est.low)} to ${money(est.high)}` : undefined,
         note: `${PROFILES[profile].label} (${finish === 'primed' ? 'primed' : color.name}) on about ${sqft.toLocaleString('en-US')} sq ft`,
+        financing: financing || undefined,
+        amount: est?.high,
       })
     } catch {
       setError('Something went wrong. Please call 650-910-5521 or try again.')
@@ -361,6 +368,7 @@ export function InstantQuote() {
               {finish === 'primed' ? 'Primed for paint' : `ColorPlus ${color.name}`} · {demoKey === 'newbuild' ? 'new build' : `replacing ${DEMO_OPTIONS[demoKey].label.toLowerCase()}`}
               {profile === 'panel' && battenBoards > 0 && <> · ~{battenBoards} battens</>}
             </div>
+            <MonthlyEstimate low={est.low} high={est.high} />
           </>
         ) : (
           <div style={{ fontSize: 14, color: '#6a766d' }}>Search your address and trace your roof to see a ballpark.</div>
@@ -375,6 +383,7 @@ export function InstantQuote() {
           <input style={input} placeholder="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
           <input style={{ position: 'absolute', left: '-9999px' }} tabIndex={-1} autoComplete="off" value={hp} onChange={(e) => setHp(e.target.value)} aria-hidden />
           {error && <div style={{ fontSize: 13, color: '#b91c1c' }}>{error}</div>}
+          <FinancingQuestion value={financing} onChange={setFinancing} />
           <SmsConsent checked={smsOptIn} onChange={setSmsOptIn} />
           <button type="button" onClick={submit} disabled={submitting} className="btn btn-primary" style={{ padding: '13px 20px', fontSize: 15, opacity: submitting ? 0.6 : 1 }}>
             {submitting ? 'Sending…' : 'Send me my quote'}

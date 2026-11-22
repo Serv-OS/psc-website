@@ -13,6 +13,8 @@ import { StyleExplorer } from '@/components/design/StyleExplorer'
 import { EstimateSlider } from '@/components/pricing/EstimateSlider'
 import { FireTest } from '@/components/benefits/FireTest'
 import { ContactForm } from '@/components/contact/ContactForm'
+import { FinancingStrip } from '@/components/financing/FinancingStrip'
+import { PaymentCalculator } from '@/components/financing/PaymentCalculator'
 import { GalleryProjectsLive, BlogPostsLive } from './DynamicCollections'
 import { ImageField, type ImageValue } from './ImageField'
 
@@ -79,7 +81,7 @@ export const config: Config = {
   categories: {
     layout: { title: 'Sections', components: ['Hero', 'CenteredHero', 'Heading', 'Text', 'CallToAction', 'Spacer'] },
     content: { title: 'Content', components: ['SplitContent', 'ServicesGrid', 'FeatureCards', 'NumberedCards', 'CheckList', 'BeforeAfter', 'Reviews', 'ImageBlock'] },
-    interactive: { title: 'Interactive', components: ['QuoteEngine', 'MaterialsTabs', 'ServiceFinderBlock', 'StyleExplorerBlock', 'EstimateSliderBlock', 'FireTestBlock', 'FAQBlock', 'GalleryBlock', 'ContactBlock', 'BlogListBlock'] },
+    interactive: { title: 'Interactive', components: ['QuoteEngine', 'MaterialsTabs', 'ServiceFinderBlock', 'StyleExplorerBlock', 'EstimateSliderBlock', 'FireTestBlock', 'FAQBlock', 'GalleryBlock', 'ContactBlock', 'BlogListBlock', 'FinancingBlock', 'FinancingCalculatorBlock'] },
   },
   components: {
     // ─────────── HERO ───────────
@@ -846,6 +848,27 @@ export const config: Config = {
           </section>
         )
       },
+    },
+
+    // ─────────── FINANCING (Enhancify, 22 Nov 2026) ───────────
+    FinancingBlock: {
+      label: 'Financing',
+      fields: { city: { type: 'text', label: 'Town name (optional)' }, place: { type: 'text', label: 'Tracking name' } },
+      defaultProps: { city: '', place: 'builder' },
+      render: ({ city, place }) => <FinancingStrip place={place || 'builder'} city={city || undefined} />,
+    },
+    FinancingCalculatorBlock: {
+      label: 'Financing calculator',
+      fields: { eyebrow: { type: 'text', label: 'Eyebrow' }, title: { type: 'textarea', label: 'Title' }, place: { type: 'text', label: 'Tracking name' } },
+      defaultProps: { eyebrow: 'Payment calculator', title: 'Turn your project into a monthly payment', place: 'builder-calculator' },
+      render: ({ eyebrow, title, place }) => (
+        <section style={{ background: '#fff' }}>
+          <div className="container" style={{ padding: '84px 24px' }}>
+            {title ? <SectionHeader eyebrow={eyebrow || ''} title={title} maxWidth={760} /> : null}
+            <PaymentCalculator place={place || 'builder-calculator'} />
+          </div>
+        </section>
+      ),
     },
 
     // ─────────── FIRE TEST ───────────

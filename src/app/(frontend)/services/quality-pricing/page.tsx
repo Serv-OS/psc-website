@@ -6,8 +6,10 @@ import { JsonLd } from '@/components/ui/JsonLd'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { EstimateSlider } from '@/components/pricing/EstimateSlider'
 import { PuckRender } from '@/builder/PuckRender'
+import { withFinancing } from '@/builder/withFinancing'
 import { builtLayout, getPage, getSiteSettings } from '@/lib/data'
 import { breadcrumbLd, faqPageLd } from '@/lib/jsonld'
+import { FinancingStrip } from '@/components/financing/FinancingStrip'
 import { DEFAULT_PRICING } from '@/lib/quote'
 
 export const revalidate = 300
@@ -50,7 +52,7 @@ const faqs: FAQItem[] = [
 export default async function QualityPricingPage() {
   const [page, settings] = await Promise.all([getPage('quality-pricing'), getSiteSettings()])
   const layout = builtLayout(page)
-  if (layout) return <PuckRender data={layout} />
+  if (layout) return <PuckRender data={withFinancing(layout, 'pricing')} />
   const pricing = {
     ...DEFAULT_PRICING,
     markup: settings?.pricing?.markup ?? DEFAULT_PRICING.markup,
@@ -157,6 +159,8 @@ export default async function QualityPricingPage() {
           </div>
         </div>
       </section>
+
+      <FinancingStrip place="pricing" />
 
       {/* FAQ */}
       <section style={{ background: '#fff' }}>

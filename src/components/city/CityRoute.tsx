@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { CityBody } from '@/components/city/CityBody'
 import { JsonLd } from '@/components/ui/JsonLd'
 import { PuckRender } from '@/builder/PuckRender'
+import { withFinancing } from '@/builder/withFinancing'
 import { asMedia, builtLayout, getPage, getServiceArea, getSiteSettings } from '@/lib/data'
 import { DEFAULT_CITIES, type CityData } from '@/lib/cities'
 import { breadcrumbLd, cityContractorLd } from '@/lib/jsonld'
@@ -24,7 +25,7 @@ export async function CityRoute({ slug }: { slug: string }) {
   const [area, settings, page] = await Promise.all([getServiceArea(slug), getSiteSettings(), getPage(`siding-${slug}`)])
   // If this location page has been customised in the visual builder, render that.
   const layout = builtLayout(page)
-  if (layout) return <PuckRender data={layout} />
+  if (layout) return <PuckRender data={withFinancing(layout, `city-${slug}`, area?.city || DEFAULT_CITIES[slug]?.name)} />
   const def = DEFAULT_CITIES[slug]
   const city: CityData = area
     ? {

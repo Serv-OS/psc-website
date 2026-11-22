@@ -7,9 +7,11 @@ import { MediaImage } from '@/components/ui/MediaImage'
 import { SectionHeader } from '@/components/ui/SectionHeader'
 import { QuoteStudio } from '@/components/home/QuoteStudio'
 import { PuckRender } from '@/builder/PuckRender'
+import { withFinancing } from '@/builder/withFinancing'
 import { asMedia, getFeaturedGallery, getPage, getSiteSettings, getTestimonials, imageSlot } from '@/lib/data'
 import { generalContractorLd, serviceCatalogLd } from '@/lib/jsonld'
 import { DEFAULT_PRICING } from '@/lib/quote'
+import { FinancingStrip } from '@/components/financing/FinancingStrip'
 import { resolveBiz } from '@/lib/site'
 
 export const revalidate = 300
@@ -85,7 +87,7 @@ export default async function HomePage() {
     return (
       <>
         <JsonLd data={[generalContractorLd(biz), serviceCatalogLd(biz)]} />
-        <PuckRender data={layout} />
+        <PuckRender data={withFinancing(layout, 'home')} />
       </>
     )
   }
@@ -265,6 +267,8 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      <FinancingStrip place="home" />
 
       {/* CTA STRIP */}
       <section style={{ background: 'linear-gradient(135deg,#206a38,#0e341d)' }}>

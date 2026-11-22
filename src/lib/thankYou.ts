@@ -8,7 +8,7 @@
  * address: anything in the URL ends up in Google's reports.
  */
 export type ThankYouForm = 'contact' | 'quote' | 'instant-quote'
-export type ThankYouDetails = { first?: string; estimate?: string; note?: string }
+export type ThankYouDetails = { first?: string; estimate?: string; note?: string; financing?: string; amount?: number }
 
 export const THANKS_KEY = 'psc_thank_you'
 
