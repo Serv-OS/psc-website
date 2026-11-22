@@ -6,6 +6,7 @@ import { Poppins } from 'next/font/google'
 
 import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
+import { FinancingBar } from '@/components/financing/FinancingBar'
 import { asMedia, getSiteSettings } from '@/lib/data'
 import { resolveBiz, SITE_URL, NAV, DEFAULT_FOOTER_COLUMNS, type NavItem, type FooterColumn } from '@/lib/site'
 
@@ -16,6 +17,22 @@ const cleanNav = (items: unknown): NavItem[] | null => {
     .filter((i): i is NavItem => !!i && typeof (i as NavItem).label === 'string' && !!(i as NavItem).href)
     .map((i) => ({ label: i.label, href: i.href, children: Array.isArray(i.children) ? i.children.filter((c) => c?.label && c?.href) : undefined }))
   return out.length ? out : null
+}
+/* Financing (22 Nov 2026) is always in the menu and the footer, even when the
+ * menus were edited in the CMS before it existed. Placed before Contact Us. */
+const FIN_LINK = { label: 'Financing', href: '/financing' }
+const withFinancingNav = (nav: NavItem[]): NavItem[] => {
+  if (nav.some((i) => i.href === '/financing' || i.children?.some((c) => c.href === '/financing'))) return nav
+  const at = nav.findIndex((i) => i.href === '/contact-us')
+  const out = [...nav]
+  out.splice(at < 0 ? out.length : at, 0, FIN_LINK)
+  return out
+}
+const withFinancingFooter = (cols: FooterColumn[]): FooterColumn[] => {
+  if (cols.some((c) => c.links.some((l) => l.href === '/financing'))) return cols
+  const i = cols.findIndex((c) => c.links.some((l) => l.href === '/instant-quote'))
+  const at = i < 0 ? cols.length - 1 : i
+  return cols.map((c, n) => (n === at ? { ...c, links: [...c.links, FIN_LINK] } : c))
 }
 const cleanCols = (cols: unknown): FooterColumn[] | null => {
   if (!Array.isArray(cols)) return null
@@ -61,8 +78,8 @@ export default async function FrontendLayout({ children }: { children: React.Rea
   const biz = resolveBiz(settings)
   const logoUrl = asMedia(settings?.logo)?.url || '/logo.svg'
   const s = settings as unknown as { headerNav?: unknown; footerColumns?: unknown } | null
-  const nav = cleanNav(s?.headerNav) ?? (NAV as unknown as NavItem[])
-  const footerColumns = cleanCols(s?.footerColumns) ?? DEFAULT_FOOTER_COLUMNS
+  const nav = withFinancingNav(cleanNav(s?.headerNav) ?? (NAV as unknown as NavItem[]))
+  const footerColumns = withFinancingFooter(cleanCols(s?.footerColumns) ?? DEFAULT_FOOTER_COLUMNS)
 
   return (
     <html lang="en" className={poppins.variable}>
@@ -70,6 +87,7 @@ export default async function FrontendLayout({ children }: { children: React.Rea
         {/* overflow-x: clip (not hidden) prevents horizontal scroll WITHOUT creating a
             scroll container that would break position: sticky on descendant elements. */}
         <div style={{ overflowX: 'clip' }}>
+          <FinancingBar />
           <Header announcement={biz.announcement} phone={biz.phone} logoUrl={logoUrl} nav={nav} />
           {children}
           <Footer biz={biz} logoUrl={logoUrl} columns={footerColumns} />

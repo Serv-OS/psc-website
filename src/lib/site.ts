@@ -100,6 +100,7 @@ export const NAV = [
   },
   { label: 'Gallery', href: '/gallery' },
   { label: 'Benefits', href: '/benefits' },
+  { label: 'Financing', href: '/financing' },
   { label: 'Contact Us', href: '/contact-us' },
 ] as const
 
