@@ -113,7 +113,7 @@ export async function POST(req: Request) {
     if (data.source === 'instant-quote') {
       await forwardInstantQuoteToCrm({ name, email, phone, c, body })
     } else {
-      await forwardToCrm({ type, name, email, phone, c, body })
+      await forwardToCrm({ type, name, email, phone, c, body: { ...body, source: data.source } })
     }
 
     // Notify sales (only when an email adapter is configured).

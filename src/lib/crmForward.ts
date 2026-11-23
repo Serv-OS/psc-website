@@ -8,6 +8,19 @@ const CRM_FORMS_URL =
   process.env.CRM_FORMS_URL ||
   'https://xxazlzkhwraqfeqjzviz.supabase.co/functions/v1/forms-public'
 
+const FORM_NAMES: Record<string, string> = {
+  'contact-form': 'Contact form',
+  'home-quote': 'Home page quote form',
+  'instant-quote': 'Instant quote',
+}
+/** "Website form: Contact form (page /contact-us)". */
+export function formLabel(source: string, pageUrl?: string | null, note?: string): string {
+  const name = FORM_NAMES[source] || source.replace(/[-_]/g, ' ')
+  let page = ''
+  try { if (pageUrl) page = new URL(pageUrl).pathname } catch { /* not a URL */ }
+  return `Website form: ${name}${page ? ` (page ${page})` : ''}${note ? `. ${note}` : ''}`
+}
+
 const usdRange = (lo?: number, hi?: number) => {
   const f = (n?: number) => (typeof n === 'number' ? '$' + Math.round(n).toLocaleString('en-US') : '')
   return lo || hi ? `${f(lo)} – ${f(hi)}`.trim() : ''
@@ -21,8 +34,12 @@ export async function forwardToCrm(args: {
   phone: string
   c: any
   body: any
+  /** Extra words for the label, for example "sent late". */
+  labelNote?: string
 }) {
   const { type, name, email, phone, c, body } = args
+  // Every lead says, as its first line in the CRM, which website form made it.
+  const label = formLabel(String(body?.source || (type === 'contact' ? 'contact-form' : 'home-quote')), body?.page_url, args.labelNote)
   const parts = name.trim().split(/\s+/)
   const first_name = parts[0] || ''
   const last_name = parts.slice(1).join(' ')
@@ -34,7 +51,7 @@ export async function forwardToCrm(args: {
     data = {
       first_name, last_name, email, phone,
       address: c.address, city: c.city, zip: c.zip,
-      interest: body?.interest, message: body?.message,
+      interest: body?.interest, message: [label, body?.message].filter(Boolean).join('\n\n'),
     }
   } else {
     slug = 'website-estimate'
@@ -47,7 +64,7 @@ export async function forwardToCrm(args: {
       profile: sel.profile, texture: sel.texture, color: sel.color,
       sqft: proj.sqft, stories: proj.stories,
       estimate_range: usdRange(est.low, est.high),
-      notes: c.notes || body?.notes,
+      notes: [label, c.notes || body?.notes].filter(Boolean).join('\n\n'),
     }
   }
   data.sms_consent = body?.sms_consent === true
