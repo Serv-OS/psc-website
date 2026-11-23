@@ -17,6 +17,8 @@ const nextConfig = {
     remotePatterns: [
       { protocol: 'https', hostname: 'posup.co.uk' },
       { protocol: 'https', hostname: '*.public.blob.vercel-storage.com' },
+      // Autopilot photos from the CRM's public content bucket.
+      { protocol: 'https', hostname: 'xxazlzkhwraqfeqjzviz.supabase.co', pathname: '/storage/v1/object/public/content/**' },
     ],
   },
   async redirects() {
