@@ -1,77 +1,12 @@
 import { NextResponse } from 'next/server'
 
+import { forwardToCrm } from '@/lib/crmForward'
 import { getPayloadClient } from '@/lib/payload'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
 const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/
-
-// Forward each lead into the ServOS CRM (psc-crm) for lead management. Public,
-// no-auth ingest endpoint; overridable via env for other environments.
-const CRM_FORMS_URL =
-  process.env.CRM_FORMS_URL ||
-  'https://xxazlzkhwraqfeqjzviz.supabase.co/functions/v1/forms-public'
-
-const usdRange = (lo?: number, hi?: number) => {
-  const f = (n?: number) => (typeof n === 'number' ? '$' + Math.round(n).toLocaleString('en-US') : '')
-  return lo || hi ? `${f(lo)} – ${f(hi)}`.trim() : ''
-}
-
-// Best-effort: never let a CRM hiccup break the website form.
-async function forwardToCrm(args: {
-  type: 'contact' | 'quote'
-  name: string
-  email: string
-  phone: string
-  c: any
-  body: any
-}) {
-  const { type, name, email, phone, c, body } = args
-  const parts = name.trim().split(/\s+/)
-  const first_name = parts[0] || ''
-  const last_name = parts.slice(1).join(' ')
-
-  let slug: string
-  let data: Record<string, any>
-  if (type === 'contact') {
-    slug = 'website-contact'
-    data = {
-      first_name, last_name, email, phone,
-      address: c.address, city: c.city, zip: c.zip,
-      interest: body?.interest, message: body?.message,
-    }
-  } else {
-    slug = 'website-estimate'
-    const sel = body?.selection || {}
-    const proj = body?.project || {}
-    const est = body?.estimate || {}
-    data = {
-      first_name, last_name, email, phone,
-      address: c.address,
-      profile: sel.profile, texture: sel.texture, color: sel.color,
-      sqft: proj.sqft, stories: proj.stories,
-      estimate_range: usdRange(est.low, est.high),
-      notes: c.notes || body?.notes,
-    }
-  }
-  data.sms_consent = body?.sms_consent === true
-  if (['yes', 'maybe', 'no'].includes(body?.financing)) data.financing = body.financing
-
-  for (const k of Object.keys(data)) {
-    if (data[k] === undefined || data[k] === null || data[k] === '') delete data[k]
-  }
-
-  try {
-    await fetch(CRM_FORMS_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ slug, data, page_url: body?.page_url || null }),
-    })
-  } catch (e) {
-    console.error('CRM lead forward failed', e)
-  }
-}
 
 // Instant-quote submissions get the full treatment in the CRM: contact + location
 // + lead + deal + a DRAFT quote built by the real quote engine, round-robin assigned.
