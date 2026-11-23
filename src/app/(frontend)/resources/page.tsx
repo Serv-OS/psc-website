@@ -7,6 +7,7 @@ import { SectionHeader } from '@/components/ui/SectionHeader'
 import { PuckRender } from '@/builder/PuckRender'
 import { asMedia, builtLayout, getBlogPosts, getPage } from '@/lib/data'
 import { breadcrumbLd } from '@/lib/jsonld'
+import { autoCategory, autoHero, getAutoPosts } from '@/lib/autopilot'
 
 export const revalidate = 300
 
@@ -34,7 +35,12 @@ function fmtDate(d?: string | null) {
 }
 
 export default async function ResourcesPage() {
-  const [posts, page] = await Promise.all([getBlogPosts(), getPage('resources')])
+  const [cmsPosts, autoPosts, page] = await Promise.all([getBlogPosts(), getAutoPosts(), getPage('resources')])
+  // CMS articles and autopilot posts (from the CRM) in one list, newest first.
+  const posts = [
+    ...cmsPosts.map((p) => ({ key: `cms-${p.id}`, slug: p.slug as string, title: p.title, excerpt: p.excerpt || null, date: p.publishedAt || null, cat: CAT_LABELS[p.category] || '', media: asMedia(p.heroImage) })),
+    ...autoPosts.map((p) => ({ key: `auto-${p.id}`, slug: p.slug, title: p.title, excerpt: p.excerpt, date: p.publish_at, cat: autoCategory(p), media: autoHero(p) ? ({ url: autoHero(p), alt: p.title } as never) : null })),
+  ].sort((a, b) => new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime())
   const layout = builtLayout(page)
   if (layout) return <PuckRender data={layout} />
 
@@ -67,15 +73,15 @@ export default async function ResourcesPage() {
           ) : (
             <div className="cols-3">
               {posts.map((p) => {
-                const hero = asMedia(p.heroImage)
+                const hero = p.media
                 return (
-                  <Link key={p.id} href={`/resources/${p.slug}`} className="lift" style={{ display: 'block', border: '1px solid #e7ece7', borderRadius: 18, overflow: 'hidden', background: '#fbfcfa' }}>
-                    <MediaImage media={hero} label={CAT_LABELS[p.category] || 'Article'} style={{ aspectRatio: '16/9' }} sizes="(max-width: 640px) 100vw, 33vw" />
+                  <Link key={p.key} href={`/resources/${p.slug}`} className="lift" style={{ display: 'block', border: '1px solid #e7ece7', borderRadius: 18, overflow: 'hidden', background: '#fbfcfa' }}>
+                    <MediaImage media={hero} label={p.cat || 'Article'} style={{ aspectRatio: '16/9' }} sizes="(max-width: 640px) 100vw, 33vw" />
                     <div style={{ padding: '18px 20px 22px' }}>
-                      <div style={{ fontSize: 12, fontWeight: 700, color: '#206a38', textTransform: 'uppercase', letterSpacing: '.4px' }}>{CAT_LABELS[p.category] || ''}</div>
+                      <div style={{ fontSize: 12, fontWeight: 700, color: '#206a38', textTransform: 'uppercase', letterSpacing: '.4px' }}>{p.cat}</div>
                       <h3 style={{ fontSize: 17, fontWeight: 700, color: '#16261c', marginTop: 6, lineHeight: 1.3 }}>{p.title}</h3>
                       {p.excerpt ? <p style={{ fontSize: 14, color: '#5b675e', marginTop: 8, lineHeight: 1.55 }}>{p.excerpt}</p> : null}
-                      <div style={{ fontSize: 12.5, color: '#9aa69d', marginTop: 12 }}>{fmtDate(p.publishedAt)}</div>
+                      <div style={{ fontSize: 12.5, color: '#9aa69d', marginTop: 12 }}>{fmtDate(p.date)}</div>
                     </div>
                   </Link>
                 )

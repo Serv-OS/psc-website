@@ -7,6 +7,8 @@ import { JsonLd } from '@/components/ui/JsonLd'
 import { MediaImage } from '@/components/ui/MediaImage'
 import { asMedia, getBlogPost, getBlogPosts } from '@/lib/data'
 import { blogPostingLd, breadcrumbLd } from '@/lib/jsonld'
+import { autoCategory, autoHero, getAutoPost } from '@/lib/autopilot'
+import { AutoPostBody } from '@/components/AutoPostBody'
 
 export const revalidate = 300
 
@@ -25,7 +27,17 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
   const post = await getBlogPost(slug)
-  if (!post) return { title: 'Article not found' }
+  if (!post) {
+    const auto = await getAutoPost(slug)
+    if (!auto) return { title: 'Article not found' }
+    const img = autoHero(auto)
+    return {
+      title: auto.seo_title || auto.title,
+      description: auto.seo_description || auto.excerpt || undefined,
+      alternates: { canonical: `/resources/${slug}` },
+      openGraph: img ? { images: [{ url: img }] } : undefined,
+    }
+  }
   const og = asMedia(post.seo?.ogImage) || asMedia(post.heroImage)
   return {
     title: post.seo?.metaTitle || post.title,
@@ -47,7 +59,11 @@ function fmtDate(d?: string | null) {
 export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   const post = await getBlogPost(slug)
-  if (!post) notFound()
+  if (!post) {
+    const auto = await getAutoPost(slug)
+    if (!auto) notFound()
+    return <AutoArticle slug={slug} p={auto} />
+  }
 
   const hero = asMedia(post.heroImage)
   const ogUrl = (asMedia(post.seo?.ogImage) || hero)?.url
@@ -105,6 +121,48 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         <div className="container" style={{ padding: '56px 24px', textAlign: 'center' }}>
           <h2 style={{ fontSize: 'clamp(22px,2.8vw,32px)', fontWeight: 800, color: '#fff', letterSpacing: '-.6px' }}>Ready to price your project?</h2>
           <p style={{ maxWidth: 540, margin: '12px auto 0', fontSize: 16, color: '#bcd9c2' }}>Build an instant estimate in 60 seconds — we&apos;ll beat any like-for-like quote by 10%.</p>
+          <Link href="/instant-quote" className="btn btn-light" style={{ display: 'inline-block', marginTop: 22, fontSize: 16, padding: '15px 28px', borderRadius: 13 }}>Build my instant quote &rarr;</Link>
+        </div>
+      </section>
+    </>
+  )
+}
+
+/** An autopilot post written in the CRM, in the same layout as a CMS article. */
+function AutoArticle({ slug, p }: { slug: string; p: NonNullable<Awaited<ReturnType<typeof getAutoPost>>> }) {
+  const img = autoHero(p)
+  const cat = autoCategory(p)
+  return (
+    <>
+      <JsonLd
+        data={[
+          breadcrumbLd([
+            { name: 'Home', url: '/' },
+            { name: 'Resources', url: '/resources' },
+            { name: p.title, url: `/resources/${slug}` },
+          ]),
+          blogPostingLd({ title: p.title, description: p.excerpt || undefined, url: `/resources/${slug}`, image: img ?? undefined, datePublished: p.publish_at, author: 'Peninsula Siding Company' }),
+        ]}
+      />
+      <article style={{ background: '#fff' }}>
+        <div style={{ maxWidth: 820, margin: '0 auto', padding: '40px 24px 24px' }}>
+          <div style={{ fontSize: 13, color: '#6a766d', fontWeight: 500 }}>
+            <Link href="/" style={{ color: '#6a766d' }}>Home</Link> <span style={{ margin: '0 6px', color: '#b8c4ba' }}>/</span>{' '}
+            <Link href="/resources" style={{ color: '#6a766d' }}>Resources</Link> <span style={{ margin: '0 6px', color: '#b8c4ba' }}>/</span>{' '}
+            <span style={{ color: '#206a38', fontWeight: 600 }}>{cat}</span>
+          </div>
+          <div style={{ marginTop: 22, fontSize: 12.5, fontWeight: 700, color: '#206a38', textTransform: 'uppercase', letterSpacing: '.4px' }}>{cat}</div>
+          <h1 style={{ fontSize: 'clamp(30px,4vw,46px)', fontWeight: 800, letterSpacing: '-1.2px', lineHeight: 1.08, color: '#16261c', marginTop: 10 }}>{p.title}</h1>
+          <div style={{ marginTop: 14, fontSize: 14, color: '#6a766d' }}>Peninsula Siding Company · {fmtDate(p.publish_at)}</div>
+        </div>
+        <div className="prose" style={{ maxWidth: 740, margin: '0 auto', padding: '16px 24px 72px' }}>
+          <AutoPostBody body={p.body} images={p.image_paths} />
+        </div>
+      </article>
+      <section style={{ background: 'linear-gradient(135deg,#206a38,#0e341d)' }}>
+        <div className="container" style={{ padding: '56px 24px', textAlign: 'center' }}>
+          <h2 style={{ fontSize: 'clamp(22px,2.8vw,32px)', fontWeight: 800, color: '#fff', letterSpacing: '-.6px' }}>Ready to price your project?</h2>
+          <p style={{ maxWidth: 540, margin: '12px auto 0', fontSize: 16, color: '#bcd9c2' }}>Build an instant estimate in 60 seconds. Financing available, rates from 7.99% APR.</p>
           <Link href="/instant-quote" className="btn btn-light" style={{ display: 'inline-block', marginTop: 22, fontSize: 16, padding: '15px 28px', borderRadius: 13 }}>Build my instant quote &rarr;</Link>
         </div>
       </section>

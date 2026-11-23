@@ -2,6 +2,7 @@ import type { MetadataRoute } from 'next'
 
 import { getBlogPosts, getServiceAreas } from '@/lib/data'
 import { CITY_SLUGS } from '@/lib/cities'
+import { getAutoPosts } from '@/lib/autopilot'
 import { SITE_URL } from '@/lib/site'
 
 export const revalidate = 3600
@@ -45,6 +46,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'yearly',
       priority: 0.6,
     })
+  }
+
+  // Autopilot posts from the CRM (only due ones come back).
+  for (const p of await getAutoPosts()) {
+    entries.push({ url: `${SITE_URL}/resources/${p.slug}`, lastModified: new Date(p.updated_at || p.publish_at), changeFrequency: 'yearly', priority: 0.6 })
   }
 
   return entries
