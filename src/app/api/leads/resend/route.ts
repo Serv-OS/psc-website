@@ -43,7 +43,12 @@ export async function POST(req: Request) {
     quote: leads.filter((l) => l.type !== 'contact').length,
     first: leads[0]?.createdAt || null, last: leads[leads.length - 1]?.createdAt || null,
   }
-  if (body.list) summary.leads = (docs as any[]).map((l) => ({ at: l.createdAt, type: l.type, status: l.status, source: l.source, email: l.email }))
+  // The full record, so the owner can be given a list of what was missed.
+  if (body.list) summary.leads = (docs as any[]).map((l) => ({
+    at: l.createdAt, type: l.type, status: l.status, source: l.source, name: l.name, email: l.email, phone: l.phone,
+    address: l.address, city: l.city, zip: l.zip, interest: l.interest, message: l.message, notes: l.notes,
+    selection: l.selection, project: l.project, estimate: l.estimate,
+  }))
   if (!body.send) return NextResponse.json({ dryRun: true, ...summary })
 
   let sent = 0
